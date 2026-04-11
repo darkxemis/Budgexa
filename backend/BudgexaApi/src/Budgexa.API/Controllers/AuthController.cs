@@ -12,8 +12,8 @@ public sealed class AuthController(ISender sender) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var result = await sender.Send(command, cancellationToken);
-        return Ok(result);
+        var userId = await sender.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(Register), new { id = userId }, new { userId });
     }
 
     [HttpPost("login")]

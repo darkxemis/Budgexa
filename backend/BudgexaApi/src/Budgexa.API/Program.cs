@@ -1,3 +1,4 @@
+using Budgexa.API;
 using Budgexa.Application;
 using Budgexa.Infrastructure;
 using Scalar.AspNetCore;
@@ -5,8 +6,7 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-
+builder.Services.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -15,10 +15,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
+    app.MapScalarApiReference(options => 
     {
         options.WithTitle("Budgexa API");
-        options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+        options.EnableDarkMode();
+        options.WithTheme(ScalarTheme.BluePlanet);
+        options.AddPreferredSecuritySchemes("Bearer");
     });
 }
 

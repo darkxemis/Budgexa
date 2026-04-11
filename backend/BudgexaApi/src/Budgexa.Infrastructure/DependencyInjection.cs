@@ -29,6 +29,7 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
     }
 
     private static void AddAuth(this IServiceCollection services, IConfiguration configuration)
@@ -47,6 +48,7 @@ public static class DependencyInjection
         })
         .AddJwtBearer(options =>
         {
+            options.MapInboundClaims = false;   
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,

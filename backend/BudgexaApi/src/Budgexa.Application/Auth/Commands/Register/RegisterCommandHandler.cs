@@ -1,16 +1,15 @@
 namespace Budgexa.Application.Auth.Commands.Register;
 
 using MediatR;
-using Budgexa.Application.Auth.DTOs;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Interfaces;
 
 public sealed class RegisterCommandHandler(
     IUserRepository userRepository,
-    IJwtTokenGenerator jwtTokenGenerator,
-    IPasswordHasher passwordHasher) : IRequestHandler<RegisterCommand, AuthResult>
+    IPasswordHasher passwordHasher,
+    IUnitOfWork unitOfWork) : IRequestHandler<RegisterCommand, Guid>
 {
-    public async Task<AuthResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
@@ -23,9 +22,8 @@ public sealed class RegisterCommandHandler(
         var user = User.Create(request.Email, hash, request.FirstName, request.LastName);
 
         await userRepository.AddAsync(user, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var token = jwtTokenGenerator.GenerateToken(user);
-
-        return new AuthResult(token, user.Email, $"{user.FirstName} {user.LastName}");
+        return user.Id;
     }
 }

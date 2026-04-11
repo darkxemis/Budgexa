@@ -7,6 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 public sealed class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 {
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Users.FindAsync([id], cancellationToken);
+    }
+
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await dbContext.Users
@@ -16,6 +21,5 @@ public sealed class UserRepository(ApplicationDbContext dbContext) : IUserReposi
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
     {
         await dbContext.Users.AddAsync(user, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -21,6 +21,6 @@ public sealed class LoginQueryHandler(
 
         var token = jwtTokenGenerator.GenerateToken(user);
 
-        return new AuthResult(token, user.Email, $"{user.FirstName} {user.LastName}");
+        return new AuthResult(user.Id, token, user.Email, $"{user.FirstName} {user.LastName}");
     }
 }
