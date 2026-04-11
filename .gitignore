@@ -26,7 +26,7 @@ x86/
 *.csproj.user
 *.dbmdl
 *.jfm
-launchSettings.json
+
 
 ## User-specific
 *.DotSettings.user
