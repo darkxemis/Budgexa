@@ -11,4 +11,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.13.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Budgexa.Application\Budgexa.Application.csproj" />
+    <ProjectReference Include="..\Budgexa.Infrastructure\Budgexa.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

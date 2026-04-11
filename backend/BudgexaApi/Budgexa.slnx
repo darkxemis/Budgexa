@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Budgexa.API/Budgexa.API.csproj" />
+    <Project Path="src/Budgexa.Application/Budgexa.Application.csproj" />
+    <Project Path="src/Budgexa.Domain/Budgexa.Domain.csproj" />
+    <Project Path="src/Budgexa.Infrastructure/Budgexa.Infrastructure.csproj" />
+  </Folder>
+</Solution>
