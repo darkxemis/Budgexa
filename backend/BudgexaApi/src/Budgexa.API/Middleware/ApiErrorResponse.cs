@@ -1,4 +1,4 @@
-namespace Budgexa.API.Infrastructure;
+namespace Budgexa.API.Middleware;
 
 public sealed record ApiErrorResponse(
     string Tag,

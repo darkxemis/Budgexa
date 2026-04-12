@@ -1,4 +1,4 @@
-namespace Budgexa.API.Infrastructure;
+namespace Budgexa.API.Middleware;
 
 using System.Diagnostics;
 using System.Net;
