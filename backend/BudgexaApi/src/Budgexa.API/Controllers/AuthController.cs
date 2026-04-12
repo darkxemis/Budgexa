@@ -1,5 +1,6 @@
 namespace Budgexa.API.Controllers;
 
+using Budgexa.API.Middleware;
 using Budgexa.Application.Auth.Commands.Register;
 using Budgexa.Application.Auth.DTOs;
 using Budgexa.Application.Auth.Queries.Login;
@@ -23,8 +24,12 @@ public sealed class AuthController(ISender sender) : ControllerBase
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The unique identifier of the newly created user.</returns>
     /// <response code="201">User registered successfully.</response>
+    /// <response code="400">Validation failed — check metadata for field errors.</response>
+    /// <response code="409">A user with this email already exists.</response>
     [HttpPost("register")]
     [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(RegisterCommand command, CancellationToken cancellationToken)
     {
         var userId = await sender.Send(command, cancellationToken);
@@ -41,8 +46,12 @@ public sealed class AuthController(ISender sender) : ControllerBase
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A JWT token along with basic user information.</returns>
     /// <response code="200">Login successful.</response>
+    /// <response code="400">Validation failed — check metadata for field errors.</response>
+    /// <response code="401">Invalid email or password.</response>
     [HttpPost("login")]
     [ProducesResponseType<AuthResult>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(LoginQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);

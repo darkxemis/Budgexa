@@ -17,4 +17,9 @@ public static class ErrorTags
     {
         public const string InternalError = "server.internalError";
     }
+
+    public static class Validation
+    {
+        public const string Failed = "validation.failed";
+    }
 }
