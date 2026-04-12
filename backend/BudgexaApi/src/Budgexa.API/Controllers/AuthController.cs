@@ -1,6 +1,7 @@
 namespace Budgexa.API.Controllers;
 
 using Budgexa.API.Middleware;
+using Budgexa.Application.Auth.Commands.RefreshToken;
 using Budgexa.Application.Auth.Commands.Register;
 using Budgexa.Application.Auth.DTOs;
 using Budgexa.Application.Auth.Queries.Login;
@@ -8,11 +9,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
-/// Authentication endpoints: registration and login.
+/// Authentication endpoints: registration, login, token refresh, and logout.
 /// </summary>
 [ApiController]
 [Route("api/v1/[controller]")]
-public sealed class AuthController(ISender sender) : ControllerBase
+public sealed class AuthController(ISender sender, IConfiguration configuration) : ControllerBase
 {
     /// <summary>
     /// POST /api/v1/auth/register
@@ -40,21 +41,87 @@ public sealed class AuthController(ISender sender) : ControllerBase
     /// POST /api/v1/auth/login
     /// </summary>
     /// <remarks>
-    /// Authenticates a user and returns a JWT token.
+    /// Authenticates a user and sets access token and refresh token as HTTP-only cookies.
     /// </remarks>
     /// <param name="query">User credentials (email and password).</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A JWT token along with basic user information.</returns>
-    /// <response code="200">Login successful.</response>
+    /// <returns>Basic user information. Tokens are set as HTTP-only cookies.</returns>
+    /// <response code="200">Login successful — tokens set in cookies.</response>
     /// <response code="400">Validation failed — check metadata for field errors.</response>
     /// <response code="401">Invalid email or password.</response>
     [HttpPost("login")]
-    [ProducesResponseType<AuthResult>(StatusCodes.Status200OK)]
+    [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(LoginQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
-        return Ok(result);
+        SetTokenCookies(result.Token, result.RefreshToken);
+        return Ok(new LoginResponse(result.UserId, result.Email, result.FullName));
     }
+
+    /// <summary>
+    /// POST /api/v1/auth/refresh
+    /// </summary>
+    /// <remarks>
+    /// Refreshes the access token using the refresh token cookie. The old refresh token is revoked and a new one is issued (token rotation).
+    /// </remarks>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Basic user information. New tokens are set as HTTP-only cookies.</returns>
+    /// <response code="200">Tokens refreshed successfully.</response>
+    /// <response code="401">Invalid or expired refresh token.</response>
+    [HttpPost("refresh")]
+    [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiErrorResponse>(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Refresh(CancellationToken cancellationToken)
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return Unauthorized();
+        }
+
+        var result = await sender.Send(new RefreshTokenCommand(refreshToken), cancellationToken);
+        SetTokenCookies(result.Token, result.RefreshToken);
+        return Ok(new LoginResponse(result.UserId, result.Email, result.FullName));
+    }
+
+    /// <summary>
+    /// POST /api/v1/auth/logout
+    /// </summary>
+    /// <remarks>
+    /// Clears both authentication cookies, effectively logging out the user.
+    /// </remarks>
+    /// <response code="204">Logged out successfully.</response>
+    [HttpPost("logout")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult Logout()
+    {
+        var expiredOptions = CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(-1));
+        Response.Cookies.Delete("accessToken", expiredOptions);
+        Response.Cookies.Delete("refreshToken", expiredOptions);
+        return NoContent();
+    }
+
+    private void SetTokenCookies(string accessToken, string refreshToken)
+    {
+        var accessMinutes = configuration.GetValue<int>("JwtSettings:ExpirationInMinutes");
+        var refreshDays = configuration.GetValue<int>("JwtSettings:RefreshTokenExpirationInDays");
+
+        Response.Cookies.Append("accessToken", accessToken, CreateCookieOptions(
+            DateTimeOffset.UtcNow.AddMinutes(accessMinutes)));
+
+        Response.Cookies.Append("refreshToken", refreshToken, CreateCookieOptions(
+            DateTimeOffset.UtcNow.AddDays(refreshDays)));
+    }
+
+    private static CookieOptions CreateCookieOptions(DateTimeOffset expires) => new()
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Strict,
+        Path = "/",
+        Expires = expires,
+    };
 }

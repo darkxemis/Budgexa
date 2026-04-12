@@ -14,6 +14,17 @@ builder.Services.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [])
+              .AllowCredentials()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -30,6 +41,8 @@ if (app.Environment.IsDevelopment())
     app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+app.UseCors("Frontend");
 
 app.UseHttpsRedirection();
 

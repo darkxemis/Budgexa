@@ -8,4 +8,5 @@ public sealed class JwtSettings
     public string Issuer { get; init; } = default!;
     public string Audience { get; init; } = default!;
     public int ExpirationInMinutes { get; init; }
+    public int RefreshTokenExpirationInDays { get; init; }
 }
