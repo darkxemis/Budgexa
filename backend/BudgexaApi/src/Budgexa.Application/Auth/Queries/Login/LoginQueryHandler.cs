@@ -1,7 +1,9 @@
 namespace Budgexa.Application.Auth.Queries.Login;
 
 using MediatR;
+using System.Net;
 using Budgexa.Application.Auth.DTOs;
+using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 
 public sealed class LoginQueryHandler(
@@ -12,11 +14,11 @@ public sealed class LoginQueryHandler(
     public async Task<AuthResult> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailAsync(request.Email, cancellationToken)
-            ?? throw new UnauthorizedAccessException("Invalid credentials.");
+            ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
 
         if (!passwordHasher.Verify(request.Password, user.PasswordHash))
         {
-            throw new UnauthorizedAccessException("Invalid credentials.");
+            throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
         }
 
         var token = jwtTokenGenerator.GenerateToken(user);

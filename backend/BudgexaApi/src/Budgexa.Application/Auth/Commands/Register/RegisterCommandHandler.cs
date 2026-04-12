@@ -1,7 +1,9 @@
 namespace Budgexa.Application.Auth.Commands.Register;
 
 using MediatR;
+using System.Net;
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 
 public sealed class RegisterCommandHandler(
@@ -15,7 +17,7 @@ public sealed class RegisterCommandHandler(
 
         if (existingUser is not null)
         {
-            throw new InvalidOperationException("A user with this email already exists.");
+            throw new AppException(HttpStatusCode.Conflict, ErrorTags.Auth.EmailAlreadyExists, "A user with this email already exists.");
         }
 
         var hash = passwordHasher.Hash(request.Password);

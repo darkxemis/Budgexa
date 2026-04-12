@@ -1,7 +1,9 @@
 namespace Budgexa.Application.Users.Queries.GetCurrentUser;
 
 using MediatR;
+using System.Net;
 using Budgexa.Application.Users.DTOs;
+using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 
 public sealed class GetCurrentUserQueryHandler(
@@ -10,7 +12,7 @@ public sealed class GetCurrentUserQueryHandler(
     public async Task<UserProfileResult> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdAsync(request.UserId, cancellationToken)
-            ?? throw new UnauthorizedAccessException("User not found.");
+            ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
         return new UserProfileResult(
             user.Id,

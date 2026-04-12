@@ -1,11 +1,15 @@
 namespace Budgexa.API;
 
+using Budgexa.API.Infrastructure;
 using Microsoft.OpenApi;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+
         services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer((document, _, _) =>

@@ -1,6 +1,7 @@
 namespace Budgexa.API.Controllers;
 
 using Budgexa.Application.Auth.Commands.Register;
+using Budgexa.Application.Auth.DTOs;
 using Budgexa.Application.Auth.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public sealed class AuthController(ISender sender) : ControllerBase
     /// <returns>The unique identifier of the newly created user.</returns>
     /// <response code="201">User registered successfully.</response>
     [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
     public async Task<IActionResult> Register(RegisterCommand command, CancellationToken cancellationToken)
     {
         var userId = await sender.Send(command, cancellationToken);
@@ -41,7 +42,7 @@ public sealed class AuthController(ISender sender) : ControllerBase
     /// <returns>A JWT token along with basic user information.</returns>
     /// <response code="200">Login successful.</response>
     [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<AuthResult>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
