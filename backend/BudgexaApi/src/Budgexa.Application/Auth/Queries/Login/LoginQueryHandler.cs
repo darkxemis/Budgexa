@@ -6,8 +6,6 @@ using Budgexa.Application.Auth.DTOs;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
-using Budgexa.Infrastructure.Authentication;
-using Microsoft.Extensions.Options;
 
 public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResult>
 {
@@ -16,7 +14,7 @@ public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResult>
     private readonly IJwtTokenGenerator jwtTokenGenerator;
     private readonly IPasswordHasher passwordHasher;
     private readonly IUnitOfWork unitOfWork;
-    private readonly JwtSettings jwtSettings;
+    private readonly IJwtSettingsProvider jwtSettingsProvider;
 
     public LoginQueryHandler(
         IUserRepository userRepository,
@@ -24,14 +22,14 @@ public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResult>
         IJwtTokenGenerator jwtTokenGenerator,
         IPasswordHasher passwordHasher,
         IUnitOfWork unitOfWork,
-        IOptions<JwtSettings> jwtOptions)
+        IJwtSettingsProvider jwtSettingsProvider)
     {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtTokenGenerator = jwtTokenGenerator;
         this.passwordHasher = passwordHasher;
         this.unitOfWork = unitOfWork;
-        this.jwtSettings = jwtOptions.Value;
+        this.jwtSettingsProvider = jwtSettingsProvider;
     }
 
     public async Task<AuthResult> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -44,8 +42,9 @@ public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResult>
             throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
         }
 
+
         var accessToken = jwtTokenGenerator.GenerateToken(user);
-        var refreshToken = RefreshToken.Create(user.Id, jwtSettings.RefreshTokenExpirationInDays);
+        var refreshToken = RefreshToken.Create(user.Id, jwtSettingsProvider.RefreshTokenExpirationInDays);
 
         await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

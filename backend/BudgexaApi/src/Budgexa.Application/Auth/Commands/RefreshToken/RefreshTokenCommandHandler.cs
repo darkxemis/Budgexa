@@ -4,9 +4,7 @@ using System.Net;
 using Budgexa.Application.Auth.DTOs;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
-using Budgexa.Infrastructure.Authentication;
 using MediatR;
-using Microsoft.Extensions.Options;
 
 public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthResult>
 {
@@ -14,20 +12,20 @@ public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCom
     private readonly IUserRepository userRepository;
     private readonly IJwtTokenGenerator jwtTokenGenerator;
     private readonly IUnitOfWork unitOfWork;
-    private readonly JwtSettings jwtSettings;
+    private readonly IJwtSettingsProvider jwtSettingsProvider;
 
     public RefreshTokenCommandHandler(
         IRefreshTokenRepository refreshTokenRepository,
         IUserRepository userRepository,
         IJwtTokenGenerator jwtTokenGenerator,
         IUnitOfWork unitOfWork,
-        IOptions<JwtSettings> jwtOptions)
+        IJwtSettingsProvider jwtSettingsProvider)
     {
         this.refreshTokenRepository = refreshTokenRepository;
         this.userRepository = userRepository;
         this.jwtTokenGenerator = jwtTokenGenerator;
         this.unitOfWork = unitOfWork;
-        this.jwtSettings = jwtOptions.Value;
+        this.jwtSettingsProvider = jwtSettingsProvider;
     }
 
     public async Task<AuthResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
@@ -44,7 +42,7 @@ public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCom
             ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidRefreshToken, "User not found.");
 
         var accessToken = jwtTokenGenerator.GenerateToken(user);
-        var newRefreshToken = Domain.Entities.RefreshToken.Create(user.Id, jwtSettings.RefreshTokenExpirationInDays);
+        var newRefreshToken = Domain.Entities.RefreshToken.Create(user.Id, jwtSettingsProvider.RefreshTokenExpirationInDays);
 
         await refreshTokenRepository.AddAsync(newRefreshToken, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

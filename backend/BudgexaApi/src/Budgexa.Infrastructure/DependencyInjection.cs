@@ -1,6 +1,6 @@
 namespace Budgexa.Infrastructure;
 
-using System.Text;
+using Budgexa.Application.Auth;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.Persistence;
@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 public static class DependencyInjection
 {
@@ -39,6 +40,7 @@ public static class DependencyInjection
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.AddSingleton<IJwtSettingsProvider, JwtSettingsProvider>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 
