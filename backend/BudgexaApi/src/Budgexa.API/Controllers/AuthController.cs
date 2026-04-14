@@ -116,7 +116,7 @@ public sealed class AuthController(ISender sender, IConfiguration configuration)
             DateTimeOffset.UtcNow.AddDays(refreshDays)));
     }
 
-    private static CookieOptions CreateCookieOptions(DateTimeOffset expires) => new()
+    private CookieOptions CreateCookieOptions(DateTimeOffset expires) => new()
     {
         HttpOnly = true,
         Secure = true,
