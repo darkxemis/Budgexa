@@ -8,7 +8,9 @@ using Budgexa.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-public sealed class JwtTokenGenerator(IOptions<JwtSettings> jwtSettings) : IJwtTokenGenerator
+public sealed class JwtTokenGenerator(
+    IOptions<JwtSettings> jwtSettings
+) : IJwtTokenGenerator
 {
     private readonly JwtSettings _settings = jwtSettings.Value;
 

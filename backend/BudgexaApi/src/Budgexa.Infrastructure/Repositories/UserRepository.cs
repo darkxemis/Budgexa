@@ -5,7 +5,9 @@ using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class UserRepository(ApplicationDbContext dbContext) : IUserRepository
+public sealed class UserRepository(
+    ApplicationDbContext dbContext
+) : IUserRepository
 {
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {

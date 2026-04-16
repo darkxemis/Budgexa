@@ -9,7 +9,8 @@ using Budgexa.Domain.Interfaces;
 public sealed class RegisterCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
-    IUnitOfWork unitOfWork) : IRequestHandler<RegisterCommand, Guid>
+    IUnitOfWork unitOfWork
+) : IRequestHandler<RegisterCommand, Guid>
 {
     public async Task<Guid> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {

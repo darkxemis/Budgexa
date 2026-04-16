@@ -7,7 +7,8 @@ using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 
 public sealed class GetCurrentUserQueryHandler(
-    IUserRepository userRepository) : IRequestHandler<GetCurrentUserQuery, UserProfileResult>
+    IUserRepository userRepository
+) : IRequestHandler<GetCurrentUserQuery, UserProfileResult>
 {
     public async Task<UserProfileResult> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {

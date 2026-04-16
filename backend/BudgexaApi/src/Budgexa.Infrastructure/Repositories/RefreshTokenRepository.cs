@@ -5,7 +5,9 @@ using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class RefreshTokenRepository(ApplicationDbContext dbContext) : IRefreshTokenRepository
+public sealed class RefreshTokenRepository(
+    ApplicationDbContext dbContext
+) : IRefreshTokenRepository
 {
     public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
     {

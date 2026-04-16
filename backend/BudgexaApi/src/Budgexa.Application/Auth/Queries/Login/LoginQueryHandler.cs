@@ -7,34 +7,16 @@ using Budgexa.Domain.Entities;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 
-public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResult>
+public sealed class LoginQueryHandler(
+    IUserRepository userRepository,
+    IRefreshTokenRepository refreshTokenRepository,
+    IJwtTokenGenerator jwtTokenGenerator,
+    IPasswordHasher passwordHasher,
+    IUnitOfWork unitOfWork,
+    IJwtSettingsProvider jwtSettingsProvider,
+    ILoginLockoutSettingsProvider lockoutSettingsProvider
+) : IRequestHandler<LoginQuery, AuthResult>
 {
-    private readonly IUserRepository userRepository;
-    private readonly IRefreshTokenRepository refreshTokenRepository;
-    private readonly IJwtTokenGenerator jwtTokenGenerator;
-    private readonly IPasswordHasher passwordHasher;
-    private readonly IUnitOfWork unitOfWork;
-    private readonly IJwtSettingsProvider jwtSettingsProvider;
-    private readonly ILoginLockoutSettingsProvider lockoutSettingsProvider;
-
-    public LoginQueryHandler(
-        IUserRepository userRepository,
-        IRefreshTokenRepository refreshTokenRepository,
-        IJwtTokenGenerator jwtTokenGenerator,
-        IPasswordHasher passwordHasher,
-        IUnitOfWork unitOfWork,
-        IJwtSettingsProvider jwtSettingsProvider,
-        ILoginLockoutSettingsProvider lockoutSettingsProvider)
-    {
-        this.userRepository = userRepository;
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.jwtTokenGenerator = jwtTokenGenerator;
-        this.passwordHasher = passwordHasher;
-        this.unitOfWork = unitOfWork;
-        this.jwtSettingsProvider = jwtSettingsProvider;
-        this.lockoutSettingsProvider = lockoutSettingsProvider;
-    }
-
     public async Task<AuthResult> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailAsync(request.Email, cancellationToken)
