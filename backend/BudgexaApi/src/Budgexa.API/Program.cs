@@ -1,4 +1,5 @@
 using Budgexa.API;
+using Budgexa.API.Endpoints;
 using Budgexa.Application;
 using Budgexa.Infrastructure;
 using Scalar.AspNetCore;
@@ -9,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog((context, configuration) =>
         configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
 builder.Services.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -49,6 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapAuthEndpoints();
+app.MapUsersEndpoints();
 
 app.Run();
