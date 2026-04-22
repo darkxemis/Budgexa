@@ -1,12 +1,13 @@
 namespace Budgexa.Infrastructure.Authentication;
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Budgexa.Application.Roles.DTOs;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 public sealed class JwtTokenGenerator(
     IOptions<JwtSettings> jwtSettings
@@ -19,7 +20,7 @@ public sealed class JwtTokenGenerator(
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -27,6 +28,11 @@ public sealed class JwtTokenGenerator(
             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
+        foreach (var userRole in user.UserRoles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+        }
 
         var token = new JwtSecurityToken(
             issuer: _settings.Issuer,

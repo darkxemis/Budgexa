@@ -1,10 +1,10 @@
 namespace Budgexa.Application.Auth.Commands.Register;
 
-using MediatR;
-using System.Net;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
+using MediatR;
+using System.Net;
 
 public sealed class RegisterCommandHandler(
     IUserRepository userRepository,
@@ -23,6 +23,11 @@ public sealed class RegisterCommandHandler(
 
         var hash = passwordHasher.Hash(request.Password);
         var user = User.Create(request.Email, hash, request.FirstName, request.LastName);
+
+        foreach (var roleId in request.RoleIds)
+        {
+            user.UserRoles.Add(UserRole.Create(user.Id, roleId));
+        }
 
         await userRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

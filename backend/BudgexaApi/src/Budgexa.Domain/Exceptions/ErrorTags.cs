@@ -15,6 +15,12 @@ public static class ErrorTags
         public const string NotFound = "user.notFound";
     }
 
+    public static class Role
+    {
+        public const string NotFound = "role.notFound";
+        public const string NameExists = "role.nameExists";
+    }
+
     public static class Server
     {
         public const string InternalError = "server.internalError";

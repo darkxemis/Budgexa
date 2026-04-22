@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog((context, configuration) =>
         configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -51,5 +53,6 @@ app.UseAuthorization();
 
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
+app.MapRoleEndpoints();
 
 app.Run();

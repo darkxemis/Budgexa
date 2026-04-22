@@ -11,6 +11,8 @@ public sealed class User : Entity
     public int FailedLoginAttempts { get; private set; }
     public DateTime? LockoutEnd { get; private set; }
 
+    public ICollection<UserRole> UserRoles { get; private set; } = new List<UserRole>();
+
     private User() { }
 
     public static User Create(string email, string passwordHash, string firstName, string lastName)

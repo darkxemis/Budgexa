@@ -4,6 +4,7 @@ using Budgexa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Budgexa.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422074543_AddRolesAndUserRoles")]
+    partial class AddRolesAndUserRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,23 +81,6 @@ namespace Budgexa.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9f3c2a6e-8b71-4b8d-9c2a-5f6e3d1a7c90"),
-                            Name = "freelance"
-                        },
-                        new
-                        {
-                            Id = new Guid("d4a1f9b2-3c7e-4e5a-8a91-2b6c0f7d8e13"),
-                            Name = "administrator"
-                        },
-                        new
-                        {
-                            Id = new Guid("6b2e4c9a-1f83-4d7b-b2a5-9e0c3f6a1d74"),
-                            Name = "superadministrator"
-                        });
                 });
 
             modelBuilder.Entity("Budgexa.Domain.Entities.User", b =>
