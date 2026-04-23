@@ -11,6 +11,9 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<Status> Statuses => Set<Status>();
+    public DbSet<StatusTranslation> StatusTranslations => Set<StatusTranslation>();
+    public DbSet<Language> Languages => Set<Language>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

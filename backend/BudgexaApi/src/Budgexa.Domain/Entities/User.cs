@@ -10,19 +10,36 @@ public sealed class User : Entity
     public string LastName { get; private set; } = default!;
     public int FailedLoginAttempts { get; private set; }
     public DateTime? LockoutEnd { get; private set; }
+    public Guid CompanyId { get; private set; }
+    public Guid LanguageId { get; private set; }
+    public Guid StatusId { get; private set; }
+
+    public Company Company { get; private set; } = default!;
+    public Language Language { get; private set; } = default!;
+    public Status Status { get; private set; } = default!;
 
     public ICollection<UserRole> UserRoles { get; private set; } = new List<UserRole>();
 
     private User() { }
 
-    public static User Create(string email, string passwordHash, string firstName, string lastName)
+    public static User Create(
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName,
+        Guid companyId,
+        Guid languageId,
+        Guid statusId)
     {
         return new User
         {
             Email = email,
             PasswordHash = passwordHash,
             FirstName = firstName,
-            LastName = lastName
+            LastName = lastName,
+            CompanyId = companyId,
+            LanguageId = languageId,
+            StatusId = statusId
         };
     }
 

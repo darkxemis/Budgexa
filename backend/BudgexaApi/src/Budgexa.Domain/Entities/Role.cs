@@ -5,6 +5,8 @@ public sealed class Role
     public Guid Id { get; private set; }
     public string Name { get; private set; } = default!;
 
+    public ICollection<UserRole> UserRoles { get; private set; } = new List<UserRole>();
+
     private Role() { }
 
     internal Role(Guid id, string name)

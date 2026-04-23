@@ -6,5 +6,8 @@ public sealed record RegisterCommand(
     string Email,
     string Password,
     string FirstName,
-    Guid[] RoleIds,
-    string LastName) : IRequest<Guid>;
+    string LastName,
+    Guid CompanyId,
+    Guid LanguageId,
+    Guid StatusId,
+    Guid[] RoleIds) : IRequest<Guid>;

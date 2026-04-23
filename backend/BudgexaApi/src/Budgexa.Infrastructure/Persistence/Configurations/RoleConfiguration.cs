@@ -16,6 +16,8 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasIndex(r => r.Name)
             .IsUnique();
 
+        builder.ToTable("roles");
+
         builder.HasData(
             Role.Create("freelance", RoleIds.Freelance),
             Role.Create("administrator", RoleIds.Administrator),

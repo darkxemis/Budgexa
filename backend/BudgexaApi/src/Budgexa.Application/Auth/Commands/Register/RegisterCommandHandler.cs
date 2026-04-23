@@ -22,7 +22,7 @@ public sealed class RegisterCommandHandler(
         }
 
         var hash = passwordHasher.Hash(request.Password);
-        var user = User.Create(request.Email, hash, request.FirstName, request.LastName);
+        var user = User.Create(request.Email, hash, request.FirstName, request.LastName, request.CompanyId, request.LanguageId, request.StatusId);
 
         foreach (var roleId in request.RoleIds)
         {
