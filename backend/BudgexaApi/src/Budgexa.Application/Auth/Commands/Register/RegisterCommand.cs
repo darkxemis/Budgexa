@@ -9,5 +9,4 @@ public sealed record RegisterCommand(
     string LastName,
     Guid CompanyId,
     Guid LanguageId,
-    Guid StatusId,
     Guid[] RoleIds) : IRequest<Guid>;

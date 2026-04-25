@@ -1,6 +1,7 @@
 namespace Budgexa.Application.Auth.Commands.Register;
 
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 using MediatR;
@@ -8,6 +9,7 @@ using System.Net;
 
 public sealed class RegisterCommandHandler(
     IUserRepository userRepository,
+    IStatusRepository statusRepository,
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork
 ) : IRequestHandler<RegisterCommand, Guid>
@@ -17,12 +19,15 @@ public sealed class RegisterCommandHandler(
         var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
         if (existingUser is not null)
-        {
             throw new AppException(HttpStatusCode.Conflict, ErrorTags.Auth.EmailAlreadyExists, "A user with this email already exists.");
-        }
+        
+
+        var status = await statusRepository.GetByValueAsync((int)StatusValue.New);
+        if (status == null)
+            throw new AppException(HttpStatusCode.BadRequest, ErrorTags.Status.NotFound, "Default status 'New' not found.");
 
         var hash = passwordHasher.Hash(request.Password);
-        var user = User.Create(request.Email, hash, request.FirstName, request.LastName, request.CompanyId, request.LanguageId, request.StatusId);
+        var user = User.Create(request.Email, hash, request.FirstName, request.LastName, request.CompanyId, request.LanguageId, status.Id);
 
         foreach (var roleId in request.RoleIds)
         {

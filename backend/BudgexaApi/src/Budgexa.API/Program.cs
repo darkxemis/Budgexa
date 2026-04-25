@@ -2,6 +2,8 @@ using Budgexa.API;
 using Budgexa.API.Endpoints;
 using Budgexa.Application;
 using Budgexa.Infrastructure;
+using Budgexa.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -54,5 +56,13 @@ app.UseAuthorization();
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapRoleEndpoints();
+
+// Automatically apply pending EF Core migrations at startup.
+// This ensures the database schema is always up to date with the latest model changes.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();

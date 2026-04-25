@@ -30,10 +30,12 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
 
         builder.Property(c => c.StartDate)
             .IsRequired()
-            .HasColumnOrder(7);
+            .HasColumnOrder(7)
+            .HasColumnType("date");
 
         builder.Property(c => c.EndDate)
-            .HasColumnOrder(8);
+            .HasColumnOrder(8)
+            .HasColumnType("date");
 
         // One-to-many relationship with User
         builder.HasMany(c => c.Users)

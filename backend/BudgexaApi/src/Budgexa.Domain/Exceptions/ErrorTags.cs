@@ -21,6 +21,11 @@ public static class ErrorTags
         public const string NameExists = "role.nameExists";
     }
 
+    public static class Status
+    {
+        public const string NotFound = "status.notFound";
+    }
+
     public static class Server
     {
         public const string InternalError = "server.internalError";

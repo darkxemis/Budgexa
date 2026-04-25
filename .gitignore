@@ -55,3 +55,9 @@ docker-compose.override.yml
 
 # Serilog logs
 logs/
+
+# secrets
+.env
+
+#IA context
+CONTEXT.md
