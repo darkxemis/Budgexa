@@ -21,12 +21,6 @@ public static class DependencyInjection
                     Description = "Personal finance management API.",
                 };
 
-                // Set the default server to HTTPS
-                document.Servers = new List<OpenApiServer>
-                {
-                    new OpenApiServer { Url = "https://api.localhost" }
-                };
-
                 document.Components ??= new OpenApiComponents();
                 document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
                 document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme

@@ -1,0 +1,43 @@
+services:
+  sqlserver:
+    container_name: budgexa-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    networks:
+      - budgexa-net
+
+  budgexaapi:
+    container_name: budgexa-api
+    build:
+      context: .
+      dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - JwtSettings__Secret=${JWT_SECRET}
+    ports:
+      - "5000:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - budgexa-net
+
+  budgexa-client:
+    container_name: budgexa-client
+    build:
+      context: ./frontend/budgexa-client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8080:80"
+    networks:
+      - budgexa-net
+    depends_on:
+      - budgexaapi
+
+networks:
+  budgexa-net:
+    driver: bridge

@@ -105,7 +105,7 @@ public static class AuthEndpoints
     {
         HttpOnly = true,
         Secure = true,
-        SameSite = SameSiteMode.Strict,
+        SameSite = SameSiteMode.None,
         Path = "/",
         Expires = expires,
     };

@@ -62,7 +62,24 @@ app.MapRoleEndpoints();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+
+    var retry = 30;
+
+    while (true)
+    {
+        try
+        {
+            db.Database.Migrate();
+            break;
+        }
+        catch
+        {
+            retry--;
+            if (retry == 0) throw;
+
+            Thread.Sleep(2000);
+        }
+    }
 }
 
 app.Run();
