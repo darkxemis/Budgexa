@@ -1,12 +1,29 @@
 services:
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --api.insecure=true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+    networks:
+      - budgexa-net
+
   sqlserver:
     container_name: budgexa-sqlserver
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - SA_PASSWORD=${SA_PASSWORD}
       - ACCEPT_EULA=Y
-    secrets:
-      - sa_password
     ports:
       - "1433:1433"
     networks:
@@ -21,21 +38,32 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - JwtSettings__Secret=${JWT_SECRET}
-    secrets:
-      - connection_string
-    ports:
-      - "5000:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.budgexaapi.rule=Host(`api.localhost`)"
+      - "traefik.http.routers.budgexaapi.entrypoints=web"
+      - "traefik.http.services.budgexaapi.loadbalancer.server.port=80"
     depends_on:
       - sqlserver
     networks:
       - budgexa-net
 
-secrets:
-  sa_password:
-    file: ./secrets/sa_password.txt
-  connection_string:
-    file: ./secrets/connection_string.txt
+  budgexa-client:
+    container_name: budgexa-client
+    build:
+      context: ./frontend/budgexa-client
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.budgexaclient.rule=Host(`localhost`) && PathPrefix(`/`)"
+      - "traefik.http.routers.budgexaclient.entrypoints=web"
+      - "traefik.http.services.budgexaclient.loadbalancer.server.port=80"
+    networks:
+      - budgexa-net
+    depends_on:
+      - budgexaapi
 
 networks:
   budgexa-net:
     driver: bridge
+

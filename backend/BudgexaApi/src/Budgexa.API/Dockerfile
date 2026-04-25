@@ -1,20 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-WORKDIR /app
-EXPOSE 80
-
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-
-# Copia toda la solución y dependencias
 COPY . .
+RUN dotnet publish "backend/BudgexaApi/src/Budgexa.API/Budgexa.API.csproj" -c Release -o /app/publish
 
-# Entra en la carpeta del proyecto principal
-WORKDIR /src/backend/BudgexaApi/src/Budgexa.API
-
-RUN dotnet restore "Budgexa.API.csproj"
-RUN dotnet publish "Budgexa.API.csproj" -c Release -o /app/publish
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+EXPOSE 80
+ENV ASPNETCORE_URLS="http://+:80"
 ENTRYPOINT ["dotnet", "Budgexa.API.dll"]
