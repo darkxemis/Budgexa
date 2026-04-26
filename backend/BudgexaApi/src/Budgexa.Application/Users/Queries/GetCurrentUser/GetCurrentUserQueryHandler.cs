@@ -20,6 +20,7 @@ public sealed class GetCurrentUserQueryHandler(
             user.Email,
             user.FirstName,
             user.LastName,
-            user.CreatedAt);
+            user.CreatedAt,
+            user.Language.Code);
     }
 }

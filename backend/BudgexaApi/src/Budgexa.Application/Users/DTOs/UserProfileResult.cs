@@ -5,4 +5,5 @@ public sealed record UserProfileResult(
     string Email,
     string FirstName,
     string LastName,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    string Language);

@@ -1,0 +1,10 @@
+<div class="dashboard-container">
+  <h1>{{ 'welcome' | translate }}</h1>
+  <div *ngIf="user() as userInfo">
+    <p><strong>Email:</strong> {{ userInfo.email }}</p>
+    <p><strong>Name:</strong> {{ userInfo.firstName }} {{ userInfo.lastName }}</p>
+  </div>
+  <div *ngIf="!user()">
+    <p>No user info loaded.</p>
+  </div>
+</div>

@@ -3,5 +3,6 @@ export interface UserProfileResult {
   email: string;
   firstName: string;
   lastName: string;
-  createdAt: string;
+  createdAt: Date;
+  language: string;
 }

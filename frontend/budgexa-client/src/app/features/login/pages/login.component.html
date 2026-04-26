@@ -27,7 +27,7 @@
           name="email"
           required
           autocomplete="username"
-          placeholder="Correo electrónico"
+          [placeholder]="'email' | translate"
         />
       </div>
       <div class="input-group">
@@ -39,7 +39,7 @@
           name="password"
           required
           autocomplete="current-password"
-          placeholder="Contraseña"
+          [placeholder]="'password' | translate"
         />
       </div>
       <button type="submit">Entrar</button>
