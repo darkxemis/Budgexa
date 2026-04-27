@@ -2,48 +2,42 @@
   <div class="glass-card">
     <form
       class="login-form"
-      (submit)="login(); $event.preventDefault()"
+      [formGroup]="form"
+      (ngSubmit)="login()"
       aria-label="Formulario de acceso"
     >
-      <div class="logo-circle">
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="24" cy="24" r="24" fill="#7b2ff2" />
-          <path d="M24 14L28 24H20L24 14Z" fill="#fff" />
-        </svg>
-      </div>
-      <h1>Bienvenido</h1>
       <div class="input-group">
         <input
           id="email"
           type="email"
-          [value]="email()"
-          (input)="email.set($event.target.value)"
-          name="email"
-          required
+          formControlName="email"
           autocomplete="username"
           [placeholder]="'email' | translate"
         />
+        <app-form-error [control]="form.controls.email" />
       </div>
+
       <div class="input-group">
         <input
           id="password"
           type="password"
-          [value]="password()"
-          (input)="password.set($event.target.value)"
-          name="password"
-          required
+          formControlName="password"
           autocomplete="current-password"
           [placeholder]="'password' | translate"
         />
+        <app-form-error [control]="form.controls.password" />
       </div>
-      <button type="submit">Entrar</button>
-      <div class="error" *ngIf="error()">{{ error() }}</div>
+
+      <button type="submit" [disabled]="loading() || form.disabled">
+        {{ (loading() ? 'connecting' : 'enter') | translate }}
+        @if (loading()) {
+          <app-spinner />
+        }
+      </button>
+
+      @if (error()) {
+        <div class="error-alert">{{ error() }}</div>
+      }
     </form>
   </div>
 </div>

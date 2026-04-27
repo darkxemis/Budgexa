@@ -2,5 +2,27 @@
   "welcome": "Welcome",
   "login": "Login",
   "email": "Email",
-  "password": "Password"
+  "password": "Password",
+  "connecting": "Connecting...",
+  "enter": "Enter",
+  "validations": {
+    "required": "This field is required.",
+    "email": "Invalid email format.",
+    "minlength": "Does not meet minimum length.",
+    "maxlength": "Exceeds maximum length.",
+    "pattern": "Invalid format.",
+    "invalid": "Invalid value."
+  },
+
+  
+  "auth.emailAlreadyExists": "An account with this email already exists.",
+  "auth.invalidCredentials": "Invalid email or password.",
+  "auth.invalidRefreshToken": "Invalid session. Please log in again.",
+  "auth.accountLocked": "Your account is locked.",
+  "user.notFound": "User not found.",
+  "role.notFound": "Role not found.",
+  "role.nameExists": "Role name already exists.",
+  "status.notFound": "Status not found.",
+  "server.internalError": "Internal server error. Please try again later.",
+  "validation.failed": "Validation failed. Please check your input."
 }

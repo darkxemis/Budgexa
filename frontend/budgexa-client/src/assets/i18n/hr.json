@@ -2,5 +2,27 @@
   "welcome": "Dobrodošli",
   "login": "Prijava",
   "email": "E-pošta",
-  "password": "Lozinka"
+  "password": "Lozinka",
+  "connecting": "Povezivanje...",
+  "enter": "Prijava",
+  "validations": {
+    "required": "Ovo polje je obavezno.",
+    "email": "Neispravan format e-pošte.",
+    "minlength": "Ne ispunjava minimalnu duljinu.",
+    "maxlength": "Prelazi maksimalnu duljinu.",
+    "pattern": "Neispravan format.",
+    "invalid": "Neispravna vrijednost."
+  },
+
+  
+  "auth.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
+  "auth.invalidCredentials": "Neispravna e-pošta ili lozinka.",
+  "auth.invalidRefreshToken": "Nevažeća sesija. Prijavite se ponovno.",
+  "auth.accountLocked": "Vaš račun je zaključan.",
+  "user.notFound": "Korisnik nije pronađen.",
+  "role.notFound": "Uloga nije pronađena.",
+  "role.nameExists": "Naziv uloge već postoji.",
+  "status.notFound": "Status nije pronađen.",
+  "server.internalError": "Interna pogreška poslužitelja. Pokušajte kasnije.",
+  "validation.failed": "Validacija nije uspjela. Provjerite unos."
 }

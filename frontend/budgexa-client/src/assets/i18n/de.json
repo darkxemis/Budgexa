@@ -2,5 +2,27 @@
   "welcome": "Willkommen",
   "login": "Anmelden",
   "email": "E-Mail",
-  "password": "Passwort"
+  "password": "Passwort",
+  "connecting": "Verbinden...",
+  "enter": "Einloggen",
+  "validations": {
+    "required": "Dieses Feld ist erforderlich.",
+    "email": "Ungültiges E-Mail-Format.",
+    "minlength": "Erfüllt nicht die Mindestlänge.",
+    "maxlength": "Überschreitet die maximale Länge.",
+    "pattern": "Ungültiges Format.",
+    "invalid": "Ungültiger Wert."
+  },
+
+
+  "auth.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
+  "auth.invalidCredentials": "Ungültige E-Mail oder Passwort.",
+  "auth.invalidRefreshToken": "Ungültige Sitzung. Bitte erneut anmelden.",
+  "auth.accountLocked": "Ihr Konto ist gesperrt.",
+  "user.notFound": "Benutzer nicht gefunden.",
+  "role.notFound": "Rolle nicht gefunden.",
+  "role.nameExists": "Rollenname existiert bereits.",
+  "status.notFound": "Status nicht gefunden.",
+  "server.internalError": "Interner Serverfehler. Bitte später erneut versuchen.",
+  "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen."
 }

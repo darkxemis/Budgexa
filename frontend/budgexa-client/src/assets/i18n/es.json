@@ -2,5 +2,27 @@
   "welcome": "Bienvenido",
   "login": "Iniciar sesión",
   "email": "Correo electrónico",
-  "password": "Contraseña"
+  "password": "Contraseña",
+  "connecting": "Conectando...",
+  "enter": "Entrar",
+  "validations": {
+    "required": "Este campo es obligatorio.",
+    "email": "Formato de correo inválido.",
+    "minlength": "No cumple la longitud mínima.",
+    "maxlength": "Supera la longitud máxima.",
+    "pattern": "Formato inválido.",
+    "invalid": "Valor inválido."
+  },
+
+  
+  "auth.emailAlreadyExists": "Ya existe una cuenta con este correo.",
+  "auth.invalidCredentials": "Correo o contraseña incorrectos.",
+  "auth.invalidRefreshToken": "Sesión inválida. Por favor, inicia sesión de nuevo.",
+  "auth.accountLocked": "Tu cuenta está bloqueada.",
+  "user.notFound": "Usuario no encontrado.",
+  "role.notFound": "Rol no encontrado.",
+  "role.nameExists": "El nombre del rol ya existe.",
+  "status.notFound": "Estado no encontrado.",
+  "server.internalError": "Error interno del servidor. Intenta más tarde.",
+  "validation.failed": "Validación fallida. Revisa los datos."
 }
