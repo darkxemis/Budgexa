@@ -5,8 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { UserStore } from '../../../core/state/user.store';
-import { ToastService } from '../../../shared/components/toast/toast.service';
-import { ToastType } from '../../../shared/components/toast/toast.type';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { FormErrorComponent } from '../../../shared/components/form-error/form-error.component';
 
@@ -22,11 +20,8 @@ export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
-  private readonly toast = inject(ToastService);
-  private readonly translate = inject(TranslateService);
 
   protected readonly loading = signal(false);
-  protected readonly error = signal('');
 
   protected readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -46,15 +41,12 @@ export class LoginComponent {
     }
 
     this.loading.set(true);
-    //this.form.disable();
 
     this.auth.login(this.form.getRawValue()).subscribe({
       next: () => {
-        this.toast.show(this.translate.instant('welcome'), ToastType.Success);
         this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        //this.form.enable();
+      error: () => {
         this.loading.set(false);
       }
     });

@@ -1,5 +1,5 @@
 {
-  "welcome": "Welcome",
+  "welcome": "Welcome {{ name }}",
   "login": "Login",
   "email": "Email",
   "password": "Password",
@@ -14,7 +14,6 @@
     "invalid": "Invalid value."
   },
 
-  
   "auth.emailAlreadyExists": "An account with this email already exists.",
   "auth.invalidCredentials": "Invalid email or password.",
   "auth.invalidRefreshToken": "Invalid session. Please log in again.",
@@ -24,5 +23,9 @@
   "role.nameExists": "Role name already exists.",
   "status.notFound": "Status not found.",
   "server.internalError": "Internal server error. Please try again later.",
-  "validation.failed": "Validation failed. Please check your input."
+  "validation.failed": "Validation failed. Please check your input.",
+
+  "settings": "Settings",
+  "logout": "Logout",
+  "noUserInfo": "No user info loaded."
 }

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-form-error',
@@ -21,17 +21,11 @@ export class FormErrorComponent {
   };
 
   get errorKey(): string {
-  const keys = Object.keys(this.control?.errors || {});
-  return keys.length > 0 ? keys[0] : ''; 
+    const keys = Object.keys(this.control?.errors || {});
+    return keys.length > 0 ? keys[0] : ''; 
   }
 
   get errorMessage(): string {
-
-  return this.errorMessages[this.errorKey] || 'validations.invalid';
-  }
-
-  get errorParams(): any {
-
-  return this.control?.errors?.[this.errorKey];
+    return this.errorMessages[this.errorKey] || 'validations.invalid';
   }
 }

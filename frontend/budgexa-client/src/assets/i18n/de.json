@@ -1,5 +1,5 @@
 {
-  "welcome": "Willkommen",
+  "welcome": "Willkommen {{ name }}",
   "login": "Anmelden",
   "email": "E-Mail",
   "password": "Passwort",
@@ -14,7 +14,6 @@
     "invalid": "Ungültiger Wert."
   },
 
-
   "auth.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
   "auth.invalidCredentials": "Ungültige E-Mail oder Passwort.",
   "auth.invalidRefreshToken": "Ungültige Sitzung. Bitte erneut anmelden.",
@@ -24,5 +23,9 @@
   "role.nameExists": "Rollenname existiert bereits.",
   "status.notFound": "Status nicht gefunden.",
   "server.internalError": "Interner Serverfehler. Bitte später erneut versuchen.",
-  "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen."
+  "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen.",
+
+  "settings": "Einstellungen",
+  "logout": "Abmelden",
+  "noUserInfo": "Keine Benutzerinformationen geladen."
 }

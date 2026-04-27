@@ -1,5 +1,5 @@
 {
-  "welcome": "Bienvenido",
+  "welcome": "Bienvenido {{ name }}",
   "login": "Iniciar sesión",
   "email": "Correo electrónico",
   "password": "Contraseña",
@@ -14,7 +14,6 @@
     "invalid": "Valor inválido."
   },
 
-  
   "auth.emailAlreadyExists": "Ya existe una cuenta con este correo.",
   "auth.invalidCredentials": "Correo o contraseña incorrectos.",
   "auth.invalidRefreshToken": "Sesión inválida. Por favor, inicia sesión de nuevo.",
@@ -24,5 +23,9 @@
   "role.nameExists": "El nombre del rol ya existe.",
   "status.notFound": "Estado no encontrado.",
   "server.internalError": "Error interno del servidor. Intenta más tarde.",
-  "validation.failed": "Validación fallida. Revisa los datos."
+  "validation.failed": "Validación fallida. Revisa los datos.",
+
+  "settings": "Configuración",
+  "logout": "Cerrar sesión",
+  "noUserInfo": "No hay información de usuario cargada."
 }

@@ -1,0 +1,21 @@
+@if (user(); as userInfo) {
+  <div class="user-menu-container">
+    <button class="user-menu-btn" (click)="toggleMenu()">
+      <span class="user-avatar">{{ userInfo.firstName.charAt(0) | uppercase }}</span>
+      <span class="user-name hide-on-mobile">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
+    </button>
+    <div class="user-dropdown" *ngIf="menuOpen">
+      <div class="user-dropdown-header">
+        <span class="user-avatar-lg">{{ userInfo.firstName.charAt(0) | uppercase }}</span>
+        <div class="user-info-block">
+          <div class="user-full-name">{{ userInfo.firstName }} {{ userInfo.lastName }}</div>
+          <div class="user-email">{{ userInfo.email }}</div>
+        </div>
+      </div>
+      <div class="user-dropdown-actions">
+        <button class="dropdown-action" type="button">{{ 'settings' | translate }}</button>
+        <button class="dropdown-action" type="button" (click)="logout()">{{ 'logout' | translate }}</button>
+      </div>
+    </div>
+  </div>
+}
