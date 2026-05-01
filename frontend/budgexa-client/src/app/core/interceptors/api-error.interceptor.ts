@@ -15,6 +15,9 @@ import { AuthService } from '../services/auth.service';
 import { UserStore } from '../state/user.store';
 import { Router } from '@angular/router';
 
+import { performLogout } from '../utils/auth.utils';
+import { ApiErrorResponse } from '../models/api-error.model';
+
 @Injectable({ providedIn: 'root' })
 export class ApiErrorInterceptor implements HttpInterceptor {
   private injector = inject(Injector);
@@ -39,13 +42,13 @@ export class ApiErrorInterceptor implements HttpInterceptor {
    * - Handles API errors with a tag (shows translated toast)
    * - Default: propagates error
    */
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         // --- 401 Unauthorized: handle refresh or force logout ---
         if (error.status === 401) {
           if (req.url.includes('/refresh')) {
-            this.router.navigate(['/login']);
+            performLogout(this.authService, this.userStore, this.router);
             return throwError(() => error);
           }
           const wwwAuth = error.headers?.get('WWW-Authenticate') || '';
@@ -53,16 +56,10 @@ export class ApiErrorInterceptor implements HttpInterceptor {
             // If token expired, try to refresh
             return this.handle401Error(req, next).pipe(
               catchError((refreshError) => {
-                this.authService.logout();
-                this.userStore.clearUser();
-                this.router.navigate(['/login']);
+                performLogout(this.authService, this.userStore, this.router);
                 return throwError(() => refreshError);
               })
             );
-          } else {
-            // Any other 401: force logout
-            this.router.navigate(['/login']);
-            return throwError(() => error);
           }
         }
 
@@ -81,7 +78,7 @@ export class ApiErrorInterceptor implements HttpInterceptor {
     );
   }
 
-  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handle401Error(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject = new Subject<boolean>();
@@ -96,9 +93,7 @@ export class ApiErrorInterceptor implements HttpInterceptor {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(false);
           this.refreshTokenSubject.complete();
-          this.authService.logout();
-          this.userStore.clearUser();
-          this.router.navigate(['/login']);
+          performLogout(this.authService, this.userStore, this.router);
           return throwError(() => refreshError);
         })
       );
@@ -110,21 +105,11 @@ export class ApiErrorInterceptor implements HttpInterceptor {
           if (success) {
             return next.handle(req);
           } else {
-            this.authService.logout();
-            this.userStore.clearUser();
-            this.router.navigate(['/login']);
+            performLogout(this.authService, this.userStore, this.router);
             return throwError(() => new Error('Refresh failed'));
           }
         })
       );
     }
   }
-}
-
-export interface ApiErrorResponse {
-  tag: string;
-  message: string;
-  traceId: string;
-  metadata?: Record<string, string>;
-  detail?: string;
 }

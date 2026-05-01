@@ -6,7 +6,6 @@ export class LanguageService {
   constructor(private translate: TranslateService) {}
 
   set(lang: string) {
-    console.log('Setting language to', lang);
     this.translate.setFallbackLang(lang);
   }
 

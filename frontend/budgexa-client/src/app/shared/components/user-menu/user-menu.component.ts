@@ -1,9 +1,10 @@
 import { Component, inject, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserStore } from '../../../core/state/user.store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { performLogout } from '../../../core/utils/auth.utils';
 
 @Component({
   selector: 'app-user-menu',
@@ -14,21 +15,18 @@ import { Router } from '@angular/router';
 })
 export class UserMenuComponent {
   private readonly userStore = inject(UserStore);
-  private readonly translate = inject(TranslateService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   readonly user = this.userStore.user;
   menuOpen = false;
-  constructor(private elRef: ElementRef) {}
+  private readonly elRef = inject(ElementRef);
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
   logout() {
-    this.auth.logout();
-    this.userStore.clearUser();
-    this.router.navigate(['/login']);
+    performLogout(this.auth, this.userStore, this.router);
   }
 
   @HostListener('document:click', ['$event'])

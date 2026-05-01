@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./form-error.component.scss']
 })
 export class FormErrorComponent {
-  @Input() control!: AbstractControl | null | any;
+  @Input() control!: AbstractControl | null;
 
   private readonly errorMessages: Record<string, string> = {
     required: 'validations.required',

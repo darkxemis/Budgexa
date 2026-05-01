@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserStore } from '../../../core/state/user.store';
@@ -14,7 +14,7 @@ import { UserMenuComponent } from '../../../shared/components/user-menu/user-men
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private readonly userStore = inject(UserStore);
   private readonly toast = inject(ToastService);
   private readonly translate = inject(TranslateService);

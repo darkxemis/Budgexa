@@ -1,10 +1,7 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { AuthApiService } from '../api/auth-api.service';
+import { Injectable, inject } from '@angular/core';
 
-export interface AuthCredentials {
-  email: string;
-  password: string;
-}
+import { AuthApiService } from '../api/auth-api.service';
+import { AuthCredentials } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
