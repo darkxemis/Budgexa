@@ -77,6 +77,16 @@ public static class DependencyInjection
                     }
 
                     return Task.CompletedTask;
+                },
+                OnChallenge = context =>
+                {
+                    context.HandleResponse();
+
+                    context.Response.StatusCode = 401;
+                    context.Response.Headers["WWW-Authenticate"] =
+                        "Bearer error=\"invalid_token\", error_description=\"Token expired\"";
+
+                    return Task.CompletedTask;
                 }
             };
         });

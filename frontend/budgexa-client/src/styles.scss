@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+
+// 1. Base font for the entire app
+html, body {
+	font-family: 'Inter', Arial, Helvetica, sans-serif;
+	font-weight: 400;
+	color: #222;
+}
+
+// 2. Strong weight for headings
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Inter', Arial, Helvetica, sans-serif;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	color: #181818;
+	margin-top: 0.8em;
+	margin-bottom: 0.4em;
+}
+
+// 3. Extra emphasis for h1
+h1 {
+	font-weight: 700;
+}
+
+// 4. Font smoothing improvements
+html {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

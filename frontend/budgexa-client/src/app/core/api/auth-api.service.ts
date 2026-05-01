@@ -19,4 +19,10 @@ export class AuthApiService {
       withCredentials: true,
     });
   }
+
+  refreshToken(): Observable<{ token?: string }> {
+    return this.http.post<{ token?: string }>(`${environment.apiUrl}/auth/refresh`, {}, {
+      withCredentials: true,
+    });
+  }
 }

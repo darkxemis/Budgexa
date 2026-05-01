@@ -17,4 +17,8 @@ export class AuthService {
   logout() {
     this.api.logout().subscribe();
   }
+
+  refreshToken() {
+    return this.api.refreshToken();
+  }
 }

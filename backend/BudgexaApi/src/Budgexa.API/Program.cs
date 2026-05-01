@@ -23,9 +23,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
     {
         policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [])
-              .AllowCredentials()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithExposedHeaders("WWW-Authenticate");
     });
 });
 

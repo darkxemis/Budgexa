@@ -1,3 +1,4 @@
+
 import { Injectable, Injector, inject } from '@angular/core';
 import {
   HttpEvent,
@@ -6,35 +7,117 @@ import {
   HttpRequest,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError, switchMap, take, Subject } from 'rxjs';
 import { ToastService } from '../../shared/components/toast/toast.service';
 import { ToastType } from '../../shared/components/toast/toast.type';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../services/auth.service';
+import { UserStore } from '../state/user.store';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class ApiErrorInterceptor implements HttpInterceptor {
   private injector = inject(Injector);
   private readonly toast = inject(ToastService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly userStore = inject(UserStore);
 
+  // Indicates if a refresh token request is in progress
+  private isRefreshing = false;
+  // Subject to notify pending requests when refresh completes
+  private refreshTokenSubject = new Subject<boolean>();
+
+  // Lazy getter for TranslateService to avoid DI issues
   private get translate(): TranslateService {
     return this.injector.get(TranslateService);
   }
 
+  /**
+   * Main HTTP error interception logic:
+   * - Handles 401 errors (token expired, refresh logic, or redirect to login)
+   * - Handles API errors with a tag (shows translated toast)
+   * - Default: propagates error
+   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        // --- 401 Unauthorized: handle refresh or force logout ---
+        if (error.status === 401) {
+          if (req.url.includes('/refresh')) {
+            this.router.navigate(['/login']);
+            return throwError(() => error);
+          }
+          const wwwAuth = error.headers?.get('WWW-Authenticate') || '';
+          if (wwwAuth.includes('error="invalid_token"') && wwwAuth.includes('error_description="Token expired"')) {
+            // If token expired, try to refresh
+            return this.handle401Error(req, next).pipe(
+              catchError((refreshError) => {
+                this.authService.logout();
+                this.userStore.clearUser();
+                this.router.navigate(['/login']);
+                return throwError(() => refreshError);
+              })
+            );
+          } else {
+            // Any other 401: force logout
+            this.router.navigate(['/login']);
+            return throwError(() => error);
+          }
+        }
+
+        // --- Default error handler ---
+        // If the error has a tag, show a translated toast message
         if (error.error) {
           const apiError = error.error as ApiErrorResponse;
-
           if (apiError?.tag) {
             const translatedMessage = this.translate.instant(apiError.tag);
             this.toast.show(translatedMessage, ToastType.Error);
           }
         }
-
+        // Always propagate the error to the subscriber
         return throwError(() => error);
       })
     );
+  }
+
+  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject = new Subject<boolean>();
+      return this.authService.refreshToken().pipe(
+        switchMap(() => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(true);
+          this.refreshTokenSubject.complete();
+          return next.handle(req);
+        }),
+        catchError((refreshError) => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(false);
+          this.refreshTokenSubject.complete();
+          this.authService.logout();
+          this.userStore.clearUser();
+          this.router.navigate(['/login']);
+          return throwError(() => refreshError);
+        })
+      );
+    } else {
+      // Wait for the refresh to complete, then retry or fail
+      return this.refreshTokenSubject.pipe(
+        take(1),
+        switchMap(success => {
+          if (success) {
+            return next.handle(req);
+          } else {
+            this.authService.logout();
+            this.userStore.clearUser();
+            this.router.navigate(['/login']);
+            return throwError(() => new Error('Refresh failed'));
+          }
+        })
+      );
+    }
   }
 }
 
