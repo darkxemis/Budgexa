@@ -15,9 +15,9 @@ public sealed class LoginQueryHandler(
     IUnitOfWork unitOfWork,
     IJwtSettingsProvider jwtSettingsProvider,
     ILoginLockoutSettingsProvider lockoutSettingsProvider
-) : IRequestHandler<LoginQuery, AuthResult>
+) : IRequestHandler<LoginQuery, AuthResponse>
 {
-    public async Task<AuthResult> Handle(LoginQuery request, CancellationToken cancellationToken)
+    public async Task<AuthResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailAsync(request.Email, cancellationToken)
             ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
@@ -53,6 +53,11 @@ public sealed class LoginQueryHandler(
         await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new AuthResult(user.Id, accessToken, refreshToken.Token, user.Email, $"{user.FirstName} {user.LastName}");
+        return new AuthResponse(
+            user.Id,
+            user.Email,
+            $"{user.FirstName} {user.LastName}",
+            accessToken,
+            refreshToken.Token);
     }
 }

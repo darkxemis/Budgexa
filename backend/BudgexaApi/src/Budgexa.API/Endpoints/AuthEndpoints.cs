@@ -7,7 +7,6 @@ using Budgexa.Application.Auth.DTOs;
 using Budgexa.Application.Auth.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 public static class AuthEndpoints
 {
@@ -40,21 +39,22 @@ public static class AuthEndpoints
             {
                 var result = await sender.Send(query, cancellationToken);
 
-                var config = http.RequestServices.GetRequiredService<IConfiguration>();
-                var accessMinutes = config.GetValue<int>("JwtSettings:ExpirationInMinutes");
-                var refreshDays = config.GetValue<int>("JwtSettings:RefreshTokenExpirationInDays");
+                if (!ShouldSkipCookies(http))
+                {
+                    SetAuthCookies(http, result.AccessToken, result.RefreshToken);
+                }
 
-                http.Response.Cookies.Append("accessToken", result.Token, CreateCookieOptions(DateTimeOffset.UtcNow.AddMinutes(accessMinutes)));
-                http.Response.Cookies.Append("refreshToken", result.RefreshToken, CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(refreshDays)));
-
-                return Results.Ok(new LoginResponse(result.UserId, result.Email, result.FullName));
+                return Results.Ok(result);
             })
-            .Produces<LoginResponse>(StatusCodes.Status200OK)
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
             .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces<ApiErrorResponse>(StatusCodes.Status401Unauthorized)
             .WithName("Login")
             .WithSummary("POST /api/v1/auth/login")
-            .WithDescription("Authenticates a user and sets access token and refresh token as HTTP-only cookies.");
+            .WithDescription(
+                "Authenticates a user and returns tokens in response body. " +
+                "Cookies are set by default for web clients. " +
+                "Mobile clients should add header 'X-Skip-Cookies: true'.");
 
         group.MapPost("/refresh",
             async (
@@ -62,7 +62,7 @@ public static class AuthEndpoints
                 HttpContext http,
                 CancellationToken cancellationToken) =>
             {
-                var refreshToken = http.Request.Cookies["refreshToken"];
+                var refreshToken = GetRefreshToken(http);
                 if (string.IsNullOrWhiteSpace(refreshToken))
                 {
                     return Results.Unauthorized();
@@ -70,35 +70,76 @@ public static class AuthEndpoints
 
                 var result = await sender.Send(new RefreshTokenCommand(refreshToken), cancellationToken);
 
-                var config = http.RequestServices.GetRequiredService<IConfiguration>();
-                var accessMinutes = config.GetValue<int>("JwtSettings:ExpirationInMinutes");
-                var refreshDays = config.GetValue<int>("JwtSettings:RefreshTokenExpirationInDays");
+                if (!ShouldSkipCookies(http))
+                {
+                    SetAuthCookies(http, result.AccessToken, result.RefreshToken);
+                }
 
-                http.Response.Cookies.Append("accessToken", result.Token, CreateCookieOptions(DateTimeOffset.UtcNow.AddMinutes(accessMinutes)));
-                http.Response.Cookies.Append("refreshToken", result.RefreshToken, CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(refreshDays)));
-
-                return Results.Ok(new LoginResponse(result.UserId, result.Email, result.FullName));
+                return Results.Ok(result);
             })
-            .Produces<LoginResponse>(StatusCodes.Status200OK)
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
             .Produces<ApiErrorResponse>(StatusCodes.Status401Unauthorized)
             .WithName("Refresh")
             .WithSummary("POST /api/v1/auth/refresh")
-            .WithDescription("Refreshes the access token using the refresh token cookie. The old refresh token is revoked and a new one is issued (token rotation).");
+            .WithDescription(
+                "Refreshes tokens. Reads refresh token from cookie or 'X-Refresh-Token' header. " +
+                "Cookies updated by default. Mobile clients should add 'X-Skip-Cookies: true'.");
 
         group.MapPost("/logout",
             (HttpContext http) =>
             {
-                var expiredOptions = CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(-1));
-                http.Response.Cookies.Delete("accessToken", expiredOptions);
-                http.Response.Cookies.Delete("refreshToken", expiredOptions);
+                ClearAuthCookies(http);
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)
             .WithName("Logout")
             .WithSummary("POST /api/v1/auth/logout")
-            .WithDescription("Clears both authentication cookies, effectively logging out the user.");
+            .WithDescription("Clears authentication cookies. Mobile clients discard tokens locally.");
 
         return endpoints;
+    }
+
+    private static bool ShouldSkipCookies(HttpContext http)
+    {
+        return http.Request.Headers.TryGetValue("X-Skip-Cookies", out var value) &&
+               bool.TryParse(value.ToString(), out var skipCookies) &&
+               skipCookies;
+    }
+
+    private static string? GetRefreshToken(HttpContext http)
+    {
+        // Priority 1: Cookie (web clients)
+        if (http.Request.Cookies.TryGetValue("refreshToken", out var cookieToken))
+        {
+            return cookieToken;
+        }
+
+        // Priority 2: Custom header (mobile/API clients)
+        if (http.Request.Headers.TryGetValue("X-Refresh-Token", out var headerToken))
+        {
+            return headerToken.ToString();
+        }
+
+        return null;
+    }
+
+    private static void SetAuthCookies(HttpContext http, string accessToken, string refreshToken)
+    {
+        var config = http.RequestServices.GetRequiredService<IConfiguration>();
+        var accessMinutes = config.GetValue<int>("JwtSettings:ExpirationInMinutes");
+        var refreshDays = config.GetValue<int>("JwtSettings:RefreshTokenExpirationInDays");
+
+        http.Response.Cookies.Append("accessToken", accessToken,
+            CreateCookieOptions(DateTimeOffset.UtcNow.AddMinutes(accessMinutes)));
+        http.Response.Cookies.Append("refreshToken", refreshToken,
+            CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(refreshDays)));
+    }
+
+    private static void ClearAuthCookies(HttpContext http)
+    {
+        var expiredOptions = CreateCookieOptions(DateTimeOffset.UtcNow.AddDays(-1));
+        http.Response.Cookies.Delete("accessToken", expiredOptions);
+        http.Response.Cookies.Delete("refreshToken", expiredOptions);
     }
 
     private static CookieOptions CreateCookieOptions(DateTimeOffset expires) => new()

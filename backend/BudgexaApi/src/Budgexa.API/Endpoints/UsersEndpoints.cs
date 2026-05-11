@@ -31,7 +31,7 @@ public static class UsersEndpoints
             .WithSummary("GET /api/v1/users/me")
             .WithDescription("Returns the profile of the currently authenticated user.");
 
-        group.MapPut("/me",
+        group.MapPatch("/me",
             async (UpdateCurrentUserDto dto, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(new UpdateCurrentUserCommand(dto), cancellationToken);

@@ -12,9 +12,9 @@ public sealed class RefreshTokenCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IUnitOfWork unitOfWork,
     IJwtSettingsProvider jwtSettingsProvider
-) : IRequestHandler<RefreshTokenCommand, AuthResult>
+) : IRequestHandler<RefreshTokenCommand, AuthResponse>
 {
-    public async Task<AuthResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<AuthResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var existingToken = await refreshTokenRepository.GetByTokenAsync(request.Token, cancellationToken)
             ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidRefreshToken, "Invalid refresh token.");
@@ -35,6 +35,11 @@ public sealed class RefreshTokenCommandHandler(
         await refreshTokenRepository.AddAsync(newRefreshToken, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new AuthResult(user.Id, accessToken, newRefreshToken.Token, user.Email, $"{user.FirstName} {user.LastName}");
+        return new AuthResponse(
+            user.Id,
+            user.Email,
+            $"{user.FirstName} {user.LastName}",
+            accessToken,
+            newRefreshToken.Token);
     }
 }
