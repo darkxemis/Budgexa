@@ -4,5 +4,5 @@ namespace Budgexa.Domain.Interfaces;
 
 public interface IStatusRepository
 {
-    Task<Status?> GetByValueAsync(int value);
+    Task<Status?> GetByValueAsync(int value, CancellationToken cancellationToken = default);
 }

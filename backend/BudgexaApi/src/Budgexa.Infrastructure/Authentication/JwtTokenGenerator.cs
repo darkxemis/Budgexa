@@ -26,12 +26,13 @@ public sealed class JwtTokenGenerator(
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new("company_id", user.CompanyId.ToString()),
         };
 
         foreach (var userRole in user.UserRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+            claims.Add(new Claim("role", userRole.Role.Name));
         }
 
         var token = new JwtSecurityToken(

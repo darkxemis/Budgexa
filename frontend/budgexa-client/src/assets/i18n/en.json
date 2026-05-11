@@ -14,7 +14,7 @@
     "invalid": "Invalid value."
   },
 
-  "auth.emailAlreadyExists": "An account with this email already exists.",
+  "user.emailAlreadyExists": "An account with this email already exists.",
   "auth.invalidCredentials": "Invalid email or password.",
   "auth.invalidRefreshToken": "Invalid session. Please log in again.",
   "auth.accountLocked": "Your account is locked.",

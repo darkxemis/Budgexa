@@ -14,7 +14,7 @@
     "invalid": "Ungültiger Wert."
   },
 
-  "auth.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
+  "user.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
   "auth.invalidCredentials": "Ungültige E-Mail oder Passwort.",
   "auth.invalidRefreshToken": "Ungültige Sitzung. Bitte erneut anmelden.",
   "auth.accountLocked": "Ihr Konto ist gesperrt.",

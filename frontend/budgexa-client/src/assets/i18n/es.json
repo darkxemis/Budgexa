@@ -14,7 +14,7 @@
     "invalid": "Valor inválido."
   },
 
-  "auth.emailAlreadyExists": "Ya existe una cuenta con este correo.",
+  "user.emailAlreadyExists": "Ya existe una cuenta con este correo.",
   "auth.invalidCredentials": "Correo o contraseña incorrectos.",
   "auth.invalidRefreshToken": "Sesión inválida. Por favor, inicia sesión de nuevo.",
   "auth.accountLocked": "Tu cuenta está bloqueada.",

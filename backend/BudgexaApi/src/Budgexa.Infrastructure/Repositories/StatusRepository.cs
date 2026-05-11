@@ -9,8 +9,10 @@ public sealed class StatusRepository(
     ApplicationDbContext dbContext
 ) : IStatusRepository
 {
-    public async Task<Status?> GetByValueAsync(int value)
+    public async Task<Status?> GetByValueAsync(int value, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Statuses.FirstOrDefaultAsync(s => s.Value == value);
+        return await dbContext.Statuses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Value == value, cancellationToken);
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace Budgexa.API.Endpoints;
 
 using Budgexa.API.Mappings;
+using Budgexa.API.Middleware;
 using Budgexa.Application.Roles.Commands.CreateRole;
 using Budgexa.Application.Roles.Commands.DeleteRole;
 using Budgexa.Application.Roles.DTOs;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 public static class RoleEndpoints
@@ -22,11 +22,13 @@ public static class RoleEndpoints
                 var roles = await sender.Send(new GetAllRolesQuery(), cancellationToken);
                 return Results.Ok(roles);
             })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "administrator,superadministrator" })
+            .RequireAuthorization("AdminOnly")
             .Produces<List<RoleDto>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .WithName("GetAllRoles")
             .WithSummary("GET /api/v1/roles")
-            .WithDescription("Returns all roles. Only accessible to administrator and superadministrator.");
+            .WithDescription("Returns all roles.");
 
         group.MapPost("/",
             async (
@@ -37,12 +39,15 @@ public static class RoleEndpoints
                 var roleId = await sender.Send(command, cancellationToken);
                 return Results.Created($"/api/v1/roles/{roleId}", new { roleId });
             })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "superadministrator" })
+            .RequireAuthorization("SuperAdminOnly")
             .Produces<Guid>(StatusCodes.Status201Created)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
+            .Produces<ApiErrorResponse>(StatusCodes.Status409Conflict)
             .WithName("CreateRole")
             .WithSummary("POST /api/v1/roles")
-            .WithDescription("Creates a new role. Only accessible to superadministrator.");
+            .WithDescription("Creates a new role.");
 
         group.MapPut("/{id:guid}",
             async (
@@ -52,17 +57,18 @@ public static class RoleEndpoints
                 CancellationToken cancellationToken) =>
             {
                 var command = request.ToCommand(id);
-
                 await sender.Send(command, cancellationToken);
                 return Results.NoContent();
             })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "superadministrator" })
+            .RequireAuthorization("SuperAdminOnly")
             .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status400BadRequest)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
             .WithName("UpdateRole")
             .WithSummary("PUT /api/v1/roles/{id}")
-            .WithDescription("Updates a role. Only accessible to superadministrator.");
+            .WithDescription("Updates a role.");
 
         group.MapDelete("/{id:guid}",
             async (
@@ -73,13 +79,14 @@ public static class RoleEndpoints
                 await sender.Send(new DeleteRoleCommand(id), cancellationToken);
                 return Results.NoContent();
             })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "superadministrator" })
+            .RequireAuthorization("SuperAdminOnly")
             .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
             .WithName("DeleteRole")
             .WithSummary("DELETE /api/v1/roles/{id}")
-            .WithDescription("Deletes a role. Only accessible to superadministrator.");
+            .WithDescription("Deletes a role.");
 
         return endpoints;
     }

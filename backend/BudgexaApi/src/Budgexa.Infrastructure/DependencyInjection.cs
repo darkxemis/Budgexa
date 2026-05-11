@@ -1,10 +1,12 @@
 namespace Budgexa.Infrastructure;
 
 using Budgexa.Application.Auth;
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Repositories;
+using Budgexa.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,7 @@ public static class DependencyInjection
     {
         services.AddPersistence(configuration);
         services.AddAuth(configuration);
+        services.AddServices();
 
         return services;
     }
@@ -34,6 +37,12 @@ public static class DependencyInjection
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IStatusRepository, StatusRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
     }
 
     private static void AddAuth(this IServiceCollection services, IConfiguration configuration)
@@ -64,7 +73,8 @@ public static class DependencyInjection
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.Secret))
+                    Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                RoleClaimType = "role"
             };
 
             options.Events = new JwtBearerEvents
@@ -91,6 +101,10 @@ public static class DependencyInjection
             };
         });
 
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder()
+            .AddPolicy("AdminOnly", policy => 
+                policy.RequireRole("administrator", "superadministrator"))
+            .AddPolicy("SuperAdminOnly", policy => 
+                policy.RequireRole("superadministrator"));
     }
 }

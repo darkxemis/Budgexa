@@ -4,7 +4,6 @@ public static class ErrorTags
 {
     public static class Auth
     {
-        public const string EmailAlreadyExists = "auth.emailAlreadyExists";
         public const string InvalidCredentials = "auth.invalidCredentials";
         public const string InvalidRefreshToken = "auth.invalidRefreshToken";
         public const string AccountLocked = "auth.accountLocked";
@@ -13,6 +12,7 @@ public static class ErrorTags
     public static class User
     {
         public const string NotFound = "user.notFound";
+        public const string EmailAlreadyExists = "user.emailAlreadyExists";
     }
 
     public static class Role

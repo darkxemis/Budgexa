@@ -15,19 +15,45 @@ public sealed class UserRepository(
             .Include(l => l.Language)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
+            .Include(u => u.Status)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await dbContext.Users
+            .AsNoTracking()
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
+            .Include(u => u.Language)
+            .Include(u => u.Status)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+    }
+
+    public async Task<IEnumerable<User>> GetAllByCompanyIdAsync(Guid companyId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Users
+            .AsNoTracking()
+            .Where(u => u.CompanyId == companyId)
+            .Include(u => u.Language)
+            .Include(u => u.Status)
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
     {
         await dbContext.Users.AddAsync(user, cancellationToken);
+    }
+
+    public void Update(User user)
+    {
+        dbContext.Users.Update(user);
+    }
+
+    public void Delete(User user)
+    {
+        dbContext.Users.Remove(user);
     }
 }

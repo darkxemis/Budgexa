@@ -43,6 +43,38 @@ public sealed class User : Entity
         };
     }
 
+    public void Update(
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName,
+        Guid companyId,
+        Guid languageId)
+    {
+        Email = email;
+        PasswordHash = passwordHash;
+        FirstName = firstName;
+        LastName = lastName;
+        CompanyId = companyId;
+        LanguageId = languageId;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetRoles(List<Guid> roleIds)
+    {
+        UserRoles.Clear();
+        foreach (var roleId in roleIds)
+        {
+            UserRoles.Add(UserRole.Create(Id, roleId));
+        }
+    }
+
+    public void MarkAsDeleted(Guid deletedStatusId)
+    {
+        StatusId = deletedStatusId;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void RegisterFailedLogin(int maxAttempts, TimeSpan lockoutDuration)
     {
         FailedLoginAttempts++;

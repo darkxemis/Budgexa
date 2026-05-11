@@ -14,7 +14,7 @@
     "invalid": "Neispravna vrijednost."
   },
 
-  "auth.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
+  "user.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
   "auth.invalidCredentials": "Neispravna e-pošta ili lozinka.",
   "auth.invalidRefreshToken": "Nevažeća sesija. Prijavite se ponovno.",
   "auth.accountLocked": "Vaš račun je zaključan.",
