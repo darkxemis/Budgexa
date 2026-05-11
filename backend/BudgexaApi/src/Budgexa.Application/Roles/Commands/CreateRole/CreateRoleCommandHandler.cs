@@ -1,10 +1,10 @@
 namespace Budgexa.Application.Roles.Commands.CreateRole;
 
+using System.Net;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 using MediatR;
-using System.Net;
 
 public sealed class CreateRoleCommandHandler(
     IRoleRepository roleRepository,
@@ -13,11 +13,13 @@ public sealed class CreateRoleCommandHandler(
 {
     public async Task<Guid> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        var exists = await roleRepository.ExistsByNameAsync(request.Name, cancellationToken);
-        if (exists)
+        var dto = request.Dto;
+
+        var existingRole = await roleRepository.GetByNameAsync(dto.Name, cancellationToken);
+        if (existingRole is not null)
             throw new AppException(HttpStatusCode.Conflict, ErrorTags.Role.NameExists, "Role name already exists.");
 
-        var role = Role.Create(request.Name);
+        var role = Role.Create(dto.Name);
 
         await roleRepository.AddAsync(role, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

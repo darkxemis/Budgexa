@@ -20,11 +20,8 @@ public sealed class Role
         return new Role(id ?? Guid.NewGuid(), name);
     }
 
-    public void UpdateName(string newName)
+    public void Update(string newName)
     {
-        if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException("Role name cannot be empty");
-
         Name = newName;
     }
 }

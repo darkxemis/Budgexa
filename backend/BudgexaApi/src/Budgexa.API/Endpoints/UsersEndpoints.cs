@@ -3,6 +3,7 @@
 using Budgexa.API.Middleware;
 using Budgexa.Application.Users.Commands.CreateUser;
 using Budgexa.Application.Users.Commands.DeleteUser;
+using Budgexa.Application.Users.Commands.UpdateCurrentUser;
 using Budgexa.Application.Users.Commands.UpdateUser;
 using Budgexa.Application.Users.DTOs;
 using Budgexa.Application.Users.Queries.GetAllUsers;
@@ -30,6 +31,21 @@ public static class UsersEndpoints
             .WithSummary("GET /api/v1/users/me")
             .WithDescription("Returns the profile of the currently authenticated user.");
 
+        group.MapPut("/me",
+            async (UpdateCurrentUserDto dto, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new UpdateCurrentUserCommand(dto), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("UpdateCurrentUser")
+            .WithSummary("PUT /api/v1/users/me")
+            .WithDescription("Updates the profile of the currently authenticated user. Only firstName, lastName, password and language can be modified.");
+
         group.MapGet("/{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
@@ -37,7 +53,7 @@ public static class UsersEndpoints
                 return Results.Ok(result);
             })
             .RequireAuthorization("AdminOnly")
-            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+                .Produces<UserDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
@@ -52,7 +68,7 @@ public static class UsersEndpoints
                 return Results.Ok(result);
             })
             .RequireAuthorization("AdminOnly")
-            .Produces<IEnumerable<UserProfileResult>>(StatusCodes.Status200OK)
+            .Produces<IEnumerable<UserDto>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .WithName("GetAllUsers")
@@ -66,7 +82,7 @@ public static class UsersEndpoints
                 return Results.Created($"/api/v1/users/{result.Id}", result);
             })
             .RequireAuthorization("AdminOnly")
-            .Produces<UserProfileResult>(StatusCodes.Status201Created)
+            .Produces<UserDto>(StatusCodes.Status201Created)
             .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
@@ -82,7 +98,7 @@ public static class UsersEndpoints
                 return Results.Ok(result);
             })
             .RequireAuthorization("AdminOnly")
-            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces<UserDto>(StatusCodes.Status200OK)
             .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)

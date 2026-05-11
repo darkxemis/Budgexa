@@ -1,5 +1,6 @@
 namespace Budgexa.Application.Roles.Commands.CreateRole;
 
+using Budgexa.Application.Roles.DTOs;
 using MediatR;
 
-public record CreateRoleCommand(string Name) : IRequest<Guid>;
+public sealed record CreateRoleCommand(RoleCreateDto Dto) : IRequest<Guid>;

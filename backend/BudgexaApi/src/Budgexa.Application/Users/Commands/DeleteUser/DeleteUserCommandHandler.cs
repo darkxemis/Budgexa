@@ -17,7 +17,7 @@ public sealed class DeleteUserCommandHandler(
         var user = await userRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "User not found.");
 
-        var deletedStatus = await statusRepository.GetByValueAsync((int)StatusValue.Delete, cancellationToken)
+        var deletedStatus = await statusRepository.GetByValueAsync((int)BaseStatus.Delete, cancellationToken)
             ?? throw new AppException(HttpStatusCode.InternalServerError, ErrorTags.Status.NotFound, "Deleted status not found.");
 
         user.MarkAsDeleted(deletedStatus.Id);

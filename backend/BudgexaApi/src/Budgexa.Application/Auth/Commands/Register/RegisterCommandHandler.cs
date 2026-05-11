@@ -21,7 +21,7 @@ public sealed class RegisterCommandHandler(
         if (existingUser is not null)
             throw new AppException(HttpStatusCode.Conflict, ErrorTags.User.EmailAlreadyExists, "A user with this email already exists.");
         
-        var status = await statusRepository.GetByValueAsync((int)StatusValue.New);
+        var status = await statusRepository.GetByValueAsync((int)BaseStatus.New);
         if (status == null)
             throw new AppException(HttpStatusCode.BadRequest, ErrorTags.Status.NotFound, "Default status 'New' not found.");
 

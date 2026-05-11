@@ -1,42 +1,37 @@
-namespace Budgexa.Application.Users.Commands.UpdateUser;
+namespace Budgexa.Application.Users.Commands.UpdateCurrentUser;
 
 using System.Net;
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Users.DTOs;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 using MediatR;
 
-public sealed class UpdateUserCommandHandler(
+public sealed class UpdateCurrentUserCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
+    ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork
-) : IRequestHandler<UpdateUserCommand, UserDto>
+) : IRequestHandler<UpdateCurrentUserCommand, UserProfileResult>
 {
-    public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserProfileResult> Handle(UpdateCurrentUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(request.Id, cancellationToken)
+        var userId = currentUserService.UserId;
+
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
         var dto = request.Dto;
 
-        if (user.Email != dto.Email)
-        {
-            var existingUser = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
-            if (existingUser is not null)
-                throw new AppException(HttpStatusCode.Conflict, ErrorTags.User.EmailAlreadyExists, "Email already exists.");
-        }
-
         var passwordHash = passwordHasher.Hash(dto.Password);
 
         user.Update(
-            dto.Email,
+            user.Email,
             passwordHash,
             dto.FirstName,
             dto.LastName,
             user.CompanyId,
             dto.LanguageId);
-
-        user.SetRoles(dto.RoleIds);
 
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -44,15 +39,12 @@ public sealed class UpdateUserCommandHandler(
         var updatedUser = await userRepository.GetByIdAsync(user.Id, cancellationToken)
             ?? throw new AppException(HttpStatusCode.InternalServerError, ErrorTags.Server.InternalError, "Failed to retrieve updated user.");
 
-        return new UserDto(
+        return new UserProfileResult(
             updatedUser.Id,
             updatedUser.Email,
             updatedUser.FirstName,
             updatedUser.LastName,
-            new CompanyInfo(updatedUser.Company.Id, updatedUser.Company.Name),
-            new LanguageInfo(updatedUser.Language.Id, updatedUser.Language.Name),
-            updatedUser.UserRoles.Select(ur => new RoleInfo(ur.Role.Id, ur.Role.Name)).ToList(),
             updatedUser.CreatedAt,
-            updatedUser.UpdatedAt);
+            updatedUser.Language.Code);
     }
 }

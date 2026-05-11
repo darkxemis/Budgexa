@@ -29,9 +29,6 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
             .NotEmpty().WithMessage("Last name is required.")
             .MaximumLength(100).WithMessage("Last name cannot exceed 100 characters.");
 
-        RuleFor(x => x.Dto.CompanyId)
-            .NotEmpty().WithMessage("Company ID is required.");
-
         RuleFor(x => x.Dto.LanguageId)
             .NotEmpty().WithMessage("Language ID is required.");
 

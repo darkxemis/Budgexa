@@ -1,6 +1,7 @@
 namespace Budgexa.Infrastructure.Repositories;
 
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ public sealed class UserRepository(
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await dbContext.Users
-            .Include(l => l.Language)
+            .AsNoTracking()
+            .Include(u => u.Language)
+            .Include(u => u.Company)
+            .Include(u => u.Status)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
-            .Include(u => u.Status)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
@@ -36,7 +39,9 @@ public sealed class UserRepository(
             .AsNoTracking()
             .Where(u => u.CompanyId == companyId)
             .Include(u => u.Language)
+            .Include(u => u.Company)
             .Include(u => u.Status)
+            .Where(u => u.Status.Value != (int)BaseStatus.Delete)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
             .ToListAsync(cancellationToken);

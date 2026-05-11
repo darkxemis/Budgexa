@@ -5,6 +5,5 @@ public sealed record UserCreateDto(
     string Password,
     string FirstName,
     string LastName,
-    Guid CompanyId,
     Guid LanguageId,
     List<Guid> RoleIds);

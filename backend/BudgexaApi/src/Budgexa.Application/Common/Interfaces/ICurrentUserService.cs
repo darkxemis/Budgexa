@@ -6,4 +6,5 @@ public interface ICurrentUserService
     Guid CompanyId { get; }
     string Email { get; }
     bool IsAuthenticated { get; }
+    IEnumerable<string> Roles { get; }
 }

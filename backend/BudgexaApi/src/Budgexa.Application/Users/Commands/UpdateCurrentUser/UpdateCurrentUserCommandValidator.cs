@@ -1,15 +1,11 @@
-namespace Budgexa.Application.Users.Commands.CreateUser;
+namespace Budgexa.Application.Users.Commands.UpdateCurrentUser;
 
 using FluentValidation;
 
-public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+public sealed class UpdateCurrentUserCommandValidator : AbstractValidator<UpdateCurrentUserCommand>
 {
-    public CreateUserCommandValidator()
+    public UpdateCurrentUserCommandValidator()
     {
-        RuleFor(x => x.Dto.Email)
-            .NotEmpty().WithMessage("Email is required.")
-            .EmailAddress().WithMessage("Invalid email format.");
-
         RuleFor(x => x.Dto.Password)
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters.")
@@ -28,8 +24,5 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
 
         RuleFor(x => x.Dto.LanguageId)
             .NotEmpty().WithMessage("Language ID is required.");
-
-        RuleFor(x => x.Dto.RoleIds)
-            .NotEmpty().WithMessage("At least one role is required.");
     }
 }

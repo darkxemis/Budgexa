@@ -1,12 +1,11 @@
 ﻿namespace Budgexa.API.Endpoints;
 
-using Budgexa.API.Mappings;
 using Budgexa.API.Middleware;
 using Budgexa.Application.Roles.Commands.CreateRole;
 using Budgexa.Application.Roles.Commands.DeleteRole;
+using Budgexa.Application.Roles.Commands.UpdateRole;
 using Budgexa.Application.Roles.DTOs;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 public static class RoleEndpoints
 {
@@ -15,9 +14,7 @@ public static class RoleEndpoints
         var group = endpoints.MapGroup("/api/v1/roles").WithTags("Roles");
 
         group.MapGet("/",
-            async (
-            ISender sender, 
-            CancellationToken cancellationToken) =>
+            async (ISender sender, CancellationToken cancellationToken) =>
             {
                 var roles = await sender.Send(new GetAllRolesQuery(), cancellationToken);
                 return Results.Ok(roles);
@@ -31,12 +28,9 @@ public static class RoleEndpoints
             .WithDescription("Returns all roles.");
 
         group.MapPost("/",
-            async (
-                ISender sender,
-                [FromBody] CreateRoleCommand command,
-                CancellationToken cancellationToken) =>
+            async (RoleCreateDto dto, ISender sender, CancellationToken cancellationToken) =>
             {
-                var roleId = await sender.Send(command, cancellationToken);
+                var roleId = await sender.Send(new CreateRoleCommand(dto), cancellationToken);
                 return Results.Created($"/api/v1/roles/{roleId}", new { roleId });
             })
             .RequireAuthorization("SuperAdminOnly")
@@ -50,14 +44,9 @@ public static class RoleEndpoints
             .WithDescription("Creates a new role.");
 
         group.MapPut("/{id:guid}",
-            async (
-                Guid id,
-                [FromBody] UpdateRoleDto request,
-                ISender sender,
-                CancellationToken cancellationToken) =>
+            async (Guid id, UpdateRoleDto dto, ISender sender, CancellationToken cancellationToken) =>
             {
-                var command = request.ToCommand(id);
-                await sender.Send(command, cancellationToken);
+                await sender.Send(new UpdateRoleCommand(id, dto), cancellationToken);
                 return Results.NoContent();
             })
             .RequireAuthorization("SuperAdminOnly")
@@ -66,15 +55,13 @@ public static class RoleEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .Produces<ApiErrorResponse>(StatusCodes.Status409Conflict)
             .WithName("UpdateRole")
             .WithSummary("PUT /api/v1/roles/{id}")
             .WithDescription("Updates a role.");
 
         group.MapDelete("/{id:guid}",
-            async (
-                Guid id,
-                ISender sender,
-                CancellationToken cancellationToken) =>
+            async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
                 await sender.Send(new DeleteRoleCommand(id), cancellationToken);
                 return Results.NoContent();

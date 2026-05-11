@@ -1,6 +1,6 @@
 namespace Budgexa.Domain.Enums;
 
-public enum StatusValue
+public enum BaseStatus
 {
     New = 1,
     Delete = 2

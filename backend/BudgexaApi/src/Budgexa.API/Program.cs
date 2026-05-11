@@ -9,8 +9,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((context, configuration) =>
-        configuration.ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-    app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
 
