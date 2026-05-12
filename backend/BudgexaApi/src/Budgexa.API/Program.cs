@@ -13,6 +13,7 @@ builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 
 builder.Services.AddPresentation();
 builder.Services.AddApplication();
@@ -57,6 +58,7 @@ app.UseAuthorization();
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapRoleEndpoints();
+app.MapBudgetsEndpoints();
 
 // Automatically apply pending EF Core migrations at startup.
 // This ensures the database schema is always up to date with the latest model changes.

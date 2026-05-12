@@ -1,8 +1,10 @@
 namespace Budgexa.Infrastructure;
 
 using Budgexa.Application.Auth;
+using Budgexa.Application.Budgets.Services;
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Domain.Interfaces;
+using Budgexa.Infrastructure.AI;
 using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Repositories;
@@ -43,6 +45,7 @@ public static class DependencyInjection
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<IAiService, OllamaAiService>();
     }
 
     private static void AddAuth(this IServiceCollection services, IConfiguration configuration)

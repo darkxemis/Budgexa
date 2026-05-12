@@ -10,6 +10,16 @@ services:
     networks:
       - budgexa-net
 
+  ollama:
+    container_name: budgexa-ollama
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - budgexa-net
+
   budgexaapi:
     container_name: budgexa-api
     build:
@@ -51,3 +61,6 @@ services:
 networks:
   budgexa-net:
     driver: bridge
+
+volumes:
+  ollama-data:
