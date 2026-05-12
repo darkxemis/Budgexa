@@ -1,17 +1,15 @@
-﻿using Budgexa.Application.Auth;
+﻿namespace Budgexa.Infrastructure.Authentication;
+
+using Budgexa.Application.Auth;
 using Microsoft.Extensions.Configuration;
 
-namespace Budgexa.Infrastructure.Authentication;
-
-public sealed class LoginLockoutSettingsProvider : ILoginLockoutSettingsProvider
+public sealed class LoginLockoutSettingsProvider(
+    IConfiguration configuration
+) : ILoginLockoutSettingsProvider
 {
-    public int MaxFailedAttempts { get; }
-    public int LockoutMinutes { get; }
+    private readonly IConfigurationSection _section = configuration.GetSection("LoginLockout");
 
-    public LoginLockoutSettingsProvider(IConfiguration configuration)
-    {
-        var section = configuration.GetSection("LoginLockout");
-        MaxFailedAttempts = section.GetValue<int>("MaxFailedAttempts");
-        LockoutMinutes = section.GetValue<int>("LockoutMinutes");
-    }
+    public int MaxFailedAttempts => _section.GetValue<int>("MaxFailedAttempts");
+
+    public int LockoutMinutes => _section.GetValue<int>("LockoutMinutes");
 }

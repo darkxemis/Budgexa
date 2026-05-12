@@ -14,11 +14,11 @@ public static class BudgetsEndpoints
 
         group.MapPost("ai-generate",
             async (
+                ISender sender,
                 [FromBody] GenerateBudgetWithAiRequestDto request,
-                IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GenerateBudgetWithAiQuery(request), cancellationToken);
+                var result = await sender.Send(new GenerateBudgetWithAiQuery(request), cancellationToken);
                 return Results.Ok(result);
             })
             .RequireAuthorization()
