@@ -8,11 +8,11 @@ export class ToastService {
   readonly toast = this._toast.asReadonly();
   private timeoutId?: ReturnType<typeof setTimeout>;
 
-  show(message: string, type: ToastType = ToastType.Info) {
+  show(message: string, type: ToastType = ToastType.Info, params?: Record<string, unknown>) {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }
-    this._toast.set({ message, type });
+    this._toast.set({ message, type, params });
     this.timeoutId = setTimeout(() => {
       this._toast.set(null);
       this.timeoutId = undefined;

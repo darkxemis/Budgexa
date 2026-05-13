@@ -68,8 +68,7 @@ export class ApiErrorInterceptor implements HttpInterceptor {
         if (error.error) {
           const apiError = error.error as ApiErrorResponse;
           if (apiError?.tag) {
-            const translatedMessage = this.translate.instant(apiError.tag);
-            this.toast.show(translatedMessage, ToastType.Error);
+            this.toast.show(apiError.tag, ToastType.Error);
           }
         }
         // Always propagate the error to the subscriber
