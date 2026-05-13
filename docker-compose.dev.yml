@@ -31,6 +31,7 @@ services:
       - JwtSettings__Secret=${JWT_SECRET}
       - ASPNETCORE_Kestrel__Certificates__Default__Password=BudgexaDev123!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-dev.pfx
+      - Ollama__BaseUrl=http://host.docker.internal:11434
     ports:
       - "5000:80"
       - "5443:443"
