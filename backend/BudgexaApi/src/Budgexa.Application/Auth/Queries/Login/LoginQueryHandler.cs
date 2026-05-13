@@ -19,7 +19,7 @@ public sealed class LoginQueryHandler(
 {
     public async Task<AuthResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(request.Email, cancellationToken)
+        var user = await userRepository.GetByEmailForUpdateAsync(request.Email, cancellationToken)
             ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
 
         if (user.IsLockedOut())

@@ -45,7 +45,7 @@ public static class DependencyInjection
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddSingleton<IAiService, OllamaAiService>();
+        services.AddSingleton<IAiService, OllamaSharpAiService>();
     }
 
     private static void AddAuth(this IServiceCollection services, IConfiguration configuration)

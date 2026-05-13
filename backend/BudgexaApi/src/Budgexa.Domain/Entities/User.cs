@@ -91,8 +91,5 @@ public sealed class User : Entity
         LockoutEnd = null;
     }
 
-    public bool IsLockedOut()
-    {
-        return LockoutEnd.HasValue && LockoutEnd.Value > DateTime.UtcNow;
-    }
+    public bool IsLockedOut() => LockoutEnd is { } end && end > DateTime.UtcNow;
 }

@@ -33,6 +33,16 @@ public sealed class UserRepository(
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
+    public async Task<User?> GetByEmailForUpdateAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Users
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .Include(u => u.Language)
+            .Include(u => u.Status)
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+    }
+
     public async Task<IEnumerable<User>> GetAllByCompanyIdAsync(Guid companyId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Users
