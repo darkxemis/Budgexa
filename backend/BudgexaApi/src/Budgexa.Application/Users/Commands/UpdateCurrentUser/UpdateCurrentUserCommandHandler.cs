@@ -44,7 +44,11 @@ public sealed class UpdateCurrentUserCommandHandler(
             updatedUser.Email,
             updatedUser.FirstName,
             updatedUser.LastName,
+            updatedUser.CompanyId,
+            updatedUser.Company.Name,
+            updatedUser.LanguageId,
+            updatedUser.Language.Code,
             updatedUser.CreatedAt,
-            updatedUser.Language.Code);
+            updatedUser.UpdatedAt);
     }
 }

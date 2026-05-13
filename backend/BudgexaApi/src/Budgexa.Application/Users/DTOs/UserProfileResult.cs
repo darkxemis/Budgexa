@@ -5,5 +5,9 @@ public sealed record UserProfileResult(
     string Email,
     string FirstName,
     string LastName,
+    Guid CompanyId,
+    string CompanyName,
+    Guid LanguageId,
+    string Language,
     DateTime CreatedAt,
-    string Language);
+    DateTime? UpdatedAt);
