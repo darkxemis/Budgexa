@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { UserApiService } from '../api/user-api.service';
-import { UserProfileResult } from '../models/user.model';
+import { UserProfileResult, UpdateCurrentUserDto } from '../models/user.model';
 import { UserStore } from '../state/user.store';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -27,6 +27,14 @@ export class UserService {
     }
 
     return this.fetchUser();
+  }
+
+  updateUser(dto: UpdateCurrentUserDto): Observable<UserProfileResult | null> {
+    console.log('Updating user with DTO:', dto);
+    return this.api.updateMe(dto).pipe(
+      tap((user: UserProfileResult) => this.userStore.setUser(user)),
+      catchError(() => of(null))
+    );
   }
 
   clearUser() {

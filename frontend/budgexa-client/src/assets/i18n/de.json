@@ -5,6 +5,7 @@
   "password": "Passwort",
   "connecting": "Verbinden...",
   "enter": "Einloggen",
+  "loading": "Laden",
   "validations": {
     "required": "Dieses Feld ist erforderlich.",
     "email": "Ungültiges E-Mail-Format.",
@@ -27,5 +28,17 @@
 
   "settings": "Einstellungen",
   "logout": "Abmelden",
-  "noUserInfo": "Keine Benutzerinformationen geladen."
+  "noUserInfo": "Keine Benutzerinformationen geladen.",
+
+  "userSettings": "Benutzereinstellungen",
+  "firstName": "Vorname",
+  "lastName": "Nachname",
+  "newPassword": "Neues Passwort",
+  "newPasswordPlaceholder": "Leer lassen, um das aktuelle Passwort beizubehalten",
+  "passwordHint": "Leer lassen, wenn Sie Ihr Passwort nicht ändern möchten",
+  "language": "Sprache",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "saving": "Speichern...",
+  "settingsUpdated": "Einstellungen erfolgreich aktualisiert"
 }

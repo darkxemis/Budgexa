@@ -1,0 +1,75 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>{{ 'userSettings' | translate }}</h2>
+      <button type="button" class="close-btn" (click)="onClose()" aria-label="Close">
+        &times;
+      </button>
+    </div>
+
+    <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="firstName">{{ 'firstName' | translate }}</label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          autocomplete="given-name"
+          [placeholder]="'firstName' | translate"
+        />
+        <app-form-error [control]="form.controls.firstName" />
+      </div>
+
+      <div class="input-group">
+        <label for="lastName">{{ 'lastName' | translate }}</label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          autocomplete="family-name"
+          [placeholder]="'lastName' | translate"
+        />
+        <app-form-error [control]="form.controls.lastName" />
+      </div>
+
+      <div class="input-group">
+        <label for="password">{{ 'newPassword' | translate }}</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="new-password"
+          [placeholder]="'newPasswordPlaceholder' | translate"
+        />
+        <app-form-error [control]="form.controls.password" />
+        <small class="input-hint">{{ 'passwordHint' | translate }}</small>
+      </div>
+
+      <div class="input-group">
+        <label for="languageId">{{ 'language' | translate }}</label>
+        <select id="languageId" formControlName="languageId">
+          @if (loadingLanguages()) {
+            <option value="">{{ 'loading' | translate }}...</option>
+          } @else {
+            @for (lang of languages(); track lang.id) {
+              <option [value]="lang.id">{{ lang.name }}</option>
+            }
+          }
+        </select>
+        <app-form-error [control]="form.controls.languageId" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="onClose()" [disabled]="loading()">
+          {{ 'cancel' | translate }}
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading() || form.disabled">
+          {{ (loading() ? 'saving' : 'save') | translate }}
+          @if (loading()) {
+            <app-spinner />
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

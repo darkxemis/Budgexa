@@ -6,10 +6,10 @@ export class LanguageService {
   constructor(private translate: TranslateService) {}
 
   set(lang: string) {
-    this.translate.setFallbackLang(lang);
+    this.translate.use(lang);
   }
 
   get current() {
-    return this.translate.getFallbackLang();
+    return this.translate.currentLang || this.translate.defaultLang;
   }
 }

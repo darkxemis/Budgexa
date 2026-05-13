@@ -14,7 +14,7 @@ public sealed class UpdateUserCommandHandler(
 {
     public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(request.Id, cancellationToken)
+        var user = await userRepository.GetByIdForUpdateAsync(request.Id, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
         var dto = request.Dto;
@@ -26,7 +26,9 @@ public sealed class UpdateUserCommandHandler(
                 throw new AppException(HttpStatusCode.Conflict, ErrorTags.User.EmailAlreadyExists, "Email already exists.");
         }
 
-        var passwordHash = passwordHasher.Hash(dto.Password);
+        var passwordHash = string.IsNullOrWhiteSpace(dto.Password)
+            ? user.PasswordHash
+            : passwordHasher.Hash(dto.Password);
 
         user.Update(
             dto.Email,
@@ -38,7 +40,6 @@ public sealed class UpdateUserCommandHandler(
 
         user.SetRoles(dto.RoleIds);
 
-        userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         var updatedUser = await userRepository.GetByIdAsync(user.Id, cancellationToken)

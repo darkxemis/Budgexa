@@ -12,7 +12,8 @@ public sealed class UpdateCurrentUserCommandValidator : AbstractValidator<Update
             .Matches("[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
             .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")
             .Matches("[0-9]").WithMessage("Password must contain at least one digit.")
-            .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
+            .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.")
+            .When(x => !string.IsNullOrWhiteSpace(x.Dto.Password));
 
         RuleFor(x => x.Dto.FirstName)
             .NotEmpty().WithMessage("First name is required.")

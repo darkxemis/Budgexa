@@ -5,6 +5,7 @@
   "password": "Password",
   "connecting": "Connecting...",
   "enter": "Enter",
+  "loading": "Loading",
   "validations": {
     "required": "This field is required.",
     "email": "Invalid email format.",
@@ -27,5 +28,17 @@
 
   "settings": "Settings",
   "logout": "Logout",
-  "noUserInfo": "No user info loaded."
+  "noUserInfo": "No user info loaded.",
+
+  "userSettings": "User Settings",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "newPassword": "New Password",
+  "newPasswordPlaceholder": "Leave empty to keep current password",
+  "passwordHint": "Leave empty if you don't want to change your password",
+  "language": "Language",
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "settingsUpdated": "Settings updated successfully"
 }

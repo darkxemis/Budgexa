@@ -13,9 +13,13 @@
         </div>
       </div>
       <div class="user-dropdown-actions">
-        <button class="dropdown-action" type="button">{{ 'settings' | translate }}</button>
+        <button class="dropdown-action" type="button" (click)="openSettings()">{{ 'settings' | translate }}</button>
         <button class="dropdown-action" type="button" (click)="logout()">{{ 'logout' | translate }}</button>
       </div>
     </div>
   </div>
+
+  @if (showSettingsModal()) {
+    <app-user-settings-modal (close)="closeSettings()" />
+  }
 }

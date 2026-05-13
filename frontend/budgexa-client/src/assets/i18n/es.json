@@ -5,6 +5,7 @@
   "password": "Contraseña",
   "connecting": "Conectando...",
   "enter": "Entrar",
+  "loading": "Cargando",
   "validations": {
     "required": "Este campo es obligatorio.",
     "email": "Formato de correo inválido.",
@@ -27,5 +28,17 @@
 
   "settings": "Configuración",
   "logout": "Cerrar sesión",
-  "noUserInfo": "No hay información de usuario cargada."
+  "noUserInfo": "No hay información de usuario cargada.",
+
+  "userSettings": "Configuración de Usuario",
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "newPassword": "Nueva Contraseña",
+  "newPasswordPlaceholder": "Dejar vacío para mantener la contraseña actual",
+  "passwordHint": "Dejar vacío si no deseas cambiar tu contraseña",
+  "language": "Idioma",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "saving": "Guardando...",
+  "settingsUpdated": "Configuración actualizada correctamente"
 }

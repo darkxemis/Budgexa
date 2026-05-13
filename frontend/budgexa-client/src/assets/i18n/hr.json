@@ -5,6 +5,7 @@
   "password": "Lozinka",
   "connecting": "Povezivanje...",
   "enter": "Prijava",
+  "loading": "Učitavanje",
   "validations": {
     "required": "Ovo polje je obavezno.",
     "email": "Neispravan format e-pošte.",
@@ -27,5 +28,17 @@
 
   "settings": "Postavke",
   "logout": "Odjava",
-  "noUserInfo": "Nema učitanih korisničkih podataka."
+  "noUserInfo": "Nema učitanih korisničkih podataka.",
+
+  "userSettings": "Korisničke Postavke",
+  "firstName": "Ime",
+  "lastName": "Prezime",
+  "newPassword": "Nova Lozinka",
+  "newPasswordPlaceholder": "Ostavite prazno da zadržite trenutnu lozinku",
+  "passwordHint": "Ostavite prazno ako ne želite promijeniti lozinku",
+  "language": "Jezik",
+  "cancel": "Odustani",
+  "save": "Spremi",
+  "saving": "Spremanje...",
+  "settingsUpdated": "Postavke uspješno ažurirane"
 }

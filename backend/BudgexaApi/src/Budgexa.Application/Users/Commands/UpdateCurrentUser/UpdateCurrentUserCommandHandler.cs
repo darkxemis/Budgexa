@@ -18,12 +18,14 @@ public sealed class UpdateCurrentUserCommandHandler(
     {
         var userId = currentUserService.UserId;
 
-        var user = await userRepository.GetByIdAsync(userId, cancellationToken)
+        var user = await userRepository.GetByIdForUpdateAsync(userId, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
         var dto = request.Dto;
 
-        var passwordHash = passwordHasher.Hash(dto.Password);
+        var passwordHash = string.IsNullOrWhiteSpace(dto.Password)
+            ? user.PasswordHash
+            : passwordHasher.Hash(dto.Password);
 
         user.Update(
             user.Email,
@@ -32,8 +34,7 @@ public sealed class UpdateCurrentUserCommandHandler(
             dto.LastName,
             user.CompanyId,
             dto.LanguageId);
-
-        userRepository.Update(user);
+      
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         var updatedUser = await userRepository.GetByIdAsync(user.Id, cancellationToken)
