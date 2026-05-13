@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./form-error.component.scss']
 })
 export class FormErrorComponent {
-  @Input() control!: AbstractControl | null;
+  control = input.required<AbstractControl | null>();
 
   private readonly errorMessages: Record<string, string> = {
     required: 'validations.required',
@@ -20,12 +20,12 @@ export class FormErrorComponent {
     pattern: 'validations.pattern'
   };
 
-  get errorKey(): string {
-    const keys = Object.keys(this.control?.errors || {});
-    return keys.length > 0 ? keys[0] : ''; 
-  }
+  errorKey = computed(() => {
+    const keys = Object.keys(this.control()?.errors || {});
+    return keys.length > 0 ? keys[0] : '';
+  });
 
-  get errorMessage(): string {
-    return this.errorMessages[this.errorKey] || 'validations.invalid';
-  }
+  errorMessage = computed(() => {
+    return this.errorMessages[this.errorKey()] || 'validations.invalid';
+  });
 }

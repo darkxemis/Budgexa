@@ -1,3 +1,5 @@
-<div *ngIf="toast() as t" class="toast" [ngClass]="t.type">
-  <span class="message">{{ t.message | translate:t.params }}</span>
-</div>
+@if (toast(); as t) {
+  <div class="toast" [ngClass]="t.type">
+    <span class="message">{{ t.message | translate:t.params }}</span>
+  </div>
+}

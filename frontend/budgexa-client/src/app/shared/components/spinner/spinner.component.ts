@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NgStyle } from '@angular/common';
 
 @Component({
@@ -9,6 +9,6 @@ import { NgStyle } from '@angular/common';
   styleUrl: './spinner.component.scss'
 })
 export class SpinnerComponent {
-  @Input() size: number = 18;
-  @Input() color: string = '#7b2ff2';
+  size = input<number>(18);
+  color = input<string>('#7b2ff2');
 }

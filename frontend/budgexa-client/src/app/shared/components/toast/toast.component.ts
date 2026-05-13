@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastService } from './toast.service';
 
 @Component({
   selector: 'app-toast',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [NgClass, TranslateModule],
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.scss'],
 })

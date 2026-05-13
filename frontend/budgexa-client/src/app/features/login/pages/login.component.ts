@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -15,7 +15,7 @@ import { FormErrorComponent } from '../../../shared/components/form-error/form-e
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly auth = inject(AuthService);
   private readonly userStore = inject(UserStore);
@@ -28,7 +28,7 @@ export class LoginComponent {
     password: ['', [Validators.required]]
   });
 
-  constructor() {
+  ngOnInit() {
     if (this.userStore.user()?.id) {
       this.router.navigate(['/dashboard']);
     }

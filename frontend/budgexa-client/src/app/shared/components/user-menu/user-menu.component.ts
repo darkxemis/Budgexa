@@ -1,7 +1,7 @@
-import { Component, inject, HostListener, ElementRef, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { UserStore } from '../../../core/state/user.store';
+import { Component, inject, HostListener, signal } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { UserStore } from '../../../core/state/user.store';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { performLogout } from '../../../core/utils/auth.utils';
@@ -10,7 +10,7 @@ import { UserSettingsModalComponent } from '../user-settings-modal/user-settings
 @Component({
   selector: 'app-user-menu',
   standalone: true,
-  imports: [CommonModule, TranslateModule, UserSettingsModalComponent],
+  imports: [UpperCasePipe, TranslateModule, UserSettingsModalComponent],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
 })
@@ -21,7 +21,6 @@ export class UserMenuComponent {
   readonly user = this.userStore.user;
   menuOpen = false;
   showSettingsModal = signal(false);
-  private readonly elRef = inject(ElementRef);
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

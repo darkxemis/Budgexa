@@ -1,4 +1,4 @@
-import { Component, inject, signal, output, computed } from '@angular/core';
+import { Component, inject, signal, output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,7 +23,7 @@ import { LanguageDataService } from '../../../core/services/language-data.servic
   templateUrl: './user-settings-modal.component.html',
   styleUrl: './user-settings-modal.component.scss',
 })
-export class UserSettingsModalComponent {
+export class UserSettingsModalComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly userService = inject(UserService);
   private readonly userStore = inject(UserStore);
@@ -43,7 +43,7 @@ export class UserSettingsModalComponent {
     languageId: ['', [Validators.required]],
   });
 
-  constructor() {
+  ngOnInit() {
     this.form.controls.languageId.disable();
 
     this.languageDataService.loadLanguages().subscribe({
@@ -98,11 +98,5 @@ export class UserSettingsModalComponent {
 
   onClose() {
     this.close.emit();
-  }
-
-  onBackdropClick(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-      this.onClose();
-    }
   }
 }

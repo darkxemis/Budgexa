@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { LanguageSyncService } from './core/i18n/language-initializer.service';
@@ -11,5 +11,5 @@ import { LanguageSyncService } from './core/i18n/language-initializer.service';
 })
 export class App {
   protected readonly title = signal('budgexa-client');
-  constructor(languageSync: LanguageSyncService) {}
+  private readonly languageSync = inject(LanguageSyncService);
 }

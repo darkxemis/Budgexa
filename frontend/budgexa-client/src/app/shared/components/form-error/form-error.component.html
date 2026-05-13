@@ -1,7 +1,7 @@
-@if (control?.touched && control?.errors) {
+@if (control()?.touched && control()?.errors) {
   <div class="error-container">
     <small class="error-text">
-      {{ errorMessage | translate }}
+      {{ errorMessage() | translate }}
     </small>
   </div>
 }
