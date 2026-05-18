@@ -7,6 +7,7 @@ public sealed class Language
     public string Name { get; private set; } = default!;
 
     public ICollection<StatusTranslation> StatusTranslations { get; private set; } = new List<StatusTranslation>();
+    public ICollection<LanguageTranslation> Translations { get; private set; } = new List<LanguageTranslation>();
 
     private Language() { }
 

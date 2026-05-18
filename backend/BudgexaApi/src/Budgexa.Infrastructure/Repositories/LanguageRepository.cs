@@ -12,6 +12,8 @@ public sealed class LanguageRepository(
     public async Task<List<Language>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.Languages
+            .Include(l => l.Translations)
+                .ThenInclude(t => t.TranslationLanguage)
             .AsNoTracking()
             .OrderBy(l => l.Name)
             .ToListAsync(cancellationToken);

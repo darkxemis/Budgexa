@@ -1,10 +1,10 @@
-﻿using Budgexa.Domain.Entities;
+﻿namespace Budgexa.Infrastructure.Persistence.Configurations;
+
+using Budgexa.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Budgexa.Infrastructure.Persistence.Configurations;
-
-public class CompanyConfiguration : IEntityTypeConfiguration<Company>
+internal sealed class CompanyConfiguration : IEntityTypeConfiguration<Company>
 {
     public void Configure(EntityTypeBuilder<Company> builder)
     {

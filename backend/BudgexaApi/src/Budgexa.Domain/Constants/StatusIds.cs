@@ -1,4 +1,4 @@
-﻿namespace Budgexa.Domain.Static;
+﻿namespace Budgexa.Domain.Constants;
 
 public static class StatusIds
 {

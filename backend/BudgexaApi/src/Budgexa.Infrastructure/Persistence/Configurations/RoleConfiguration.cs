@@ -1,9 +1,11 @@
-﻿using Budgexa.Domain.Entities;
-using Budgexa.Domain.Enum;
+﻿namespace Budgexa.Infrastructure.Persistence.Configurations;
+
+using Budgexa.Domain.Constants;
+using Budgexa.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
+internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {

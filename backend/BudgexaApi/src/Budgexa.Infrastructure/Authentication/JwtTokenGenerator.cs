@@ -1,13 +1,12 @@
 namespace Budgexa.Infrastructure.Authentication;
 
-using Budgexa.Application.Roles.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 public sealed class JwtTokenGenerator(
     IOptions<JwtSettings> jwtSettings

@@ -1,11 +1,11 @@
-﻿using Budgexa.Domain.Entities;
-using Budgexa.Domain.Static;
+﻿namespace Budgexa.Infrastructure.Persistence.Configurations;
+
+using Budgexa.Domain.Constants;
+using Budgexa.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Budgexa.Infrastructure.Persistence.Configurations;
-
-public class LanguageConfiguration : IEntityTypeConfiguration<Language>
+internal sealed class LanguageConfiguration : IEntityTypeConfiguration<Language>
 {
     public void Configure(EntityTypeBuilder<Language> builder)
     {

@@ -1,4 +1,4 @@
-﻿namespace Budgexa.Domain.Enum
+﻿namespace Budgexa.Domain.Constants
 {
     public static class RoleIds
     {

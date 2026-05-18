@@ -1,11 +1,11 @@
+namespace Budgexa.Infrastructure.Persistence.Configurations;
+
+using Budgexa.Domain.Constants;
 using Budgexa.Domain.Entities;
-using Budgexa.Domain.Static;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Budgexa.Infrastructure.Persistence.Configurations;
-
-public class StatusConfiguration : IEntityTypeConfiguration<Status>
+internal sealed class StatusConfiguration : IEntityTypeConfiguration<Status>
 {
     public void Configure(EntityTypeBuilder<Status> builder)
     {
