@@ -18,4 +18,11 @@ public sealed class LanguageRepository(
             .OrderBy(l => l.Name)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<Language?> GetByCodeAsync(string code, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Languages
+            .AsNoTracking()
+            .FirstOrDefaultAsync(l => l.Code == code, cancellationToken);
+    }
 }
