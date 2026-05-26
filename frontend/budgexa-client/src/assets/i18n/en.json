@@ -40,5 +40,34 @@
   "cancel": "Cancel",
   "save": "Save",
   "saving": "Saving...",
-  "settingsUpdated": "Settings updated successfully"
+  "settingsUpdated": "Settings updated successfully",
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Select an option to get started",
+    "cards": {
+      "invoices": {
+        "title": "Invoices",
+        "description": "Manage and track your invoices"
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage users and permissions"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Invoices",
+    "welcome": "Welcome to Invoices",
+    "description": "Manage your invoices efficiently. Create, view, and track all your invoices in one place.",
+    "create": "Create New Invoice",
+    "list": "Your Invoices",
+    "no-invoices": "No invoices yet. Create your first invoice to get started."
+  },
+
+  "users": {
+    "title": "Users",
+    "placeholder": "User management coming soon..."
+  }
 }

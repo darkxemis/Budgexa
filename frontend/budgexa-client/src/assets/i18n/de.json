@@ -40,5 +40,34 @@
   "cancel": "Abbrechen",
   "save": "Speichern",
   "saving": "Speichern...",
-  "settingsUpdated": "Einstellungen erfolgreich aktualisiert"
+  "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Wählen Sie eine Option, um zu beginnen",
+    "cards": {
+      "invoices": {
+        "title": "Rechnungen",
+        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
+      },
+      "users": {
+        "title": "Benutzer",
+        "description": "Benutzer und Berechtigungen verwalten"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Rechnungen",
+    "welcome": "Willkommen bei Rechnungen",
+    "description": "Verwalten Sie Ihre Rechnungen effizient. Erstellen, anzeigen und verfolgen Sie alle Ihre Rechnungen an einem Ort.",
+    "create": "Neue Rechnung erstellen",
+    "list": "Ihre Rechnungen",
+    "no-invoices": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung, um zu beginnen."
+  },
+
+  "users": {
+    "title": "Benutzer",
+    "placeholder": "Benutzerverwaltung in Kürze..."
+  }
 }

@@ -40,5 +40,34 @@
   "cancel": "Odustani",
   "save": "Spremi",
   "saving": "Spremanje...",
-  "settingsUpdated": "Postavke uspješno ažurirane"
+  "settingsUpdated": "Postavke uspješno ažurirane",
+
+  "dashboard": {
+    "title": "Nadzorna ploča",
+    "subtitle": "Odaberite opciju za početak",
+    "cards": {
+      "invoices": {
+        "title": "Računi",
+        "description": "Upravljajte i pratite svoje račune"
+      },
+      "users": {
+        "title": "Korisnici",
+        "description": "Upravljajte korisnicima i dozvolama"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Računi",
+    "welcome": "Dobrodošli u Račune",
+    "description": "Učinkovito upravljajte svojim računima. Kreirajte, pregledavajte i pratite sve svoje račune na jednom mjestu.",
+    "create": "Kreiraj Novi Račun",
+    "list": "Vaši Računi",
+    "no-invoices": "Još nema računa. Kreirajte svoj prvi račun da započnete."
+  },
+
+  "users": {
+    "title": "Korisnici",
+    "placeholder": "Upravljanje korisnicima uskoro..."
+  }
 }

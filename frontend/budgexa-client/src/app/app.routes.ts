@@ -10,7 +10,19 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/pages/dashboard.component').then((m) => m.DashboardComponent),
-      canActivate: [authGuard],
+    canActivate: [authGuard],
+  },
+  {
+    path: 'invoices',
+    loadComponent: () =>
+      import('./features/invoices/pages/invoices.component').then((m) => m.InvoicesComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'users',
+    loadComponent: () =>
+      import('./features/users/pages/users.component').then((m) => m.UsersComponent),
+    canActivate: [authGuard],
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },

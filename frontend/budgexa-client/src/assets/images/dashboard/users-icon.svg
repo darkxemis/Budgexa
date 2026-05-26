@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Fondo circular suave -->
+  <circle cx="60" cy="60" r="58" fill="#C9B8F9" opacity="0.3"/>
+  
+  <!-- Usuario principal (frente) -->
+  <g transform="translate(60, 45)">
+    <!-- Cabeza -->
+    <circle cx="0" cy="-8" r="12" fill="url(#userGradient)"/>
+    <!-- Cuerpo -->
+    <path d="M -16 20 Q -16 8 -12 6 L -8 4 Q -6 3 0 3 Q 6 3 8 4 L 12 6 Q 16 8 16 20 L 16 28 Q 16 30 14 30 L -14 30 Q -16 30 -16 28 Z" 
+          fill="url(#userGradient)"/>
+  </g>
+  
+  <!-- Usuario izquierdo (atrás) -->
+  <g transform="translate(30, 52)" opacity="0.7">
+    <!-- Cabeza -->
+    <circle cx="0" cy="-6" r="10" fill="url(#userGradient2)"/>
+    <!-- Cuerpo -->
+    <path d="M -13 16 Q -13 7 -10 5 L -7 3 Q -5 2 0 2 Q 5 2 7 3 L 10 5 Q 13 7 13 16 L 13 22 Q 13 24 11 24 L -11 24 Q -13 24 -13 22 Z" 
+          fill="url(#userGradient2)"/>
+  </g>
+  
+  <!-- Usuario derecho (atrás) -->
+  <g transform="translate(90, 52)" opacity="0.7">
+    <!-- Cabeza -->
+    <circle cx="0" cy="-6" r="10" fill="url(#userGradient2)"/>
+    <!-- Cuerpo -->
+    <path d="M -13 16 Q -13 7 -10 5 L -7 3 Q -5 2 0 2 Q 5 2 7 3 L 10 5 Q 13 7 13 16 L 13 22 Q 13 24 11 24 L -11 24 Q -13 24 -13 22 Z" 
+          fill="url(#userGradient2)"/>
+  </g>
+  
+  <!-- Gradientes -->
+  <defs>
+    <linearGradient id="userGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B6EF9;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7B2FF2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B1FE5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="userGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9B7EF9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7B3FF2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

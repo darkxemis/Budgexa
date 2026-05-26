@@ -40,5 +40,34 @@
   "cancel": "Cancelar",
   "save": "Guardar",
   "saving": "Guardando...",
-  "settingsUpdated": "Configuración actualizada correctamente"
+  "settingsUpdated": "Configuración actualizada correctamente",
+
+  "dashboard": {
+    "title": "Panel de Control",
+    "subtitle": "Selecciona una opción para comenzar",
+    "cards": {
+      "invoices": {
+        "title": "Facturas",
+        "description": "Gestiona y rastrea tus facturas"
+      },
+      "users": {
+        "title": "Usuarios",
+        "description": "Gestiona usuarios y permisos"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Facturas",
+    "welcome": "Bienvenido a Facturas",
+    "description": "Gestiona tus facturas de manera eficiente. Crea, visualiza y rastrea todas tus facturas en un solo lugar.",
+    "create": "Crear Nueva Factura",
+    "list": "Tus Facturas",
+    "no-invoices": "Aún no hay facturas. Crea tu primera factura para comenzar."
+  },
+
+  "users": {
+    "title": "Usuarios",
+    "placeholder": "Gestión de usuarios próximamente..."
+  }
 }
