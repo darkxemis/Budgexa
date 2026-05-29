@@ -101,6 +101,7 @@
     "operator": "Operator",
     "value": "Wert",
     "enterValue": "Filterwert eingeben...",
+    "selectValue": "Wert auswählen...",
     "cancel": "Abbrechen",
     "apply": "Anwenden",
     "sortMultiple": "Klicken zum Sortieren (unterstützt mehrere Spalten)",

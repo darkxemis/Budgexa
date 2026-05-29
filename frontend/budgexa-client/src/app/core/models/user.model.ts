@@ -1,4 +1,5 @@
 import { Guid } from './guid.model';
+import { SelectorOption } from './selector.model';
 
 export interface UserProfileResult {
   id: Guid;
@@ -20,8 +21,7 @@ export interface UpdateCurrentUserDto {
   languageId: Guid;
 }
 
-export interface Language {
-  id: Guid;
+// Language uses the generic SelectorOption (id, name, code)
+export interface Language extends SelectorOption {
   code: string;
-  name: string;
 }

@@ -19,6 +19,7 @@ import {
   GridRequestDto,
   GridResponseDto,
 } from '../../../core/models/grid.model';
+import { SelectorOption } from '../../../core/models/selector.model';
 
 @Component({
   selector: 'app-data-grid',
@@ -57,9 +58,11 @@ export class DataGridComponent<T = any> implements OnInit {
 
   // UI State
   protected readonly showFilters = signal(false);
-  protected readonly filterColumn = signal<string | null>(null);
+  protected readonly filterColumn = signal<GridColumnDef<T> | null>(null);
   protected readonly filterOperator = signal<GridOperator>(GridOperator.Contains);
   protected readonly filterValue = signal('');
+  protected readonly filterOptions = signal<SelectorOption[]>([]);
+  protected readonly loadingFilterOptions = signal(false);
   protected readonly showColumnSelector = signal(false);
 
   // Search debounce
@@ -116,7 +119,7 @@ export class DataGridComponent<T = any> implements OnInit {
   });
 
   // Available operators for filtering
-  protected readonly operators = [
+  protected readonly allOperators = [
     { value: GridOperator.Equal, label: 'grid.operators.equal' },
     { value: GridOperator.NotEqual, label: 'grid.operators.notEqual' },
     { value: GridOperator.Contains, label: 'grid.operators.contains' },
@@ -128,6 +131,47 @@ export class DataGridComponent<T = any> implements OnInit {
     { value: GridOperator.GreaterThanOrEqual, label: 'grid.operators.greaterThanOrEqual' },
     { value: GridOperator.LessThanOrEqual, label: 'grid.operators.lessThanOrEqual' },
   ];
+
+  // Filtered operators based on current column type
+  protected readonly operators = computed(() => {
+    const column = this.filterColumn();
+    if (!column) return this.allOperators;
+
+    const filterType = column.filterType || 'text';
+
+    switch (filterType) {
+      case 'select':
+        // Selectors: only exact match operators
+        return this.allOperators.filter(op => 
+          op.value === GridOperator.Equal || 
+          op.value === GridOperator.NotEqual
+        );
+      
+      case 'number':
+      case 'date':
+        // Numbers and dates: comparison operators only
+        return this.allOperators.filter(op => 
+          op.value === GridOperator.Equal || 
+          op.value === GridOperator.NotEqual ||
+          op.value === GridOperator.GreaterThan ||
+          op.value === GridOperator.LessThan ||
+          op.value === GridOperator.GreaterThanOrEqual ||
+          op.value === GridOperator.LessThanOrEqual
+        );
+      
+      case 'text':
+      default:
+        // Text: all string operators
+        return this.allOperators.filter(op => 
+          op.value === GridOperator.Equal || 
+          op.value === GridOperator.NotEqual ||
+          op.value === GridOperator.Contains ||
+          op.value === GridOperator.NotContains ||
+          op.value === GridOperator.StartsWith ||
+          op.value === GridOperator.EndsWith
+        );
+    }
+  });
 
   constructor() {
     effect(() => {
@@ -203,20 +247,55 @@ export class DataGridComponent<T = any> implements OnInit {
   }
 
   // Filtering
-  protected openFilterDialog(column: GridColumnDef<T>) {
+  protected async openFilterDialog(column: GridColumnDef<T>) {
     if (!column.filterable) return;
     
-    this.filterColumn.set(column.field as string);
+    this.filterColumn.set(column);
     this.showFilters.set(true);
     
-    // Check if there's an existing filter for this column
-    const existingFilter = this.filters().find(f => f.column === column.field);
+    // Load filter options if it's a select type
+    if (column.filterType === 'select' && column.filterOptions) {
+      this.loadingFilterOptions.set(true);
+      try {
+        if (typeof column.filterOptions === 'function') {
+          const options = await column.filterOptions();
+          this.filterOptions.set(options);
+        } else {
+          this.filterOptions.set(column.filterOptions);
+        }
+      } catch (error) {
+        console.error('Error loading filter options:', error);
+        this.filterOptions.set([]);
+      } finally {
+        this.loadingFilterOptions.set(false);
+      }
+    } else {
+      this.filterOptions.set([]);
+    }
+    
+    // Check if there's an existing filter for this column (use filterField if available)
+    const filterFieldName = column.filterField || (column.field as string);
+    const existingFilter = this.filters().find(f => f.column === filterFieldName);
     if (existingFilter) {
       this.filterOperator.set(existingFilter.operator);
       this.filterValue.set(existingFilter.value || '');
     } else {
-      this.filterOperator.set(GridOperator.Contains);
+      // Set default operator based on column type
+      const defaultOperator = this.getDefaultOperator(column.filterType || 'text');
+      this.filterOperator.set(defaultOperator);
       this.filterValue.set('');
+    }
+  }
+
+  private getDefaultOperator(filterType: string): GridOperator {
+    switch (filterType) {
+      case 'select':
+      case 'number':
+      case 'date':
+        return GridOperator.Equal;
+      case 'text':
+      default:
+        return GridOperator.Contains;
     }
   }
 
@@ -224,11 +303,12 @@ export class DataGridComponent<T = any> implements OnInit {
     const column = this.filterColumn();
     if (!column) return;
 
-    const currentFilters = this.filters().filter(f => f.column !== column);
+    const filterFieldName = column.filterField || (column.field as string);
+    const currentFilters = this.filters().filter(f => f.column !== filterFieldName);
     
     if (this.filterValue()) {
       currentFilters.push({
-        column,
+        column: filterFieldName,
         operator: this.filterOperator(),
         value: this.filterValue(),
       });
@@ -251,11 +331,13 @@ export class DataGridComponent<T = any> implements OnInit {
   }
 
   protected hasFilter(column: GridColumnDef<T>): boolean {
-    return this.filters().some(f => f.column === column.field);
+    const filterFieldName = column.filterField || (column.field as string);
+    return this.filters().some(f => f.column === filterFieldName);
   }
 
   protected getFilterForColumn(column: GridColumnDef<T>): GridFilterDto | undefined {
-    return this.filters().find(f => f.column === column.field);
+    const filterFieldName = column.filterField || (column.field as string);
+    return this.filters().find(f => f.column === filterFieldName);
   }
 
   // Search

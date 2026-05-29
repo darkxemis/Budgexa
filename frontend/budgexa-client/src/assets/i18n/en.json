@@ -101,6 +101,7 @@
     "operator": "Operator",
     "value": "Value",
     "enterValue": "Enter filter value...",
+    "selectValue": "Select a value...",
     "cancel": "Cancel",
     "apply": "Apply",
     "sortMultiple": "Click to sort (supports multiple columns)",

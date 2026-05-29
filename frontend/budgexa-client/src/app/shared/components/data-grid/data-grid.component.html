@@ -248,7 +248,7 @@
   <!-- Filter Dialog Modal -->
   <div class="modal-overlay" *ngIf="showFilters()" (click)="cancelFilter()">
     <div class="filter-dialog" (click)="$event.stopPropagation()">
-      <h3>{{ 'grid.filterBy' | translate }}: {{ filterColumn() }}</h3>
+      <h3>{{ 'grid.filterBy' | translate }}: {{ filterColumn()?.header | translate }}</h3>
       
       <div class="filter-form">
         <div class="form-group">
@@ -258,7 +258,7 @@
             (change)="filterOperator.set($any($event.target).value)"
           >
             <option 
-              *ngFor="let op of operators" 
+              *ngFor="let op of operators()" 
               [value]="op.value"
             >
               {{ op.label | translate }}
@@ -268,7 +268,26 @@
 
         <div class="form-group">
           <label>{{ 'grid.value' | translate }}</label>
+          
+          <!-- Select input for filter type 'select' -->
+          <select 
+            *ngIf="filterColumn()?.filterType === 'select'"
+            [value]="filterValue()"
+            (change)="filterValue.set($any($event.target).value)"
+            [disabled]="loadingFilterOptions()"
+          >
+            <option value="">{{ 'grid.selectValue' | translate }}</option>
+            <option 
+              *ngFor="let option of filterOptions()" 
+              [value]="option.id"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+
+          <!-- Text input for other filter types -->
           <input
+            *ngIf="filterColumn()?.filterType !== 'select'"
             type="text"
             [value]="filterValue()"
             (input)="filterValue.set($any($event.target).value)"

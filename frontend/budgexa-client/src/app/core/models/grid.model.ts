@@ -1,3 +1,5 @@
+import { SelectorOption } from './selector.model';
+
 // Grid Request Models
 export interface GridRequestDto {
   page: number;
@@ -49,11 +51,15 @@ export interface GridColumnDef<T = any> {
   header: string;
   sortable?: boolean;
   filterable?: boolean;
+  filterField?: string; // Optional: different field name for filtering (e.g., 'languageId' for 'languageName' column)
   filterType?: 'text' | 'number' | 'date' | 'select';
-  filterOptions?: { label: string; value: any }[];
+  filterOptions?: SelectorOption[] | (() => Promise<SelectorOption[]>);
   width?: string;
   cellTemplate?: (row: T) => string;
 }
+
+// GridFilterOption is just an alias for SelectorOption
+export type GridFilterOption = SelectorOption;
 
 // Grid State Management
 export interface GridState {

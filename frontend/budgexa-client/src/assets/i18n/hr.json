@@ -101,6 +101,7 @@
     "operator": "Operator",
     "value": "Vrijednost",
     "enterValue": "Unesite vrijednost filtera...",
+    "selectValue": "Odaberite vrijednost...",
     "cancel": "Odustani",
     "apply": "Primijeni",
     "sortMultiple": "Kliknite za sortiranje (podržava više stupaca)",

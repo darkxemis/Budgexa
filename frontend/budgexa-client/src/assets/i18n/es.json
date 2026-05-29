@@ -101,6 +101,7 @@
     "operator": "Operador",
     "value": "Valor",
     "enterValue": "Ingrese valor del filtro...",
+    "selectValue": "Seleccionar un valor...",
     "cancel": "Cancelar",
     "apply": "Aplicar",
     "sortMultiple": "Clic para ordenar (soporta múltiples columnas)",
