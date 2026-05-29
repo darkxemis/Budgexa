@@ -68,6 +68,52 @@
 
   "users": {
     "title": "Benutzer",
-    "placeholder": "Benutzerverwaltung in Kürze..."
+    "placeholder": "Benutzerverwaltung in Kürze...",
+    "grid": {
+      "email": "E-Mail",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "company": "Unternehmen",
+      "language": "Sprache",
+      "status": "Status",
+      "roles": "Rollen",
+      "createdAt": "Erstellt am"
+    }
+  },
+
+  "grid": {
+    "search": "Suchen...",
+    "clearSearch": "Suche löschen",
+    "refresh": "Aktualisieren",
+    "clearAll": "Alles löschen",
+    "activeFilters": "Aktive Filter",
+    "removeFilter": "Filter entfernen",
+    "loading": "Lädt...",
+    "filter": "Filter",
+    "noData": "Keine Daten verfügbar",
+    "showing": "Anzeigen",
+    "of": "von",
+    "items": "Elemente",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageSize": "Elemente pro Seite",
+    "filterBy": "Filtern nach",
+    "operator": "Operator",
+    "value": "Wert",
+    "enterValue": "Filterwert eingeben...",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden",
+    "operators": {
+      "equal": "Gleich",
+      "notEqual": "Nicht gleich",
+      "contains": "Enthält",
+      "notContains": "Enthält nicht",
+      "startsWith": "Beginnt mit",
+      "endsWith": "Endet mit",
+      "greaterThan": "Größer als",
+      "lessThan": "Kleiner als",
+      "greaterThanOrEqual": "Größer oder gleich",
+      "lessThanOrEqual": "Kleiner oder gleich"
+    }
   }
 }

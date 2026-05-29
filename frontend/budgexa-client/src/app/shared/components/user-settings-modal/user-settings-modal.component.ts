@@ -9,6 +9,7 @@ import { FormErrorComponent } from '../form-error/form-error.component';
 import { ToastService } from '../toast/toast.service';
 import { ToastType } from '../toast/toast.type';
 import { LanguageDataService } from '../../../core/services/language-data.service';
+import { Guid } from '../../../core/models/guid.model';
 
 @Component({
   selector: 'app-user-settings-modal',
@@ -80,7 +81,7 @@ export class UserSettingsModalComponent implements OnInit {
     const dto = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
-      languageId: formValue.languageId,
+      languageId: formValue.languageId as Guid,
       ...(formValue.password && { password: formValue.password }),
     };
 

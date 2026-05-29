@@ -68,6 +68,52 @@
 
   "users": {
     "title": "Usuarios",
-    "placeholder": "Gestión de usuarios próximamente..."
+    "placeholder": "Gestión de usuarios próximamente...",
+    "grid": {
+      "email": "Correo Electrónico",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "company": "Empresa",
+      "language": "Idioma",
+      "status": "Estado",
+      "roles": "Roles",
+      "createdAt": "Fecha de Creación"
+    }
+  },
+
+  "grid": {
+    "search": "Buscar...",
+    "clearSearch": "Limpiar búsqueda",
+    "refresh": "Actualizar",
+    "clearAll": "Limpiar Todo",
+    "activeFilters": "Filtros activos",
+    "removeFilter": "Eliminar filtro",
+    "loading": "Cargando...",
+    "filter": "Filtrar",
+    "noData": "No hay datos disponibles",
+    "showing": "Mostrando",
+    "of": "de",
+    "items": "elementos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageSize": "Elementos por página",
+    "filterBy": "Filtrar por",
+    "operator": "Operador",
+    "value": "Valor",
+    "enterValue": "Ingrese valor del filtro...",
+    "cancel": "Cancelar",
+    "apply": "Aplicar",
+    "operators": {
+      "equal": "Igual a",
+      "notEqual": "Diferente de",
+      "contains": "Contiene",
+      "notContains": "No Contiene",
+      "startsWith": "Empieza con",
+      "endsWith": "Termina con",
+      "greaterThan": "Mayor que",
+      "lessThan": "Menor que",
+      "greaterThanOrEqual": "Mayor o Igual",
+      "lessThanOrEqual": "Menor o Igual"
+    }
   }
 }

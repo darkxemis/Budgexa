@@ -1,12 +1,14 @@
+import { Guid } from './guid.model';
+
 export interface UserProfileResult {
-  id: string; // Guid
+  id: Guid;
   email: string;
   firstName: string;
   lastName: string;
-  companyId: string; // Guid
+  companyId: Guid;
   companyName: string;
-  languageId: string; // Guid
-  language: string; // Language code
+  languageId: Guid;
+  language: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,11 +17,11 @@ export interface UpdateCurrentUserDto {
   firstName: string;
   lastName: string;
   password?: string;
-  languageId: string; // Guid
+  languageId: Guid;
 }
 
 export interface Language {
-  id: string;
+  id: Guid;
   code: string;
   name: string;
 }

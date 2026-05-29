@@ -68,6 +68,52 @@
 
   "users": {
     "title": "Users",
-    "placeholder": "User management coming soon..."
+    "placeholder": "User management coming soon...",
+    "grid": {
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "company": "Company",
+      "language": "Language",
+      "status": "Status",
+      "roles": "Roles",
+      "createdAt": "Created At"
+    }
+  },
+
+  "grid": {
+    "search": "Search...",
+    "clearSearch": "Clear search",
+    "refresh": "Refresh",
+    "clearAll": "Clear All",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove filter",
+    "loading": "Loading...",
+    "filter": "Filter",
+    "noData": "No data available",
+    "showing": "Showing",
+    "of": "of",
+    "items": "items",
+    "previous": "Previous",
+    "next": "Next",
+    "pageSize": "Items per page",
+    "filterBy": "Filter by",
+    "operator": "Operator",
+    "value": "Value",
+    "enterValue": "Enter filter value...",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "operators": {
+      "equal": "Equals",
+      "notEqual": "Not Equals",
+      "contains": "Contains",
+      "notContains": "Not Contains",
+      "startsWith": "Starts With",
+      "endsWith": "Ends With",
+      "greaterThan": "Greater Than",
+      "lessThan": "Less Than",
+      "greaterThanOrEqual": "Greater or Equal",
+      "lessThanOrEqual": "Less or Equal"
+    }
   }
 }

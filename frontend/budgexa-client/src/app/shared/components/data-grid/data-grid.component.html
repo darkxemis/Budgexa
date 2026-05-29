@@ -1,0 +1,219 @@
+<div class="data-grid">
+  <!-- Search Bar -->
+  <div class="grid-toolbar" *ngIf="showSearch">
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        [placeholder]="'grid.search' | translate"
+        [value]="inputSearchValue()"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+      <button 
+        *ngIf="inputSearchValue()" 
+        class="clear-search-btn" 
+        (click)="clearSearch()"
+        [title]="'grid.clearSearch' | translate"
+      >
+        ✕
+      </button>
+      <button 
+        class="btn-refresh" 
+        (click)="refresh()"
+        [title]="'grid.refresh' | translate"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.1031 21 18.5649 18.2543 19.6482 14.5M21 10V4M21 10H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="toolbar-actions">
+      <button 
+        class="btn-clear-all" 
+        (click)="clearAll()"
+        *ngIf="filters().length > 0 || sorting().length > 0 || searchTerm()"
+        [title]="'grid.clearAll' | translate"
+      >
+        {{ 'grid.clearAll' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Active Filters -->
+  <div class="active-filters" *ngIf="filters().length > 0">
+    <span class="filters-label">{{ 'grid.activeFilters' | translate }}:</span>
+    <div class="filter-chips">
+      <div 
+        *ngFor="let filter of filters()" 
+        class="filter-chip"
+      >
+        <span class="filter-text">
+          {{ filter.column }}: {{ filter.operator }} "{{ filter.value }}"
+        </span>
+        <button 
+          class="remove-filter-btn" 
+          (click)="removeFilter(filter.column)"
+          [title]="'grid.removeFilter' | translate"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="spinner"></div>
+    <span>{{ 'grid.loading' | translate }}</span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th 
+            *ngFor="let column of columns"
+            [style.width]="column.width || 'auto'"
+            [class.sortable]="column.sortable"
+            [class.sorted]="getSortIcon(column) !== ''"
+          >
+            <div class="th-content">
+              <span 
+                (click)="toggleSort(column)"
+                [class.clickable]="column.sortable"
+              >
+                {{ column.header | translate }}
+                <span class="sort-icon" *ngIf="column.sortable">
+                  {{ getSortIcon(column) }}
+                </span>
+              </span>
+              
+              <button 
+                *ngIf="column.filterable"
+                class="filter-btn"
+                [class.active]="hasFilter(column)"
+                (click)="openFilterDialog(column)"
+                [title]="'grid.filter' | translate"
+              >
+                🔍
+              </button>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!hasData() && !loading">
+          <td [attr.colspan]="columns.length" class="no-data">
+            {{ 'grid.noData' | translate }}
+          </td>
+        </tr>
+        <tr *ngFor="let row of data().data" class="data-row">
+          <td *ngFor="let column of columns">
+            <span [innerHTML]="getCellValue(row, column)"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="showPagination && hasData()">
+    <div class="pagination-info">
+      {{ 'grid.showing' | translate }}
+      {{ (currentPage() - 1) * pageSize() + 1 }}
+      -
+      {{ Math.min(currentPage() * pageSize(), totalCount()) }}
+      {{ 'grid.of' | translate }}
+      {{ totalCount() }}
+      {{ 'grid.items' | translate }}
+    </div>
+
+    <div class="pagination-controls">
+      <button
+        class="page-btn"
+        (click)="previousPage()"
+        [disabled]="currentPage() === 1"
+        [title]="'grid.previous' | translate"
+      >
+        ‹
+      </button>
+
+      <button
+        *ngFor="let page of pageNumbers()"
+        class="page-btn"
+        [class.active]="page === currentPage()"
+        [class.ellipsis]="page === -1"
+        [disabled]="page === -1"
+        (click)="goToPage(page)"
+      >
+        {{ page === -1 ? '...' : page }}
+      </button>
+
+      <button
+        class="page-btn"
+        (click)="nextPage()"
+        [disabled]="currentPage() === totalPages()"
+        [title]="'grid.next' | translate"
+      >
+        ›
+      </button>
+    </div>
+
+    <div class="page-size-selector">
+      <label>{{ 'grid.pageSize' | translate }}:</label>
+      <select
+        [value]="pageSize()"
+        (change)="changePageSize(+$any($event.target).value)"
+      >
+        <option *ngFor="let size of pageSizeOptions" [value]="size">
+          {{ size }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filter Dialog Modal -->
+  <div class="modal-overlay" *ngIf="showFilters()" (click)="cancelFilter()">
+    <div class="filter-dialog" (click)="$event.stopPropagation()">
+      <h3>{{ 'grid.filterBy' | translate }}: {{ filterColumn() }}</h3>
+      
+      <div class="filter-form">
+        <div class="form-group">
+          <label>{{ 'grid.operator' | translate }}</label>
+          <select 
+            [value]="filterOperator()"
+            (change)="filterOperator.set($any($event.target).value)"
+          >
+            <option 
+              *ngFor="let op of operators" 
+              [value]="op.value"
+            >
+              {{ op.label | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'grid.value' | translate }}</label>
+          <input
+            type="text"
+            [value]="filterValue()"
+            (input)="filterValue.set($any($event.target).value)"
+            [placeholder]="'grid.enterValue' | translate"
+          />
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" (click)="cancelFilter()">
+          {{ 'grid.cancel' | translate }}
+        </button>
+        <button class="btn btn-primary" (click)="applyFilter()">
+          {{ 'grid.apply' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

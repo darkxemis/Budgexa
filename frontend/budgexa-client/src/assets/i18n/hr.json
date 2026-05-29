@@ -68,6 +68,52 @@
 
   "users": {
     "title": "Korisnici",
-    "placeholder": "Upravljanje korisnicima uskoro..."
+    "placeholder": "Upravljanje korisnicima uskoro...",
+    "grid": {
+      "email": "E-pošta",
+      "firstName": "Ime",
+      "lastName": "Prezime",
+      "company": "Tvrtka",
+      "language": "Jezik",
+      "status": "Status",
+      "roles": "Uloge",
+      "createdAt": "Kreirano"
+    }
+  },
+
+  "grid": {
+    "search": "Pretraži...",
+    "clearSearch": "Očisti pretragu",
+    "refresh": "Osvježi",
+    "clearAll": "Očisti sve",
+    "activeFilters": "Aktivni filteri",
+    "removeFilter": "Ukloni filter",
+    "loading": "Učitavanje...",
+    "filter": "Filter",
+    "noData": "Nema dostupnih podataka",
+    "showing": "Prikazuje se",
+    "of": "od",
+    "items": "stavki",
+    "previous": "Prethodno",
+    "next": "Sljedeće",
+    "pageSize": "Stavki po stranici",
+    "filterBy": "Filtriraj po",
+    "operator": "Operator",
+    "value": "Vrijednost",
+    "enterValue": "Unesite vrijednost filtera...",
+    "cancel": "Odustani",
+    "apply": "Primijeni",
+    "operators": {
+      "equal": "Jednako",
+      "notEqual": "Nije jednako",
+      "contains": "Sadrži",
+      "notContains": "Ne sadrži",
+      "startsWith": "Počinje s",
+      "endsWith": "Završava s",
+      "greaterThan": "Veće od",
+      "lessThan": "Manje od",
+      "greaterThanOrEqual": "Veće ili jednako",
+      "lessThanOrEqual": "Manje ili jednako"
+    }
   }
 }
