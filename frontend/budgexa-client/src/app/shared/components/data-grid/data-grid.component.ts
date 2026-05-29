@@ -20,11 +20,13 @@ import {
   GridResponseDto,
 } from '../../../core/models/grid.model';
 import { SelectorOption } from '../../../core/models/selector.model';
+import { Guid } from '../../../core/models/guid.model';
+import { AutocompleteSelectorComponent } from '../autocomplete-selector/autocomplete-selector.component';
 
 @Component({
   selector: 'app-data-grid',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, AutocompleteSelectorComponent],
   templateUrl: './data-grid.component.html',
   styleUrl: './data-grid.component.scss',
 })
@@ -62,7 +64,7 @@ export class DataGridComponent<T = any> implements OnInit {
   protected readonly filterOperator = signal<GridOperator>(GridOperator.Contains);
   protected readonly filterValue = signal('');
   protected readonly filterOptions = signal<SelectorOption[]>([]);
-  protected readonly loadingFilterOptions = signal(false);
+  protected readonly selectedFilterId = signal<Guid | null>(null);
   protected readonly showColumnSelector = signal(false);
 
   // Search debounce
@@ -251,40 +253,45 @@ export class DataGridComponent<T = any> implements OnInit {
     if (!column.filterable) return;
     
     this.filterColumn.set(column);
-    this.showFilters.set(true);
-    
-    // Load filter options if it's a select type
-    if (column.filterType === 'select' && column.filterOptions) {
-      this.loadingFilterOptions.set(true);
-      try {
-        if (typeof column.filterOptions === 'function') {
-          const options = await column.filterOptions();
-          this.filterOptions.set(options);
-        } else {
-          this.filterOptions.set(column.filterOptions);
-        }
-      } catch (error) {
-        console.error('Error loading filter options:', error);
-        this.filterOptions.set([]);
-      } finally {
-        this.loadingFilterOptions.set(false);
-      }
-    } else {
-      this.filterOptions.set([]);
-    }
     
     // Check if there's an existing filter for this column (use filterField if available)
     const filterFieldName = column.filterField || (column.field as string);
     const existingFilter = this.filters().find(f => f.column === filterFieldName);
+    
+    // Set filter options for select type
+    if (column.filterType === 'select' && column.filterOptions) {
+      this.filterOptions.set(
+        typeof column.filterOptions === 'function' ? [] : column.filterOptions
+      );
+    } else {
+      this.filterOptions.set([]);
+    }
+    
+    // Set filter values
     if (existingFilter) {
       this.filterOperator.set(existingFilter.operator);
       this.filterValue.set(existingFilter.value || '');
+      
+      // For select type, set the selected ID
+      if (column.filterType === 'select' && existingFilter.value) {
+        this.selectedFilterId.set(existingFilter.value as Guid);
+      } else {
+        this.selectedFilterId.set(null);
+      }
     } else {
       // Set default operator based on column type
       const defaultOperator = this.getDefaultOperator(column.filterType || 'text');
       this.filterOperator.set(defaultOperator);
       this.filterValue.set('');
+      this.selectedFilterId.set(null);
     }
+    
+    // Show dialog after everything is ready
+    this.showFilters.set(true);
+  }
+
+  protected onAutocompleteValueChange(value: Guid | null) {
+    this.selectedFilterId.set(value);
   }
 
   private getDefaultOperator(filterType: string): GridOperator {
@@ -306,11 +313,26 @@ export class DataGridComponent<T = any> implements OnInit {
     const filterFieldName = column.filterField || (column.field as string);
     const currentFilters = this.filters().filter(f => f.column !== filterFieldName);
     
-    if (this.filterValue()) {
+    let filterValue: string;
+    
+    // For select type, use the selected ID from autocomplete
+    if (column.filterType === 'select') {
+      const selectedId = this.selectedFilterId();
+      if (!selectedId) {
+        // If no selection, don't apply filter
+        this.showFilters.set(false);
+        return;
+      }
+      filterValue = selectedId;
+    } else {
+      filterValue = this.filterValue();
+    }
+    
+    if (filterValue) {
       currentFilters.push({
         column: filterFieldName,
         operator: this.filterOperator(),
-        value: this.filterValue(),
+        value: filterValue,
       });
     }
 

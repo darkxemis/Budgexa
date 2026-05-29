@@ -64,7 +64,8 @@ export const USERS_GRID_COLUMNS: GridColumnDef<UserGridDto>[] = [
     field: 'createdAt',
     header: 'users.grid.createdAt',
     sortable: true,
-    filterable: false,
+    filterable: true,
+    filterType: 'date',
     cellTemplate: (row: UserGridDto) => {
       return new Date(row.createdAt).toLocaleDateString();
     },

@@ -8,6 +8,7 @@ import { UsersGridService } from '../services/users-grid.service';
 import { UserGridDto } from '../models/user-grid.model';
 import { USERS_GRID_COLUMNS } from '../config/users-grid-columns.config';
 import { LanguageApiService } from '../../../core/api/language-api.service';
+import { StatusApiService } from '../../../core/api/status-api.service';
 import { SelectorOption } from '../../../core/models/selector.model';
 import { firstValueFrom } from 'rxjs';
 
@@ -21,6 +22,7 @@ import { firstValueFrom } from 'rxjs';
 export class UsersComponent implements OnInit {
   private readonly usersGridService = inject(UsersGridService);
   private readonly languageApiService = inject(LanguageApiService);
+  private readonly statusApiService = inject(StatusApiService);
   
   @ViewChild(DataGridComponent) grid?: DataGridComponent<UserGridDto>;
   
@@ -43,14 +45,28 @@ export class UsersComponent implements OnInit {
           filterOptions: this.loadLanguageOptions.bind(this)
         };
       }
-      // Other columns remain as text filters (companyName, statusName, etc.)
+      // Status selector: filters by statusId (group "Base")
+      if (column.field === 'statusName') {
+        return {
+          ...column,
+          filterField: 'statusId',
+          filterType: 'select',
+          filterOptions: this.loadStatusOptions.bind(this)
+        };
+      }
+      // Other columns remain as text filters (companyName, etc.)
       return column;
     });
   }
 
-  private async loadLanguageOptions(): Promise<SelectorOption[]> {
-    const languages = await firstValueFrom(this.languageApiService.getLanguages());
-    return languages; // Languages already implement SelectorOption
+  private async loadLanguageOptions(searchQuery?: string): Promise<SelectorOption[]> {
+    const languages = await firstValueFrom(this.languageApiService.getLanguagesForSelector(searchQuery));
+    return languages;
+  }
+
+  private async loadStatusOptions(searchQuery?: string): Promise<SelectorOption[]> {
+    const statuses = await firstValueFrom(this.statusApiService.getStatusForSelector('Base', searchQuery));
+    return statuses;
   }
 
   protected onGridStateChange(request: GridRequestDto): void {

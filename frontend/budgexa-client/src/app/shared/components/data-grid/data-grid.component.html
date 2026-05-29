@@ -269,25 +269,26 @@
         <div class="form-group">
           <label>{{ 'grid.value' | translate }}</label>
           
-          <!-- Select input for filter type 'select' -->
-          <select 
+          <!-- Autocomplete selector for filter type 'select' -->
+          <app-autocomplete-selector
             *ngIf="filterColumn()?.filterType === 'select'"
+            [options]="filterColumn()?.filterOptions || []"
+            [initialValue]="selectedFilterId()"
+            (valueChange)="onAutocompleteValueChange($event)"
+            placeholder="grid.searchOrSelect"
+          ></app-autocomplete-selector>
+
+          <!-- Date input for filter type 'date' -->
+          <input
+            *ngIf="filterColumn()?.filterType === 'date'"
+            type="date"
             [value]="filterValue()"
-            (change)="filterValue.set($any($event.target).value)"
-            [disabled]="loadingFilterOptions()"
-          >
-            <option value="">{{ 'grid.selectValue' | translate }}</option>
-            <option 
-              *ngFor="let option of filterOptions()" 
-              [value]="option.id"
-            >
-              {{ option.name }}
-            </option>
-          </select>
+            (input)="filterValue.set($any($event.target).value)"
+          />
 
           <!-- Text input for other filter types -->
           <input
-            *ngIf="filterColumn()?.filterType !== 'select'"
+            *ngIf="filterColumn()?.filterType !== 'select' && filterColumn()?.filterType !== 'date'"
             type="text"
             [value]="filterValue()"
             (input)="filterValue.set($any($event.target).value)"

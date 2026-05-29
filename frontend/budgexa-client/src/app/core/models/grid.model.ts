@@ -53,7 +53,7 @@ export interface GridColumnDef<T = any> {
   filterable?: boolean;
   filterField?: string; // Optional: different field name for filtering (e.g., 'languageId' for 'languageName' column)
   filterType?: 'text' | 'number' | 'date' | 'select';
-  filterOptions?: SelectorOption[] | (() => Promise<SelectorOption[]>);
+  filterOptions?: SelectorOption[] | ((searchQuery?: string) => Promise<SelectorOption[]>);
   width?: string;
   cellTemplate?: (row: T) => string;
 }

@@ -12,7 +12,16 @@ public sealed class StatusRepository(
     public async Task<Status?> GetByValueAsync(int value, CancellationToken cancellationToken = default)
     {
         return await dbContext.Statuses
+            .Include(s => s.Translations)
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Value == value, cancellationToken);
+    }
+
+    public async Task<List<Status>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Statuses
+            .Include(s => s.Translations)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 }
