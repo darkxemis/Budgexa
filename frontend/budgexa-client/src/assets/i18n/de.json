@@ -103,6 +103,12 @@
     "enterValue": "Filterwert eingeben...",
     "cancel": "Abbrechen",
     "apply": "Anwenden",
+    "sortMultiple": "Klicken zum Sortieren (unterstützt mehrere Spalten)",
+    "resetColumns": "Spaltenreihenfolge Zurücksetzen",
+    "clearFilters": "Filter Löschen",
+    "columns": "Spalten",
+    "manageColumns": "Spalten Verwalten",
+    "showAll": "Alle Anzeigen",
     "operators": {
       "equal": "Gleich",
       "notEqual": "Nicht gleich",

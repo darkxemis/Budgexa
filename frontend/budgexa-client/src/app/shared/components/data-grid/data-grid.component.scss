@@ -62,6 +62,9 @@
 }
 
 .toolbar-actions button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem;
   background: #f5f5f5;
   border: 1px solid #ddd;
@@ -71,7 +74,63 @@
   transition: all 0.2s ease;
 }
 
-.toolbar-actions button:hover { background: #e8e8e8; }
+.toolbar-actions button:hover { 
+  background: #e8e8e8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toolbar-actions button svg {
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.375rem;
+  background: #dc3545;
+  color: white;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.btn-columns {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.btn-columns:hover {
+  background: #bbdefb;
+  border-color: #1976d2;
+}
+
+.btn-reset-columns {
+  background: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.btn-reset-columns:hover {
+  background: #ffe69c;
+  border-color: #ffb300;
+}
+
+.btn-clear-filters {
+  background: #fff;
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-clear-filters:hover {
+  background: #dc3545;
+  color: white;
+}
 
 .btn-refresh {
   display: flex;
@@ -104,8 +163,6 @@
   width: 20px;
   height: 20px;
 }
-.btn-clear-all { background: #fff; color: #666; }
-.btn-clear-all:hover { color: #333; }
 
 .active-filters {
   display: flex;
@@ -202,6 +259,17 @@
 .data-table thead {
   background: #f8f9fa;
   border-bottom: 2px solid #dee2e6;
+  position: relative;
+}
+
+.data-table thead.reordered::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04);
 }
 
 .data-table th {
@@ -210,6 +278,29 @@
   font-weight: 600;
   color: #495057;
   white-space: nowrap;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.data-table th[draggable="true"] {
+  cursor: grab;
+}
+
+.data-table th[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.data-table th.dragging {
+  opacity: 0.5;
+  background: #d1e7ff;
+  border: 2px dashed #4285f4;
+  cursor: grabbing;
+}
+
+.data-table th.drag-over {
+  background: #e7f1ff;
+  border-left: 3px solid #4285f4;
+  transform: scale(1.02);
 }
 
 .data-table th.sortable {
@@ -435,6 +526,107 @@
 }
 
 .btn-primary:hover { background: #3367d6; }
+
+.column-selector-dialog {
+  background: white;
+  border-radius: 8px;
+  padding: 0;
+  min-width: 350px;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.close-btn:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.column-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+  max-height: 400px;
+}
+
+.column-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.column-item:last-child {
+  border-bottom: none;
+}
+
+.column-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.column-item.disabled .checkbox-label {
+  cursor: not-allowed;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4285f4;
+}
+
+.column-item.disabled input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+.column-name {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.column-selector-dialog .dialog-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 0;
+}
 
 @media (max-width: 768px) {
   .data-grid { padding: 1rem; }

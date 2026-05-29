@@ -103,6 +103,12 @@
     "enterValue": "Ingrese valor del filtro...",
     "cancel": "Cancelar",
     "apply": "Aplicar",
+    "sortMultiple": "Clic para ordenar (soporta múltiples columnas)",
+    "resetColumns": "Restaurar Orden de Columnas",
+    "clearFilters": "Limpiar Filtros",
+    "columns": "Columnas",
+    "manageColumns": "Administrar Columnas",
+    "showAll": "Mostrar Todas",
     "operators": {
       "equal": "Igual a",
       "notEqual": "Diferente de",

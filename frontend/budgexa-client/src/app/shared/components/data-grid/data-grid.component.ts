@@ -35,6 +35,7 @@ export class DataGridComponent<T = any> implements OnInit {
   @Input() showSearch = true;
   @Input() showPagination = true;
   @Input() loading = false;
+  @Input() enableColumnReorder = true;
 
   @Output() gridStateChange = new EventEmitter<GridRequestDto>();
 
@@ -59,10 +60,17 @@ export class DataGridComponent<T = any> implements OnInit {
   protected readonly filterColumn = signal<string | null>(null);
   protected readonly filterOperator = signal<GridOperator>(GridOperator.Contains);
   protected readonly filterValue = signal('');
+  protected readonly showColumnSelector = signal(false);
 
   // Search debounce
   private searchDebounceTimer?: ReturnType<typeof setTimeout>;
   private readonly searchDebounceMs = 500;
+
+  // Drag and drop for column reordering
+  protected draggedColumnIndex: number | null = null;
+  protected dragOverColumnIndex: number | null = null;
+  protected readonly orderedColumns = signal<GridColumnDef<T>[]>([]);
+  protected readonly visibleColumns = signal<Set<string>>(new Set());
 
   // Expose Math for template
   protected readonly Math = Math;
@@ -71,6 +79,20 @@ export class DataGridComponent<T = any> implements OnInit {
   protected readonly hasData = computed(() => this.data().data.length > 0);
   protected readonly totalPages = computed(() => this.data().totalPages);
   protected readonly totalCount = computed(() => this.data().totalCount);
+  protected readonly columnsReordered = computed(() => {
+    const original = this.columns;
+    const ordered = this.orderedColumns();
+    if (original.length !== ordered.length) return false;
+    return !original.every((col, index) => col.field === ordered[index].field);
+  });
+  protected readonly displayColumns = computed(() => {
+    return this.orderedColumns().filter(col => 
+      this.visibleColumns().has(col.field as string)
+    );
+  });
+  protected readonly hiddenColumnsCount = computed(() => 
+    this.columns.length - this.visibleColumns().size
+  );
   protected readonly pageNumbers = computed(() => {
     const total = this.totalPages();
     const current = this.currentPage();
@@ -123,6 +145,12 @@ export class DataGridComponent<T = any> implements OnInit {
 
   ngOnInit() {
     this.pageSize.set(this.defaultPageSize);
+    this.orderedColumns.set([...this.columns]);
+    
+    // Initialize all columns as visible
+    const visibleSet = new Set<string>();
+    this.columns.forEach(col => visibleSet.add(col.field as string));
+    this.visibleColumns.set(visibleSet);
   }
 
   setData(response: GridResponseDto<T>) {
@@ -133,26 +161,45 @@ export class DataGridComponent<T = any> implements OnInit {
   protected toggleSort(column: GridColumnDef<T>) {
     if (!column.sortable) return;
 
-    const currentSort = this.sorting().find(s => s.column === column.field);
+    const currentSorts = [...this.sorting()];
+    const currentSortIndex = currentSorts.findIndex(s => s.column === column.field);
 
-    if (!currentSort) {
-      // Add ascending sort
-      this.sorting.set([{ column: column.field as string, isDescending: false }]);
-    } else if (!currentSort.isDescending) {
-      // Change to descending
-      this.sorting.set([{ column: column.field as string, isDescending: true }]);
+    if (currentSortIndex === -1) {
+      // Column not sorted, add ascending sort to the end
+      currentSorts.push({ column: column.field as string, isDescending: false });
     } else {
-      // Remove sort
-      this.sorting.set([]);
+      const currentSort = currentSorts[currentSortIndex];
+      if (!currentSort.isDescending) {
+        // Change to descending
+        currentSorts[currentSortIndex] = { ...currentSort, isDescending: true };
+      } else {
+        // Remove this sort
+        currentSorts.splice(currentSortIndex, 1);
+      }
     }
 
+    this.sorting.set(currentSorts);
     this.currentPage.set(1);
   }
 
   protected getSortIcon(column: GridColumnDef<T>): string {
-    const sort = this.sorting().find(s => s.column === column.field);
-    if (!sort) return '';
-    return sort.isDescending ? '↓' : '↑';
+    const sortIndex = this.sorting().findIndex(s => s.column === column.field);
+    if (sortIndex === -1) return '';
+    
+    const sort = this.sorting()[sortIndex];
+    const arrow = sort.isDescending ? '↓' : '↑';
+    
+    // Show sort order number if multiple sorts
+    if (this.sorting().length > 1) {
+      return `${arrow}${sortIndex + 1}`;
+    }
+    
+    return arrow;
+  }
+
+  protected getSortOrder(column: GridColumnDef<T>): number | null {
+    const sortIndex = this.sorting().findIndex(s => s.column === column.field);
+    return sortIndex === -1 ? null : sortIndex + 1;
   }
 
   // Filtering
@@ -298,5 +345,111 @@ export class DataGridComponent<T = any> implements OnInit {
     this.inputSearchValue.set('');
     this.searchTerm.set('');
     this.currentPage.set(1);
+  }
+
+  // Reset column order to original
+  resetColumnOrder() {
+    this.orderedColumns.set([...this.columns]);
+  }
+
+  // Column visibility management
+  protected toggleColumnSelector() {
+    this.showColumnSelector.update(v => !v);
+  }
+
+  protected closeColumnSelector() {
+    this.showColumnSelector.set(false);
+  }
+
+  protected toggleColumnVisibility(column: GridColumnDef<T>) {
+    const field = column.field as string;
+    const visible = new Set(this.visibleColumns());
+    
+    if (visible.has(field)) {
+      // Don't allow hiding the last column
+      if (visible.size > 1) {
+        visible.delete(field);
+      }
+    } else {
+      visible.add(field);
+    }
+    
+    this.visibleColumns.set(visible);
+  }
+
+  protected isColumnVisible(column: GridColumnDef<T>): boolean {
+    return this.visibleColumns().has(column.field as string);
+  }
+
+  protected showAllColumns() {
+    const visibleSet = new Set<string>();
+    this.columns.forEach(col => visibleSet.add(col.field as string));
+    this.visibleColumns.set(visibleSet);
+  }
+
+  // Column reordering (Drag and Drop)
+  protected onDragStart(event: DragEvent, index: number) {
+    if (!this.enableColumnReorder) return;
+    
+    this.draggedColumnIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/html', '');
+    }
+  }
+
+  protected onDragOver(event: DragEvent, index: number) {
+    if (!this.enableColumnReorder || this.draggedColumnIndex === null) return;
+    
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+    this.dragOverColumnIndex = index;
+  }
+
+  protected onDragLeave() {
+    this.dragOverColumnIndex = null;
+  }
+
+  protected onDrop(event: DragEvent, dropIndex: number) {
+    if (!this.enableColumnReorder || this.draggedColumnIndex === null) return;
+    
+    event.preventDefault();
+    
+    const dragIndex = this.draggedColumnIndex;
+    if (dragIndex !== dropIndex) {
+      // Get the visible columns
+      const visibleCols = this.displayColumns();
+      const draggedCol = visibleCols[dragIndex];
+      const targetCol = visibleCols[dropIndex];
+      
+      // Find their positions in orderedColumns
+      const allColumns = [...this.orderedColumns()];
+      const draggedOriginalIndex = allColumns.findIndex(c => c.field === draggedCol.field);
+      const targetOriginalIndex = allColumns.findIndex(c => c.field === targetCol.field);
+      
+      // Reorder in orderedColumns
+      if (draggedOriginalIndex !== -1 && targetOriginalIndex !== -1) {
+        const [removed] = allColumns.splice(draggedOriginalIndex, 1);
+        allColumns.splice(targetOriginalIndex, 0, removed);
+        this.orderedColumns.set(allColumns);
+      }
+    }
+    
+    this.onDragEnd();
+  }
+
+  protected onDragEnd() {
+    this.draggedColumnIndex = null;
+    this.dragOverColumnIndex = null;
+  }
+
+  protected isDragging(index: number): boolean {
+    return this.draggedColumnIndex === index;
+  }
+
+  protected isDragOver(index: number): boolean {
+    return this.dragOverColumnIndex === index && this.draggedColumnIndex !== index;
   }
 }

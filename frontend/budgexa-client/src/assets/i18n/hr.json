@@ -103,6 +103,12 @@
     "enterValue": "Unesite vrijednost filtera...",
     "cancel": "Odustani",
     "apply": "Primijeni",
+    "sortMultiple": "Kliknite za sortiranje (podržava više stupaca)",
+    "resetColumns": "Vrati Redoslijed Stupaca",
+    "clearFilters": "Očisti Filtere",
+    "columns": "Stupci",
+    "manageColumns": "Upravljanje Stupcima",
+    "showAll": "Prikaži Sve",
     "operators": {
       "equal": "Jednako",
       "notEqual": "Nije jednako",
