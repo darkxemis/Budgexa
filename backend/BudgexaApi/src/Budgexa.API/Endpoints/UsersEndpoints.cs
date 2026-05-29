@@ -1,6 +1,7 @@
 ﻿namespace Budgexa.API.Endpoints;
 
 using Budgexa.API.Middleware;
+using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Users.Commands.CreateUser;
 using Budgexa.Application.Users.Commands.DeleteUser;
 using Budgexa.Application.Users.Commands.UpdateCurrentUser;
@@ -9,6 +10,7 @@ using Budgexa.Application.Users.DTOs;
 using Budgexa.Application.Users.Queries.GetAllUsers;
 using Budgexa.Application.Users.Queries.GetCurrentUser;
 using Budgexa.Application.Users.Queries.GetUserById;
+using Budgexa.Application.Users.Queries.GetUsersGrid;
 using MediatR;
 
 public static class UsersEndpoints
@@ -74,6 +76,21 @@ public static class UsersEndpoints
             .WithName("GetAllUsers")
             .WithSummary("GET /api/v1/users")
             .WithDescription("Returns all users from the authenticated user's company.");
+
+        group.MapPost("/grid",
+            async (GridRequestDto request, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new GetUsersGridQuery(request), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization("AdminOnly")
+            .Produces<GridResponseDto<UserGridDto>>(StatusCodes.Status200OK)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithName("GetUsersGrid")
+            .WithSummary("POST /api/v1/users/grid")
+            .WithDescription("Returns a paginated, filtered, and sorted grid of users with support for advanced filtering, ordering, and global search.");
 
         group.MapPost("/",
             async (UserCreateDto dto, ISender sender, CancellationToken cancellationToken) =>
