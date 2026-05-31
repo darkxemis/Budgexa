@@ -294,6 +294,10 @@ export class DataGridComponent<T = any> implements OnInit {
     this.selectedFilterId.set(value);
   }
 
+  protected onOperatorChange(value: string) {
+    this.filterOperator.set(value as GridOperator);
+  }
+
   private getDefaultOperator(filterType: string): GridOperator {
     switch (filterType) {
       case 'select':
@@ -321,6 +325,7 @@ export class DataGridComponent<T = any> implements OnInit {
       if (!selectedId) {
         // If no selection, don't apply filter
         this.showFilters.set(false);
+        this.resetFilterState();
         return;
       }
       filterValue = selectedId;
@@ -338,13 +343,20 @@ export class DataGridComponent<T = any> implements OnInit {
 
     this.filters.set(currentFilters);
     this.showFilters.set(false);
+    this.resetFilterState();
     this.currentPage.set(1);
+  }
+
+  private resetFilterState() {
+    this.filterColumn.set(null);
+    this.filterValue.set('');
+    this.selectedFilterId.set(null);
+    this.filterOperator.set(GridOperator.Contains);
   }
 
   protected cancelFilter() {
     this.showFilters.set(false);
-    this.filterColumn.set(null);
-    this.filterValue.set('');
+    this.resetFilterState();
   }
 
   protected removeFilter(column: string) {

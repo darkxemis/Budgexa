@@ -19,7 +19,7 @@ interface NavItem {
   styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent {
-  protected sidebarCollapsed = signal(this.isMobile());
+  protected sidebarCollapsed = signal(true);
 
   protected navItems: NavItem[] = [
     { path: '/dashboard', icon: 'home', label: 'nav.dashboard' },

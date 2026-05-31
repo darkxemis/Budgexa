@@ -93,8 +93,8 @@
     <span>{{ 'grid.loading' | translate }}</span>
   </div>
 
-  <!-- Table -->
-  <div class="table-container">
+  <!-- Desktop/Tablet Table View -->
+  <div class="table-container desktop-view">
     <table class="data-table">
       <thead [class.reordered]="columnsReordered()">
         <tr>
@@ -150,6 +150,30 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Mobile List View -->
+  <div class="mobile-view">
+    <div *ngIf="!hasData() && !loading" class="no-data-mobile">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M12 11L4 7M12 11V21M4 7V17L12 21" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p>{{ 'grid.noData' | translate }}</p>
+    </div>
+    
+    <div class="list-container" *ngIf="hasData()">
+      <div *ngFor="let row of data().data; let i = index" class="list-item" [class.last]="i === data().data.length - 1">
+        <div class="list-item-content">
+          <div *ngFor="let column of displayColumns().slice(0, 3)" class="item-field">
+            <span class="field-label">{{ column.header | translate }}</span>
+            <span class="field-value" [innerHTML]="getCellValue(row, column)"></span>
+          </div>
+        </div>
+        <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <!-- Pagination -->
@@ -254,12 +278,12 @@
         <div class="form-group">
           <label>{{ 'grid.operator' | translate }}</label>
           <select 
-            [value]="filterOperator()"
-            (change)="filterOperator.set($any($event.target).value)"
+            (change)="onOperatorChange($any($event.target).value)"
           >
             <option 
               *ngFor="let op of operators()" 
               [value]="op.value"
+              [selected]="op.value === filterOperator()"
             >
               {{ op.label | translate }}
             </option>
