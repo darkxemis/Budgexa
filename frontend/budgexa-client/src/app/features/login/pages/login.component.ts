@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         if (user?.firstName) {
           this.toast.show('welcome', ToastType.Success, { name: user.firstName });
         } else {
-          this.toast.show('welcome', ToastType.Success);
+          this.toast.show('welcome', ToastType.Success, { name: '' });
         }
         this.router.navigate(['/dashboard']);
       },

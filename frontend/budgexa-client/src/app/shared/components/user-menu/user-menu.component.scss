@@ -1,6 +1,8 @@
 .user-menu-container {
   position: relative;
   z-index: 10;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .user-menu-btn {
   display: flex;
@@ -15,6 +17,8 @@
   font-family: inherit;
   gap: 0.7rem;
   transition: box-shadow 0.2s;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 .user-menu-btn:hover {
   box-shadow: 0 4px 16px rgba(123,47,242,0.10);
@@ -30,6 +34,7 @@
   justify-content: center;
   font-weight: bold;
   font-size: 1.3rem;
+  flex-shrink: 0;
 }
 .hide-on-mobile {
   display: inline;
@@ -53,6 +58,7 @@
   flex-direction: column;
   gap: 1.2rem;
   animation: fadeIn 0.18s;
+  box-sizing: border-box;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
@@ -62,6 +68,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  box-sizing: border-box;
 }
 .user-avatar-lg {
   background: #7b2ff2;
@@ -74,20 +81,29 @@
   justify-content: center;
   font-weight: bold;
   font-size: 1.7rem;
+  flex-shrink: 0;
 }
 .user-info-block {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
 }
 .user-full-name {
   font-weight: 600;
   font-size: 1.15rem;
   color: #232323;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .user-email {
   font-size: 0.98rem;
   color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .user-dropdown-actions {
   display: flex;
@@ -110,33 +126,37 @@
 }
 @media (max-width: 600px) {
   .user-menu-container {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    left: auto;
-    display: block;
+    position: relative;
+    max-width: 100%;
     z-index: 1000;
   }
+
+  .user-menu-btn {
+    padding: 0.4rem 0.6rem;
+  }
+
   .user-dropdown {
     position: fixed;
-    top: 4rem;
-    right: 1rem;
-    left: auto;
-    width: 90vw;
+    top: auto;
+    right: 0.5rem;
+    left: 0.5rem;
+    bottom: auto;
+    width: calc(100% - 1rem);
     min-width: unset;
-    max-width: 90vw;
-    padding: 0.7rem 0.5rem 0.7rem 0.5rem;
-    border-radius: 1.2rem;
-    gap: 0.7rem;
+    max-width: calc(100% - 1rem);
+    padding: 1rem;
+    border-radius: 1rem;
+    gap: 1rem;
     z-index: 1001;
+    margin-top: 0.5rem;
   }
   .user-dropdown-header {
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
   .user-avatar-lg {
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1.1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
   }
   .user-info-block {
     gap: 0.1rem;
@@ -145,7 +165,7 @@
     font-size: 1rem;
   }
   .user-email {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
   }
   .user-dropdown-actions {
     gap: 0.2rem;
