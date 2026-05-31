@@ -7,6 +7,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { UserStore } from '../../../core/state/user.store';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { FormErrorComponent } from '../../../shared/components/form-error/form-error.component';
+import { ToastService } from '../../../shared/components/toast/toast.service';
+import { ToastType } from '../../../shared/components/toast/toast.type';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +22,7 @@ export class LoginComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   protected readonly loading = signal(false);
 
@@ -44,6 +47,12 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.form.getRawValue()).subscribe({
       next: () => {
+        const user = this.userStore.user();
+        if (user?.firstName) {
+          this.toast.show('welcome', ToastType.Success, { name: user.firstName });
+        } else {
+          this.toast.show('welcome', ToastType.Success);
+        }
         this.router.navigate(['/dashboard']);
       },
       error: () => {

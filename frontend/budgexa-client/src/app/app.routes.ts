@@ -13,17 +13,22 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'invoices',
-    loadComponent: () =>
-      import('./features/invoices/pages/invoices.component').then((m) => m.InvoicesComponent),
+    path: '',
+    loadComponent: () => import('./shared/layouts/main-layout/main-layout.component').then((m) => m.MainLayoutComponent),
     canActivate: [authGuard],
+    children: [
+      {
+        path: 'invoices',
+        loadComponent: () =>
+          import('./features/invoices/pages/invoices.component').then((m) => m.InvoicesComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./features/users/pages/users.component').then((m) => m.UsersComponent),
+      },
+    ],
   },
-  {
-    path: 'users',
-    loadComponent: () =>
-      import('./features/users/pages/users.component').then((m) => m.UsersComponent),
-    canActivate: [authGuard],
-  },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];

@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #f5f6fa;
-  overflow-x: hidden;
-  width: 100%;
+  background: #f8fafc;
 }
 
 .dashboard-header {
@@ -12,10 +10,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: linear-gradient(120deg, #1a1a1c 0%, #5b1fd9 50%, #7b2ff2 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  min-height: 70px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  min-height: 64px;
 }
 
 .dashboard-title {
@@ -23,26 +21,18 @@
   font-weight: 700;
   margin: 0;
   color: #ffffff;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-  letter-spacing: 0.8px;
   
   @media (min-width: 768px) {
-    font-size: 2rem;
-    letter-spacing: 1px;
+    font-size: 1.875rem;
   }
 }
 
 .dashboard-main {
   flex: 1;
-  padding: 1.5rem 0.5rem;
-  max-width: 1200px;
+  padding: 2rem 1.5rem;
   width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  box-sizing: border-box;
-  
-  @media (min-width: 640px) {
-    padding: 2rem 1.5rem;
-  }
   
   @media (min-width: 768px) {
     padding: 3rem 2rem;
@@ -50,13 +40,33 @@
 }
 
 .welcome-section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
   text-align: center;
   
+  .welcome-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    animation: wave 0.5s ease-in-out;
+    display: inline-block;
+    
+    @media (min-width: 768px) {
+      font-size: 3.5rem;
+    }
+  }
+  
   h2 {
-    font-size: 1.8rem;
-    color: #333;
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #0f172a;
     margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     
     @media (min-width: 768px) {
       font-size: 2.5rem;
@@ -65,13 +75,20 @@
   
   .welcome-subtitle {
     font-size: 1rem;
-    color: #666;
+    color: #64748b;
     margin: 0;
+    font-weight: 500;
     
     @media (min-width: 768px) {
-      font-size: 1.2rem;
+      font-size: 1.125rem;
     }
   }
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
 }
 
 .dashboard-grid {

@@ -30,6 +30,14 @@
   "logout": "Cerrar sesión",
   "noUserInfo": "No hay información de usuario cargada.",
 
+  "nav": {
+    "dashboard": "Panel de Control",
+    "invoices": "Facturas",
+    "users": "Usuarios",
+    "toggleSidebar": "Alternar barra lateral",
+    "menu": "Menú"
+  },
+
   "userSettings": "Configuración de Usuario",
   "firstName": "Nombre",
   "lastName": "Apellido",

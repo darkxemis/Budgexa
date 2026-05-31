@@ -30,6 +30,14 @@
   "logout": "Abmelden",
   "noUserInfo": "Keine Benutzerinformationen geladen.",
 
+  "nav": {
+    "dashboard": "Dashboard",
+    "invoices": "Rechnungen",
+    "users": "Benutzer",
+    "toggleSidebar": "Seitenleiste umschalten",
+    "menu": "Menü"
+  },
+
   "userSettings": "Benutzereinstellungen",
   "firstName": "Vorname",
   "lastName": "Nachname",

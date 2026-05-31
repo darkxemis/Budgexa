@@ -15,7 +15,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, UserMenuComponent, DataGridComponent],
+  imports: [CommonModule, TranslateModule, DataGridComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })

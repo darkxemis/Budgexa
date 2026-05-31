@@ -30,6 +30,14 @@
   "logout": "Logout",
   "noUserInfo": "No user info loaded.",
 
+  "nav": {
+    "dashboard": "Dashboard",
+    "invoices": "Invoices",
+    "users": "Users",
+    "toggleSidebar": "Toggle sidebar",
+    "menu": "Menu"
+  },
+
   "userSettings": "User Settings",
   "firstName": "First Name",
   "lastName": "Last Name",

@@ -5,7 +5,7 @@ import { UserMenuComponent } from '../../../shared/components/user-menu/user-men
 @Component({
   selector: 'app-invoices',
   standalone: true,
-  imports: [TranslateModule, UserMenuComponent],
+  imports: [TranslateModule],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.scss'
 })

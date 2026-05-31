@@ -7,6 +7,7 @@
   <main class="dashboard-main">
     @if (user(); as userInfo) {
       <div class="welcome-section">
+        <div class="welcome-icon">👋</div>
         <h2>{{ 'welcome' | translate:{ name: userInfo.firstName } }}</h2>
         <p class="welcome-subtitle">{{ 'dashboard.subtitle' | translate }}</p>
       </div>

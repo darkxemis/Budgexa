@@ -30,6 +30,14 @@
   "logout": "Odjava",
   "noUserInfo": "Nema učitanih korisničkih podataka.",
 
+  "nav": {
+    "dashboard": "Nadzorna ploča",
+    "invoices": "Računi",
+    "users": "Korisnici",
+    "toggleSidebar": "Prebaci bočnu traku",
+    "menu": "Izbornik"
+  },
+
   "userSettings": "Korisničke Postavke",
   "firstName": "Ime",
   "lastName": "Prezime",
