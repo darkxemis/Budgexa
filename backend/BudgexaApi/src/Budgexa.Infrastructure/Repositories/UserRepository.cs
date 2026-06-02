@@ -47,6 +47,7 @@ public sealed class UserRepository(
                 .ThenInclude(ur => ur.Role)
             .Include(u => u.Language)
             .Include(u => u.Status)
+            .Include(u => u.Company)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
@@ -164,3 +165,4 @@ public sealed class UserRepository(
         return mapper;
     }
 }
+
