@@ -7,6 +7,7 @@ public static class ErrorTags
         public const string InvalidCredentials = "auth.invalidCredentials";
         public const string InvalidRefreshToken = "auth.invalidRefreshToken";
         public const string AccountLocked = "auth.accountLocked";
+        public const string ContractExpired = "auth.contractExpired";
     }
 
     public static class User

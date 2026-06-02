@@ -59,4 +59,14 @@ public sealed class Company : Entity
         UpdatedAt = DateTime.UtcNow;
         UpdatedByUserId = updatedByUserId;
     }
+
+    public bool IsContractValid()
+    {
+        if (EndDate.HasValue)
+        {
+            return EndDate.Value >= DateOnly.FromDateTime(DateTime.UtcNow);
+        }
+        return true; // No end date means contract is valid
+    }
 }
+

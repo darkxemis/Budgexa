@@ -19,6 +19,7 @@
   "auth.invalidCredentials": "Ungültige E-Mail oder Passwort.",
   "auth.invalidRefreshToken": "Ungültige Sitzung. Bitte erneut anmelden.",
   "auth.accountLocked": "Ihr Konto ist gesperrt.",
+  "auth.contractExpired": "Ihr Vertrag ist abgelaufen. Bitte kontaktieren Sie Ihren Administrator.",
   "user.notFound": "Benutzer nicht gefunden.",
   "role.notFound": "Rolle nicht gefunden.",
   "role.nameExists": "Rollenname existiert bereits.",

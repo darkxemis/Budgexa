@@ -45,6 +45,15 @@ public sealed class LoginQueryHandler(
             throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
         }
 
+        if (user.Company != null && !user.Company.IsContractValid())
+        {
+            throw new AppException(
+                HttpStatusCode.Forbidden,
+                ErrorTags.Auth.ContractExpired,
+                "Your contract has expired. Please contact your administrator."
+            );
+        }
+
         user.ResetLoginFailures();
 
         var accessToken = jwtTokenGenerator.GenerateToken(user);

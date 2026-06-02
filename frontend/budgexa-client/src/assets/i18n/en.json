@@ -19,6 +19,7 @@
   "auth.invalidCredentials": "Invalid email or password.",
   "auth.invalidRefreshToken": "Invalid session. Please log in again.",
   "auth.accountLocked": "Your account is locked.",
+  "auth.contractExpired": "Your contract has expired. Please contact your administrator.",
   "user.notFound": "User not found.",
   "role.notFound": "Role not found.",
   "role.nameExists": "Role name already exists.",
@@ -135,3 +136,4 @@
     }
   }
 }
+

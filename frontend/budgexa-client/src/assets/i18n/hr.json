@@ -19,6 +19,7 @@
   "auth.invalidCredentials": "Neispravna e-pošta ili lozinka.",
   "auth.invalidRefreshToken": "Nevažeća sesija. Prijavite se ponovno.",
   "auth.accountLocked": "Vaš račun je zaključan.",
+  "auth.contractExpired": "Vaš ugovor je istekao. Kontaktirajte svog administratora.",
   "user.notFound": "Korisnik nije pronađen.",
   "role.notFound": "Uloga nije pronađena.",
   "role.nameExists": "Naziv uloge već postoji.",

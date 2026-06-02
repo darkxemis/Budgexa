@@ -19,6 +19,7 @@
   "auth.invalidCredentials": "Correo o contraseña incorrectos.",
   "auth.invalidRefreshToken": "Sesión inválida. Por favor, inicia sesión de nuevo.",
   "auth.accountLocked": "Tu cuenta está bloqueada.",
+  "auth.contractExpired": "Su contrato ha expirado. Por favor, contacte con su administrador.",
   "user.notFound": "Usuario no encontrado.",
   "role.notFound": "Rol no encontrado.",
   "role.nameExists": "El nombre del rol ya existe.",
@@ -135,3 +136,4 @@
     }
   }
 }
+
