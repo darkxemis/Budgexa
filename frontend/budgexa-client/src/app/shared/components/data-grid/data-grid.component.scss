@@ -728,10 +728,9 @@
   background: white;
   border-radius: 12px;
   width: 100%;
-  box-sizing: border-boxn;
+  box-sizing: border-box;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin: 0 -1rem;
 }
 
 .list-item {
@@ -819,8 +818,8 @@
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   width: 100%;
-  box-sizing: border-boxpx 3px rgba(0, 0, 0, 0.05);
-  margin: 0 -1rem;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
   svg {
     opacity: 0.6;

@@ -236,6 +236,9 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   flex-direction: column;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 
   .sidebar.collapsed ~ & {
     margin-left: $sidebar-collapsed-width;
@@ -344,7 +347,9 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   .main-content {
-    margin-left: 0;
+    margin-left: 0 !important; // Forzar sin margen en móvil
+    width: 100%;
+    max-width: 100vw;
   }
 
   .mobile-menu-btn {
@@ -366,6 +371,12 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     max-width: 100vw;
     box-sizing: border-box;
   }
+  
+  .top-header {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
 }
 
 @media (max-width: 640px) {
@@ -381,6 +392,7 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     height: 56px;
     min-height: 56px;
     width: 100%;
+    max-width: 100vw;
     box-sizing: border-box;
   }
 
@@ -415,6 +427,12 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
       width: 20px;
       height: 20px;
     }
+  }
+  
+  .main-content {
+    width: 100%;
+    max-width: 100vw;
+    margin-left: 0 !important;
   }
 }
 
