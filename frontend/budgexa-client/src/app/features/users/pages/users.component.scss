@@ -1,7 +1,5 @@
 .users-container {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
 
 .page-header {
@@ -30,36 +28,19 @@
 
 .users-grid {
   width: 100%;
-  box-sizing: border-box;
 }
 
 // ============================================
 // RESPONSIVE MOBILE
 // ============================================
 @media (max-width: 768px) {
-  .users-container {
-    width: 100%;
-    max-width: 100vw;
-  }
-
   .page-header {
     padding: 0;
     margin-bottom: 1.5rem;
-    max-width: 100%;
     
     .page-title {
       font-size: 1.5rem;
     }
-  }
-
-  .users-main {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .users-grid {
-    width: 100%;
-    max-width: 100%;
   }
 }
 

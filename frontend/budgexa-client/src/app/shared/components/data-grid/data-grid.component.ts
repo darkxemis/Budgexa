@@ -11,6 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconComponent } from '../icon/icon.component';
 import {
   GridColumnDef,
   GridFilterDto,
@@ -26,7 +27,7 @@ import { AutocompleteSelectorComponent } from '../autocomplete-selector/autocomp
 @Component({
   selector: 'app-data-grid',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, AutocompleteSelectorComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, AutocompleteSelectorComponent, IconComponent],
   templateUrl: './data-grid.component.html',
   styleUrl: './data-grid.component.scss',
 })

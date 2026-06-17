@@ -15,13 +15,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconComponent } from '../icon/icon.component';
 import { SelectorOption } from '../../../core/models/selector.model';
 import { Guid } from '../../../core/models/guid.model';
 
 @Component({
   selector: 'app-autocomplete-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, IconComponent],
   templateUrl: './autocomplete-selector.component.html',
   styleUrl: './autocomplete-selector.component.scss',
 })

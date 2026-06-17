@@ -18,7 +18,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   background: $bg-secondary;
   overflow: hidden;
   width: 100%;
-  max-width: 100%;
 }
 
 // ============================================
@@ -237,8 +236,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 
   .sidebar.collapsed ~ & {
     margin-left: $sidebar-collapsed-width;
@@ -301,7 +298,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   overflow-x: hidden;
   background: #f8fafc;
   width: 100%;
-  max-width: 100%;
 
   @media (min-width: 1280px) {
     padding: 2.5rem 2rem;
@@ -347,7 +343,7 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   .main-content {
-    margin-left: 0 !important; // Forzar sin margen en móvil
+    margin-left: 0 !important;
     width: 100%;
     max-width: 100vw;
   }
@@ -369,13 +365,11 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     padding: 1.5rem;
     width: 100%;
     max-width: 100vw;
-    box-sizing: border-box;
   }
   
   .top-header {
     width: 100%;
     max-width: 100vw;
-    box-sizing: border-box;
   }
 }
 
@@ -384,7 +378,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     padding: 1rem;
     width: 100%;
     max-width: 100vw;
-    box-sizing: border-box;
   }
 
   .top-header {
@@ -393,7 +386,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     min-height: 56px;
     width: 100%;
     max-width: 100vw;
-    box-sizing: border-box;
   }
 
   .mobile-menu-btn {
@@ -433,18 +425,6 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     width: 100%;
     max-width: 100vw;
     margin-left: 0 !important;
-  }
-}
-
-// ============================================
-// ANIMATIONS
-// ============================================
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 

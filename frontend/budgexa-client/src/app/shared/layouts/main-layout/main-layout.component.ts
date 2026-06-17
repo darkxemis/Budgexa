@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserMenuComponent } from '../../components/user-menu/user-menu.component';
+import { IconComponent, IconName } from '../../components/icon/icon.component';
 
 interface NavItem {
   path: string;
-  icon: string;
+  icon: IconName;
   label: string;
   active?: boolean;
 }
@@ -14,7 +15,7 @@ interface NavItem {
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule, UserMenuComponent],
+  imports: [CommonModule, RouterModule, TranslateModule, UserMenuComponent, IconComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
 })

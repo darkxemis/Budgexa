@@ -1,7 +1,5 @@
 .invoices-container {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
 
 .page-header {
@@ -39,7 +37,6 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   width: 100%;
-  box-sizing: border-box;
   
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -67,15 +64,9 @@
 // RESPONSIVE MOBILE
 // ============================================
 @media (max-width: 768px) {
-  .invoices-container {
-    width: 100%;
-    max-width: 100vw;
-  }
-
   .page-header {
     padding: 0;
     margin-bottom: 1.5rem;
-    max-width: 100%;
     
     .page-title {
       font-size: 1.5rem;
@@ -84,17 +75,6 @@
     .page-description {
       font-size: 0.9375rem;
     }
-  }
-
-  .invoices-main {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .invoices-grid {
-    width: 100%;
-    max-width: 100%;
-    gap: 1rem;
   }
 
   .placeholder-text {
