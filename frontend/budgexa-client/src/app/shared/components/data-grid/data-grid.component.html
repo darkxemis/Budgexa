@@ -1,22 +1,24 @@
 <div class="data-grid">
   <!-- Search Bar -->
-  <div class="grid-toolbar" *ngIf="showSearch">
-    <div class="search-container">
-      <input
-        type="text"
-        class="search-input"
-        [placeholder]="'grid.search' | translate"
-        [value]="inputSearchValue()"
-        (input)="onSearchChange($any($event.target).value)"
-      />
-      <button 
-        *ngIf="inputSearchValue()" 
-        class="clear-search-btn" 
-        (click)="clearSearch()"
-        [title]="'grid.clearSearch' | translate"
-      >
-        ✕
-      </button>
+  @if (showSearch()) {
+    <div class="grid-toolbar">
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-input"
+          [placeholder]="'grid.search' | translate"
+          [value]="inputSearchValue()"
+          (input)="onSearchChange($any($event.target).value)"
+        />
+        @if (inputSearchValue()) {
+          <button 
+            class="clear-search-btn" 
+            (click)="clearSearch()"
+            [title]="'grid.clearSearch' | translate"
+          >
+            ✕
+          </button>
+        }
       <button 
         class="btn-refresh" 
         (click)="refresh()"
@@ -34,289 +36,329 @@
       >
         <app-icon name="columns" [size]="16" />
         {{ 'grid.columns' | translate }}
-        <span class="badge" *ngIf="hiddenColumnsCount() > 0">-{{ hiddenColumnsCount() }}</span>
+        @if (hiddenColumnsCount() > 0) {
+          <span class="badge">-{{ hiddenColumnsCount() }}</span>
+        }
       </button>
-      <button 
-        class="btn-reset-columns" 
-        (click)="resetColumnOrder()"
-        *ngIf="columnsReordered()"
-        [title]="'grid.resetColumns' | translate"
-      >
-        <app-icon name="reset" [size]="16" />
-        {{ 'grid.resetColumns' | translate }}
-      </button>
-      <button 
-        class="btn-clear-filters" 
-        (click)="clearAll()"
-        *ngIf="filters().length > 0 || sorting().length > 0 || searchTerm()"
-        [title]="'grid.clearFilters' | translate"
-      >
-        <app-icon name="filters" [size]="16" />
-        {{ 'grid.clearFilters' | translate }}
-      </button>
+      @if (columnsReordered()) {
+        <button 
+          class="btn-reset-columns" 
+          (click)="resetColumnOrder()"
+          [title]="'grid.resetColumns' | translate"
+        >
+          <app-icon name="reset" [size]="16" />
+          {{ 'grid.resetColumns' | translate }}
+        </button>
+      }
+      @if (filters().length > 0 || sorting().length > 0 || searchTerm()) {
+        <button 
+          class="btn-clear-filters" 
+          (click)="clearAll()"
+          [title]="'grid.clearFilters' | translate"
+        >
+          <app-icon name="filters" [size]="16" />
+          {{ 'grid.clearFilters' | translate }}
+        </button>
+      }
     </div>
-  </div>
+    </div>
+  }
 
   <!-- Active Filters -->
-  <div class="active-filters" *ngIf="filters().length > 0">
-    <span class="filters-label">{{ 'grid.activeFilters' | translate }}:</span>
-    <div class="filter-chips">
-      <div 
-        *ngFor="let filter of filters()" 
-        class="filter-chip"
-      >
-        <span class="filter-text">
-          {{ filter.column }}: {{ filter.operator }} "{{ filter.value }}"
-        </span>
-        <button 
-          class="remove-filter-btn" 
-          (click)="removeFilter(filter.column)"
-          [title]="'grid.removeFilter' | translate"
-        >
-          ✕
-        </button>
+  @if (filters().length > 0) {
+    <div class="active-filters">
+      <span class="filters-label">{{ 'grid.activeFilters' | translate }}:</span>
+      <div class="filter-chips">
+        @for (filter of filters(); track filter.column) {
+          <div class="filter-chip">
+            <span class="filter-text">
+              {{ filter.column }}: {{ filter.operator }} "{{ filter.value }}"
+            </span>
+            <button 
+              class="remove-filter-btn" 
+              (click)="removeFilter(filter.column)"
+              [title]="'grid.removeFilter' | translate"
+            >
+              ✕
+            </button>
+          </div>
+        }
       </div>
     </div>
-  </div>
+  }
 
   <!-- Loading Overlay -->
-  <div class="loading-overlay" *ngIf="loading">
-    <div class="spinner"></div>
-    <span>{{ 'grid.loading' | translate }}</span>
-  </div>
+  @if (loading()) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+      <span>{{ 'grid.loading' | translate }}</span>
+    </div>
+  }
 
   <!-- Desktop/Tablet Table View -->
   <div class="table-container desktop-view">
     <table class="data-table">
       <thead [class.reordered]="columnsReordered()">
         <tr>
-          <th 
-            *ngFor="let column of displayColumns(); let i = index"
-            [style.width]="column.width || 'auto'"
-            [class.sortable]="column.sortable"
-            [class.sorted]="getSortIcon(column) !== ''"
-            [class.dragging]="isDragging(i)"
-            [class.drag-over]="isDragOver(i)"
-            [attr.draggable]="enableColumnReorder"
-            (dragstart)="onDragStart($event, i)"
-            (dragover)="onDragOver($event, i)"
-            (dragleave)="onDragLeave()"
-            (drop)="onDrop($event, i)"
-            (dragend)="onDragEnd()"
-          >
-            <div class="th-content">
-              <span 
-                (click)="toggleSort(column)"
-                [class.clickable]="column.sortable"
-                [title]="column.sortable ? ('grid.sortMultiple' | translate) : ''"
-              >
-                {{ column.header | translate }}
-                <span class="sort-icon" *ngIf="column.sortable">
-                  {{ getSortIcon(column) }}
+          @for (column of displayColumns(); track column.field; let i = $index) {
+            <th 
+              [style.width]="column.width || 'auto'"
+              [class.sortable]="column.sortable"
+              [class.sorted]="getSortIcon(column) !== ''"
+              [class.dragging]="isDragging(i)"
+              [class.drag-over]="isDragOver(i)"
+              [attr.draggable]="enableColumnReorder()"
+              (dragstart)="onDragStart($event, i)"
+              (dragover)="onDragOver($event, i)"
+              (dragleave)="onDragLeave()"
+              (drop)="onDrop($event, i)"
+              (dragend)="onDragEnd()"
+            >
+              <div class="th-content">
+                <span 
+                  (click)="toggleSort(column)"
+                  [class.clickable]="column.sortable"
+                  [title]="column.sortable ? ('grid.sortMultiple' | translate) : ''"
+                >
+                  {{ column.header | translate }}
+                  @if (column.sortable) {
+                    <span class="sort-icon">
+                      {{ getSortIcon(column) }}
+                    </span>
+                  }
                 </span>
-              </span>
-              
-              <button 
-                *ngIf="column.filterable"
-                class="filter-btn"
-                [class.active]="hasFilter(column)"
-                (click)="openFilterDialog(column)"
-                [title]="'grid.filter' | translate"
-              >
-                🔍
-              </button>
-            </div>
-          </th>
+                
+                @if (column.filterable) {
+                  <button 
+                    class="filter-btn"
+                    [class.active]="hasFilter(column)"
+                    (click)="openFilterDialog(column)"
+                    [title]="'grid.filter' | translate"
+                  >
+                    🔍
+                  </button>
+                }
+              </div>
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="!hasData() && !loading">
-          <td [attr.colspan]="displayColumns().length" class="no-data">
-            {{ 'grid.noData' | translate }}
-          </td>
-        </tr>
-        <tr *ngFor="let row of data().data" class="data-row">
-          <td *ngFor="let column of displayColumns()">
-            <span [innerHTML]="getCellValue(row, column)"></span>
-          </td>
-        </tr>
+        @if (!hasData() && !loading) {
+          <tr>
+            <td [attr.colspan]="displayColumns().length" class="no-data">
+              {{ 'grid.noData' | translate }}
+            </td>
+          </tr>
+        }
+        @for (row of data().data; track $index) {
+          <tr class="data-row">
+            @for (column of displayColumns(); track column.field) {
+              <td>
+                <span [innerHTML]="getCellValue(row, column)"></span>
+              </td>
+            }
+          </tr>
+        }
       </tbody>
     </table>
   </div>
 
   <!-- Mobile List View -->
   <div class="mobile-view">
-    <div *ngIf="!hasData() && !loading" class="no-data-mobile">
-      <app-icon name="no-data" [size]="48" />
-      <p>{{ 'grid.noData' | translate }}</p>
-    </div>
-    
-    <div class="list-container" *ngIf="hasData()">
-      <div *ngFor="let row of data().data; let i = index" class="list-item" [class.last]="i === data().data.length - 1">
-        <div class="list-item-content">
-          <div *ngFor="let column of displayColumns().slice(0, 3)" class="item-field">
-            <span class="field-label">{{ column.header | translate }}</span>
-            <span class="field-value" [innerHTML]="getCellValue(row, column)"></span>
-          </div>
-        </div>
-        <app-icon name="chevron-right" customClass="chevron-icon" [size]="20" />
+    @if (!hasData() && !loading) {
+      <div class="no-data-mobile">
+        <app-icon name="no-data" [size]="48" />
+        <p>{{ 'grid.noData' | translate }}</p>
       </div>
-    </div>
+    }
+    
+    @if (hasData()) {
+      <div class="list-container">
+        @for (row of data().data; track $index; let i = $index) {
+          <div class="list-item" [class.last]="i === data().data.length - 1">
+            <div class="list-item-content">
+              @for (column of displayColumns().slice(0, 3); track column.field) {
+                <div class="item-field">
+                  <span class="field-label">{{ column.header | translate }}</span>
+                  <span class="field-value" [innerHTML]="getCellValue(row, column)"></span>
+                </div>
+              }
+            </div>
+            <app-icon name="chevron-right" customClass="chevron-icon" [size]="20" />
+          </div>
+        }
+      </div>
+    }
   </div>
 
   <!-- Pagination -->
-  <div class="pagination-container" *ngIf="showPagination && hasData()">
-    <div class="pagination-info">
-      {{ 'grid.showing' | translate }}
-      {{ (currentPage() - 1) * pageSize() + 1 }}
-      -
-      {{ Math.min(currentPage() * pageSize(), totalCount()) }}
-      {{ 'grid.of' | translate }}
-      {{ totalCount() }}
-      {{ 'grid.items' | translate }}
+  @if (showPagination() && hasData()) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        {{ 'grid.showing' | translate }}
+        {{ (currentPage() - 1) * currentPageSize() + 1 }}
+        -
+        {{ Math.min(currentPage() * currentPageSize(), totalCount()) }}
+        {{ 'grid.of' | translate }}
+        {{ totalCount() }}
+        {{ 'grid.items' | translate }}
+      </div>
+
+      <div class="pagination-controls">
+        <button
+          class="page-btn"
+          (click)="previousPage()"
+          [disabled]="currentPage() === 1"
+          [title]="'grid.previous' | translate"
+        >
+          ‹
+        </button>
+
+        @for (page of pageNumbers(); track $index) {
+          <button
+            class="page-btn"
+            [class.active]="page === currentPage()"
+            [class.ellipsis]="page === -1"
+            [disabled]="page === -1"
+            (click)="goToPage(page)"
+          >
+            {{ page === -1 ? '...' : page }}
+          </button>
+        }
+
+        <button
+          class="page-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+          [title]="'grid.next' | translate"
+        >
+          ›
+        </button>
+      </div>
+
+      <div class="page-size-selector">
+        <label>{{ 'grid.pageSize' | translate }}:</label>
+        <select
+          [value]="currentPageSize()"
+          (change)="changePageSize(+$any($event.target).value)"
+        >
+          @for (size of pageSizeOptions(); track size) {
+            <option [value]="size">
+              {{ size }}
+            </option>
+          }
+        </select>
+      </div>
     </div>
-
-    <div class="pagination-controls">
-      <button
-        class="page-btn"
-        (click)="previousPage()"
-        [disabled]="currentPage() === 1"
-        [title]="'grid.previous' | translate"
-      >
-        ‹
-      </button>
-
-      <button
-        *ngFor="let page of pageNumbers()"
-        class="page-btn"
-        [class.active]="page === currentPage()"
-        [class.ellipsis]="page === -1"
-        [disabled]="page === -1"
-        (click)="goToPage(page)"
-      >
-        {{ page === -1 ? '...' : page }}
-      </button>
-
-      <button
-        class="page-btn"
-        (click)="nextPage()"
-        [disabled]="currentPage() === totalPages()"
-        [title]="'grid.next' | translate"
-      >
-        ›
-      </button>
-    </div>
-
-    <div class="page-size-selector">
-      <label>{{ 'grid.pageSize' | translate }}:</label>
-      <select
-        [value]="pageSize()"
-        (change)="changePageSize(+$any($event.target).value)"
-      >
-        <option *ngFor="let size of pageSizeOptions" [value]="size">
-          {{ size }}
-        </option>
-      </select>
-    </div>
-  </div>
+  }
 
   <!-- Column Selector Modal -->
-  <div class="modal-overlay" *ngIf="showColumnSelector()" (click)="closeColumnSelector()">
-    <div class="column-selector-dialog" (click)="$event.stopPropagation()">
-      <div class="dialog-header">
-        <h3>{{ 'grid.manageColumns' | translate }}</h3>
-        <button class="close-btn" (click)="closeColumnSelector()" [title]="'grid.cancel' | translate">✕</button>
-      </div>
-      
-      <div class="column-list">
-        <div 
-          *ngFor="let column of orderedColumns()" 
-          class="column-item"
-          [class.disabled]="!isColumnVisible(column) && visibleColumns().size === 1"
-        >
-          <label class="checkbox-label">
-            <input
-              type="checkbox"
-              [checked]="isColumnVisible(column)"
-              [disabled]="!isColumnVisible(column) && visibleColumns().size === 1"
-              (change)="toggleColumnVisibility(column)"
-            />
-            <span class="column-name">{{ column.header | translate }}</span>
-          </label>
+  @if (showColumnSelector()) {
+    <div class="modal-overlay" (click)="closeColumnSelector()">
+      <div class="column-selector-dialog" (click)="$event.stopPropagation()">
+        <div class="dialog-header">
+          <h3>{{ 'grid.manageColumns' | translate }}</h3>
+          <button class="close-btn" (click)="closeColumnSelector()" [title]="'grid.cancel' | translate">✕</button>
+        </div>
+        
+        <div class="column-list">
+          @for (column of orderedColumns(); track column.field) {
+            <div 
+              class="column-item"
+              [class.disabled]="!isColumnVisible(column) && visibleColumns().size === 1"
+            >
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="isColumnVisible(column)"
+                  [disabled]="!isColumnVisible(column) && visibleColumns().size === 1"
+                  (change)="toggleColumnVisibility(column)"
+                />
+                <span class="column-name">{{ column.header | translate }}</span>
+              </label>
+            </div>
+          }
+        </div>
+
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" (click)="showAllColumns()">
+            {{ 'grid.showAll' | translate }}
+          </button>
+          <button class="btn btn-primary" (click)="closeColumnSelector()">
+            {{ 'grid.apply' | translate }}
+          </button>
         </div>
       </div>
-
-      <div class="dialog-actions">
-        <button class="btn btn-secondary" (click)="showAllColumns()">
-          {{ 'grid.showAll' | translate }}
-        </button>
-        <button class="btn btn-primary" (click)="closeColumnSelector()">
-          {{ 'grid.apply' | translate }}
-        </button>
-      </div>
     </div>
-  </div>
+  }
 
   <!-- Filter Dialog Modal -->
-  <div class="modal-overlay" *ngIf="showFilters()" (click)="cancelFilter()">
-    <div class="filter-dialog" (click)="$event.stopPropagation()">
-      <h3>{{ 'grid.filterBy' | translate }}: {{ filterColumn()?.header | translate }}</h3>
-      
-      <div class="filter-form">
-        <div class="form-group">
-          <label>{{ 'grid.operator' | translate }}</label>
-          <select 
-            (change)="onOperatorChange($any($event.target).value)"
-          >
-            <option 
-              *ngFor="let op of operators()" 
-              [value]="op.value"
-              [selected]="op.value === filterOperator()"
+  @if (showFilters()) {
+    <div class="modal-overlay" (click)="cancelFilter()">
+      <div class="filter-dialog" (click)="$event.stopPropagation()">
+        <h3>{{ 'grid.filterBy' | translate }}: {{ filterColumn()?.header | translate }}</h3>
+        
+        <div class="filter-form">
+          <div class="form-group">
+            <label>{{ 'grid.operator' | translate }}</label>
+            <select 
+              (change)="onOperatorChange($any($event.target).value)"
             >
-              {{ op.label | translate }}
-            </option>
-          </select>
+              @for (op of operators(); track op.value) {
+                <option 
+                  [value]="op.value"
+                  [selected]="op.value === filterOperator()"
+                >
+                  {{ op.label | translate }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>{{ 'grid.value' | translate }}</label>
+            
+            <!-- Autocomplete selector for filter type 'select' -->
+            @if (filterColumn()?.filterType === 'select') {
+              <app-autocomplete-selector
+                [options]="filterColumn()?.filterOptions || []"
+                [initialValue]="selectedFilterId()"
+                (valueChange)="onAutocompleteValueChange($event)"
+                placeholder="grid.searchOrSelect"
+              ></app-autocomplete-selector>
+            }
+
+            <!-- Date input for filter type 'date' -->
+            @if (filterColumn()?.filterType === 'date') {
+              <input
+                type="date"
+                [value]="filterValue()"
+                (input)="filterValue.set($any($event.target).value)"
+              />
+            }
+
+            <!-- Text input for other filter types -->
+            @if (filterColumn()?.filterType !== 'select' && filterColumn()?.filterType !== 'date') {
+              <input
+                type="text"
+                [value]="filterValue()"
+                (input)="filterValue.set($any($event.target).value)"
+                [placeholder]="'grid.enterValue' | translate"
+              />
+            }
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>{{ 'grid.value' | translate }}</label>
-          
-          <!-- Autocomplete selector for filter type 'select' -->
-          <app-autocomplete-selector
-            *ngIf="filterColumn()?.filterType === 'select'"
-            [options]="filterColumn()?.filterOptions || []"
-            [initialValue]="selectedFilterId()"
-            (valueChange)="onAutocompleteValueChange($event)"
-            placeholder="grid.searchOrSelect"
-          ></app-autocomplete-selector>
-
-          <!-- Date input for filter type 'date' -->
-          <input
-            *ngIf="filterColumn()?.filterType === 'date'"
-            type="date"
-            [value]="filterValue()"
-            (input)="filterValue.set($any($event.target).value)"
-          />
-
-          <!-- Text input for other filter types -->
-          <input
-            *ngIf="filterColumn()?.filterType !== 'select' && filterColumn()?.filterType !== 'date'"
-            type="text"
-            [value]="filterValue()"
-            (input)="filterValue.set($any($event.target).value)"
-            [placeholder]="'grid.enterValue' | translate"
-          />
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" (click)="cancelFilter()">
+            {{ 'grid.cancel' | translate }}
+          </button>
+          <button class="btn btn-primary" (click)="applyFilter()">
+            {{ 'grid.apply' | translate }}
+          </button>
         </div>
-      </div>
-
-      <div class="dialog-actions">
-        <button class="btn btn-secondary" (click)="cancelFilter()">
-          {{ 'grid.cancel' | translate }}
-        </button>
-        <button class="btn btn-primary" (click)="applyFilter()">
-          {{ 'grid.apply' | translate }}
-        </button>
       </div>
     </div>
-  </div>
+  }
 </div>

@@ -1,15 +1,14 @@
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter,
   signal,
   computed,
   effect,
   OnInit,
+  input,
+  output,
+  ChangeDetectionStrategy,
+  WritableSignal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
 import {
@@ -27,37 +26,38 @@ import { AutocompleteSelectorComponent } from '../autocomplete-selector/autocomp
 @Component({
   selector: 'app-data-grid',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, AutocompleteSelectorComponent, IconComponent],
+  imports: [TranslateModule, AutocompleteSelectorComponent, IconComponent],
   templateUrl: './data-grid.component.html',
   styleUrl: './data-grid.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGridComponent<T = any> implements OnInit {
   // Inputs
-  @Input({ required: true }) columns: GridColumnDef<T>[] = [];
-  @Input() pageSizeOptions = [10, 25, 50, 100];
-  @Input() defaultPageSize = 10;
-  @Input() showSearch = true;
-  @Input() showPagination = true;
-  @Input() loading = false;
-  @Input() enableColumnReorder = true;
+  columns = input.required<GridColumnDef<T>[]>();
+  pageSizeOptions = input([10, 25, 50, 100]);
+  defaultPageSize = input(10);
+  showSearch = input(true);
+  showPagination = input(true);
+  loading = input(false);
+  enableColumnReorder = input(true);
 
-  @Output() gridStateChange = new EventEmitter<GridRequestDto>();
+  gridStateChange = output<GridRequestDto>();
 
   data = signal<GridResponseDto<T>>({
     data: [],
     totalCount: 0,
     page: 1,
-    pageSize: this.defaultPageSize,
+    pageSize: 10,
     totalPages: 0,
   });
 
   // Grid State Signals
-  protected readonly currentPage = signal(1);
-  protected readonly pageSize = signal(this.defaultPageSize);
-  protected readonly sorting = signal<GridSortDto[]>([]);
-  protected readonly filters = signal<GridFilterDto[]>([]);
-  protected readonly searchTerm = signal('');
-  protected readonly inputSearchValue = signal('');
+  protected readonly currentPage: WritableSignal<number> = signal(1);
+  protected readonly currentPageSize: WritableSignal<number> = signal(10);
+  protected readonly sorting: WritableSignal<GridSortDto[]> = signal([]);
+  protected readonly filters: WritableSignal<GridFilterDto[]> = signal([]);
+  protected readonly searchTerm: WritableSignal<string> = signal('');
+  protected readonly inputSearchValue: WritableSignal<string> = signal('');
 
   // UI State
   protected readonly showFilters = signal(false);
@@ -86,7 +86,7 @@ export class DataGridComponent<T = any> implements OnInit {
   protected readonly totalPages = computed(() => this.data().totalPages);
   protected readonly totalCount = computed(() => this.data().totalCount);
   protected readonly columnsReordered = computed(() => {
-    const original = this.columns;
+    const original = this.columns();
     const ordered = this.orderedColumns();
     if (original.length !== ordered.length) return false;
     return !original.every((col, index) => col.field === ordered[index].field);
@@ -97,7 +97,7 @@ export class DataGridComponent<T = any> implements OnInit {
     );
   });
   protected readonly hiddenColumnsCount = computed(() => 
-    this.columns.length - this.visibleColumns().size
+    this.columns().length - this.visibleColumns().size
   );
   protected readonly pageNumbers = computed(() => {
     const total = this.totalPages();
@@ -180,7 +180,7 @@ export class DataGridComponent<T = any> implements OnInit {
     effect(() => {
       const request: GridRequestDto = {
         page: this.currentPage(),
-        pageSize: this.pageSize(),
+        pageSize: this.currentPageSize(),
         sorting: this.sorting().length > 0 ? this.sorting() : undefined,
         filters: this.filters().length > 0 ? this.filters() : undefined,
         search: this.searchTerm() || undefined,
@@ -191,12 +191,12 @@ export class DataGridComponent<T = any> implements OnInit {
   }
 
   ngOnInit() {
-    this.pageSize.set(this.defaultPageSize);
-    this.orderedColumns.set([...this.columns]);
+    this.currentPageSize.set(this.defaultPageSize());
+    this.orderedColumns.set([...this.columns()]);
     
     // Initialize all columns as visible
     const visibleSet = new Set<string>();
-    this.columns.forEach(col => visibleSet.add(col.field as string));
+    this.columns().forEach(col => visibleSet.add(col.field as string));
     this.visibleColumns.set(visibleSet);
   }
 
@@ -420,7 +420,7 @@ export class DataGridComponent<T = any> implements OnInit {
   }
 
   protected changePageSize(size: number) {
-    this.pageSize.set(size);
+    this.currentPageSize.set(size);
     this.currentPage.set(1);
   }
 
@@ -443,7 +443,7 @@ export class DataGridComponent<T = any> implements OnInit {
     this.currentPage.set(1);
     this.gridStateChange.emit({
       page: this.currentPage(),
-      pageSize: this.pageSize(),
+      pageSize: this.currentPageSize(),
       sorting: this.sorting().length > 0 ? this.sorting() : undefined,
       filters: this.filters().length > 0 ? this.filters() : undefined,
       search: this.searchTerm() || undefined,
@@ -466,7 +466,7 @@ export class DataGridComponent<T = any> implements OnInit {
 
   // Reset column order to original
   resetColumnOrder() {
-    this.orderedColumns.set([...this.columns]);
+    this.orderedColumns.set([...this.columns()]);
   }
 
   // Column visibility management
@@ -500,7 +500,7 @@ export class DataGridComponent<T = any> implements OnInit {
 
   protected showAllColumns() {
     const visibleSet = new Set<string>();
-    this.columns.forEach(col => visibleSet.add(col.field as string));
+    this.columns().forEach(col => visibleSet.add(col.field as string));
     this.visibleColumns.set(visibleSet);
   }
 

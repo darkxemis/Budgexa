@@ -1,5 +1,4 @@
-import { Component, inject, signal, output, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, output, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../core/services/user.service';
@@ -15,7 +14,6 @@ import { Guid } from '../../../core/models/guid.model';
   selector: 'app-user-settings-modal',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     TranslateModule,
     SpinnerComponent,
@@ -23,6 +21,7 @@ import { Guid } from '../../../core/models/guid.model';
   ],
   templateUrl: './user-settings-modal.component.html',
   styleUrl: './user-settings-modal.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsModalComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);

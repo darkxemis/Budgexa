@@ -1,12 +1,12 @@
-import { Component, input } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
   standalone: true,
-  imports: [NgStyle],
+  imports: [],
   templateUrl: './spinner.component.html',
-  styleUrl: './spinner.component.scss'
+  styleUrl: './spinner.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {
   size = input<number>(18);

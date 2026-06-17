@@ -1,19 +1,15 @@
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter,
   signal,
   computed,
-  ViewChild,
+  viewChild,
   ElementRef,
   AfterViewInit,
-  OnChanges,
-  SimpleChanges,
-  HostListener,
+  effect,
+  input,
+  output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
 import { SelectorOption } from '../../../core/models/selector.model';
@@ -22,19 +18,23 @@ import { Guid } from '../../../core/models/guid.model';
 @Component({
   selector: 'app-autocomplete-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, IconComponent],
+  imports: [TranslateModule, IconComponent],
   templateUrl: './autocomplete-selector.component.html',
   styleUrl: './autocomplete-selector.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:click)': 'onDocumentClick($event)',
+  },
 })
-export class AutocompleteSelectorComponent implements AfterViewInit, OnChanges {
-  @Input() options: SelectorOption[] | ((searchQuery?: string) => Promise<SelectorOption[]>) = [];
-  @Input() placeholder = 'grid.searchOrSelect';
-  @Input() initialValue: Guid | null = null;
-  @Input() disabled = false;
+export class AutocompleteSelectorComponent implements AfterViewInit {
+  options = input<SelectorOption[] | ((searchQuery?: string) => Promise<SelectorOption[]>)>([]);
+  placeholder = input('grid.searchOrSelect');
+  initialValue = input<Guid | null>(null);
+  disabled = input(false);
 
-  @Output() valueChange = new EventEmitter<Guid | null>();
+  valueChange = output<Guid | null>();
 
-  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+  searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
 
   protected readonly searchText = signal('');
   protected readonly availableOptions = signal<SelectorOption[]>([]);
@@ -58,7 +58,19 @@ export class AutocompleteSelectorComponent implements AfterViewInit, OnChanges {
     );
   });
 
-  @HostListener('document:click', ['$event'])
+  constructor() {
+    // Watch for changes in initialValue
+    effect(async () => {
+      const initValue = this.initialValue();
+      if (initValue) {
+        await this.setDisplayValueFromId(initValue);
+      } else {
+        this.searchText.set('');
+        this.selectedOption.set(null);
+      }
+    });
+  }
+
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (!target.closest('.autocomplete-selector')) {
@@ -69,22 +81,6 @@ export class AutocompleteSelectorComponent implements AfterViewInit, OnChanges {
   async ngAfterViewInit() {
     // Load initial options
     await this.loadOptions();
-
-    // Set initial display value if provided
-    if (this.initialValue) {
-      await this.setDisplayValueFromId(this.initialValue);
-    }
-  }
-
-  async ngOnChanges(changes: SimpleChanges) {
-    if (changes['initialValue'] && !changes['initialValue'].firstChange) {
-      if (this.initialValue) {
-        await this.setDisplayValueFromId(this.initialValue);
-      } else {
-        this.searchText.set('');
-        this.selectedOption.set(null);
-      }
-    }
   }
 
   protected onInput(value: string) {
@@ -165,7 +161,7 @@ export class AutocompleteSelectorComponent implements AfterViewInit, OnChanges {
     this.selectedOption.set(null);
     this.showDropdown.set(false);
     this.valueChange.emit(null);
-    this.searchInput.nativeElement.focus();
+    this.searchInput().nativeElement.focus();
   }
 
   private scrollToHighlighted() {
@@ -180,12 +176,13 @@ export class AutocompleteSelectorComponent implements AfterViewInit, OnChanges {
   private async loadOptions(searchQuery?: string) {
     this.loading.set(true);
     try {
-      if (typeof this.options === 'function') {
-        const result = await this.options(searchQuery);
+      const opts = this.options();
+      if (typeof opts === 'function') {
+        const result = await opts(searchQuery);
         this.availableOptions.set(result);
       } else {
         // Static options, no server-side filtering needed
-        this.availableOptions.set(this.options);
+        this.availableOptions.set(opts);
       }
     } catch (error) {
       console.error('Error loading autocomplete options:', error);

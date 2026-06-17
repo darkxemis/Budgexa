@@ -1,7 +1,5 @@
-import { Component, inject, signal, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, viewChild, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserMenuComponent } from '../../../shared/components/user-menu/user-menu.component';
 import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
 import { GridRequestDto, GridColumnDef } from '../../../core/models/grid.model';
 import { UsersGridService } from '../services/users-grid.service';
@@ -15,16 +13,17 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, DataGridComponent],
+  imports: [TranslateModule, DataGridComponent],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  styleUrl: './users.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersComponent implements OnInit {
   private readonly usersGridService = inject(UsersGridService);
   private readonly languageApiService = inject(LanguageApiService);
   private readonly statusApiService = inject(StatusApiService);
   
-  @ViewChild(DataGridComponent) grid?: DataGridComponent<UserGridDto>;
+  grid = viewChild(DataGridComponent<UserGridDto>);
   
   protected readonly loading = signal(false);
   protected columns: GridColumnDef<UserGridDto>[] = [];
@@ -74,7 +73,7 @@ export class UsersComponent implements OnInit {
     
     this.usersGridService.getGrid(request).subscribe({
       next: (response) => {
-        this.grid?.setData(response);
+        this.grid()?.setData(response);
         this.loading.set(false);
       },
       error: (error) => {

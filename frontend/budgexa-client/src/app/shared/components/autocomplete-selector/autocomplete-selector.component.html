@@ -7,22 +7,23 @@
       (input)="onInput($any($event.target).value)"
       (focus)="onFocus()"
       (keydown)="onKeyDown($event)"
-      [placeholder]="placeholder | translate"
-      [disabled]="disabled"
+      [placeholder]="placeholder() | translate"
+      [disabled]="disabled()"
       class="autocomplete-input"
       autocomplete="off"
     />
     
     <!-- Clear button -->
-    <button
-      *ngIf="searchText() && !disabled"
-      type="button"
-      class="clear-button"
-      (click)="clearSelection()"
-      [title]="'grid.clear' | translate"
-    >
-      ✕
-    </button>
+    @if (searchText() && !disabled()) {
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearSelection()"
+        [title]="'grid.clear' | translate"
+      >
+        ✕
+      </button>
+    }
     
     <!-- Dropdown indicator -->
     <div class="dropdown-indicator" [class.open]="showDropdown()">
@@ -31,37 +32,47 @@
   </div>
   
   <!-- Loading indicator -->
-  <div *ngIf="loading()" class="loading-indicator">
-    <div class="spinner"></div>
-    <span>{{ 'grid.loading' | translate }}</span>
-  </div>
+  @if (loading()) {
+    <div class="loading-indicator">
+      <div class="spinner"></div>
+      <span>{{ 'grid.loading' | translate }}</span>
+    </div>
+  }
   
   <!-- Dropdown menu -->
-  <div class="autocomplete-dropdown" *ngIf="showDropdown() && !loading()">
-    <div class="autocomplete-options" *ngIf="filteredOptions().length > 0">
-      <div
-        *ngFor="let option of filteredOptions(); let i = index"
-        class="autocomplete-option"
-        [class.highlighted]="highlightedIndex() === i"
-        [class.selected]="selectedOption()?.id === option.id"
-        (click)="selectOption(option)"
-        (mouseenter)="highlightedIndex.set(i)"
-      >
-        <div class="option-content">
-          <span class="option-name">{{ option.name }}</span>
-          <app-icon 
-            *ngIf="selectedOption()?.id === option.id"
-            name="check" 
-            customClass="check-icon"
-            [size]="16" 
-          />
+  @if (showDropdown() && !loading()) {
+    <div class="autocomplete-dropdown">
+      @if (filteredOptions().length > 0) {
+        <div class="autocomplete-options">
+          @for (option of filteredOptions(); track option.id; let i = $index) {
+            <div
+              class="autocomplete-option"
+              [class.highlighted]="highlightedIndex() === i"
+              [class.selected]="selectedOption()?.id === option.id"
+              (click)="selectOption(option)"
+              (mouseenter)="highlightedIndex.set(i)"
+            >
+              <div class="option-content">
+                <span class="option-name">{{ option.name }}</span>
+                @if (selectedOption()?.id === option.id) {
+                  <app-icon 
+                    name="check" 
+                    customClass="check-icon"
+                    [size]="16" 
+                  />
+                }
+              </div>
+            </div>
+          }
         </div>
-      </div>
+      }
+      
+      <!-- No results message -->
+      @if (filteredOptions().length === 0) {
+        <div class="no-results">
+          <span>{{ 'grid.noResults' | translate }}</span>
+        </div>
+      }
     </div>
-    
-    <!-- No results message -->
-    <div class="no-results" *ngIf="filteredOptions().length === 0">
-      <span>{{ 'grid.noResults' | translate }}</span>
-    </div>
-  </div>
+  }
 </div>

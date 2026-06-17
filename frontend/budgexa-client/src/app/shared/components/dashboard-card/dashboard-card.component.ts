@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -6,7 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './dashboard-card.component.html',
-  styleUrl: './dashboard-card.component.scss'
+  styleUrl: './dashboard-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardCardComponent {
   // Inputs

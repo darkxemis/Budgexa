@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 export type IconName = 
   | 'logo' 
@@ -19,6 +19,7 @@ export type IconName =
 @Component({
   selector: 'app-icon',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <svg 
       [attr.width]="size()" 

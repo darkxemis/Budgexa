@@ -1,4 +1,4 @@
-import { Component, inject, HostListener, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
@@ -13,6 +13,10 @@ import { UserSettingsModalComponent } from '../user-settings-modal/user-settings
   imports: [UpperCasePipe, TranslateModule, UserSettingsModalComponent],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:click)': 'onDocumentClick($event)',
+  },
 })
 export class UserMenuComponent {
   private readonly userStore = inject(UserStore);
@@ -39,7 +43,6 @@ export class UserMenuComponent {
     performLogout(this.auth, this.userStore, this.router);
   }
 
-  @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (!target.closest('.user-menu-container')) {

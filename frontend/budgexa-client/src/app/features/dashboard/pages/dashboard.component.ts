@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { UserStore } from '../../../core/state/user.store';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserMenuComponent } from '../../../shared/components/user-menu/user-menu.component';
@@ -9,9 +8,10 @@ import { DashboardCardComponent } from '../../../shared/components/dashboard-car
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule, TranslateModule, DashboardCardComponent, UserMenuComponent],
+  imports: [RouterModule, TranslateModule, DashboardCardComponent, UserMenuComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private readonly userStore = inject(UserStore);

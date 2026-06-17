@@ -159,8 +159,8 @@ public sealed class UserRepository(
                 .Where(t => t.LanguageId == currentUserLanguageId)
                 .Select(t => t.Translation)
                 .FirstOrDefault() ?? u.Status.Name)
-            .AddMap("CreatedAt", u => u.CreatedAt)
-            .AddMap("UpdatedAt", u => u.UpdatedAt);
+            .AddMap("CreatedAt", u => u.CreatedAt.Date)
+            .AddMap("UpdatedAt", u => u.UpdatedAt.HasValue ? u.UpdatedAt.Value.Date : null);
 
         return mapper;
     }

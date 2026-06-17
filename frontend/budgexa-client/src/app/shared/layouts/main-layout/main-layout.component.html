@@ -7,7 +7,7 @@
         <span class="logo-text">Budgexa</span>
       </div>
       <button class="collapse-btn" (click)="toggleSidebar()" [attr.aria-label]="'nav.toggleSidebar' | translate">
-        <app-icon name="collapse" />
+        <app-icon [name]="sidebarCollapsed() ? 'chevron-right' : 'collapse'" />
       </button>
     </div>
 

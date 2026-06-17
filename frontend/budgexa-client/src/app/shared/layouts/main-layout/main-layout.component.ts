@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserMenuComponent } from '../../components/user-menu/user-menu.component';
@@ -15,11 +14,14 @@ interface NavItem {
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule, UserMenuComponent, IconComponent],
+  imports: [RouterModule, TranslateModule, UserMenuComponent, IconComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {
+  private readonly router = inject(Router);
+  
   protected sidebarCollapsed = signal(true);
 
   protected navItems: NavItem[] = [
@@ -27,8 +29,6 @@ export class MainLayoutComponent {
     { path: '/invoices', icon: 'invoice', label: 'nav.invoices' },
     { path: '/users', icon: 'users', label: 'nav.users' },
   ];
-
-  constructor(private router: Router) {}
 
   protected toggleSidebar(): void {
     this.sidebarCollapsed.update(value => !value);

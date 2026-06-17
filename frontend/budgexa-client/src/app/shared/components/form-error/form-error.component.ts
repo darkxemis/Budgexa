@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -7,7 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './form-error.component.html',
-  styleUrls: ['./form-error.component.scss']
+  styleUrls: ['./form-error.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorComponent {
   control = input.required<AbstractControl | null>();
