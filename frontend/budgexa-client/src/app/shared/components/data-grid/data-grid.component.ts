@@ -477,11 +477,12 @@ export class DataGridComponent<T = any> implements OnInit {
     if (this.searchDebounceTimer) {
       clearTimeout(this.searchDebounceTimer);
     }
-    
+
     this.sorting.set([]);
     this.filters.set([]);
     this.inputSearchValue.set('');
     this.searchTerm.set('');
+    this.currentPageSize.set(this.defaultPageSize());
     this.currentPage.set(1);
   }
 
