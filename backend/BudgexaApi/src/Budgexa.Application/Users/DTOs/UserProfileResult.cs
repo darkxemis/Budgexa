@@ -9,5 +9,6 @@ public sealed record UserProfileResult(
     string CompanyName,
     Guid LanguageId,
     string Language,
+    IReadOnlyList<string> Roles,
     DateTime CreatedAt,
     DateTime? UpdatedAt);

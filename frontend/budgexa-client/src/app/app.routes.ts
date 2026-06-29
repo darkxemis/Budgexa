@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,7 @@ export const routes: Routes = [
         path: 'users',
         loadComponent: () =>
           import('./features/users/pages/users.component').then((m) => m.UsersComponent),
+        canActivate: [adminGuard],
       },
     ],
   },

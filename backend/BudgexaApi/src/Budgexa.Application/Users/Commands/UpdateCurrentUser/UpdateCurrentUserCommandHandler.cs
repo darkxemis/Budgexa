@@ -50,6 +50,7 @@ public sealed class UpdateCurrentUserCommandHandler(
                 u.Company.Name,
                 u.LanguageId,
                 u.Language.Code,
+                u.UserRoles.Select(ur => ur.Role.Name).ToList(),
                 u.CreatedAt,
                 u.UpdatedAt))
             .FirstOrDefaultAsync(cancellationToken);

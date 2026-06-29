@@ -12,7 +12,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      @for (item of navItems; track item.path) {
+      @for (item of navItems(); track item.path) {
         <button 
           class="nav-item" 
           [class.active]="isActiveRoute(item.path)"

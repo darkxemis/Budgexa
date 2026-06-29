@@ -12,6 +12,8 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
 import {
+  GridAction,
+  GridActionKind,
   GridColumnDef,
   GridFilterDto,
   GridSortDto,
@@ -40,6 +42,12 @@ export class DataGridComponent<T = any> implements OnInit {
   showPagination = input(true);
   loading = input(false);
   enableColumnReorder = input(true);
+  /**
+   * Row actions rendered as additional narrow columns appended after data columns.
+   * Each action becomes its own column, so consumers control visibility per action
+   * simply by including or omitting it from the array.
+   */
+  actions = input<GridAction<T>[]>([]);
 
   gridStateChange = output<GridRequestDto>();
 
@@ -99,6 +107,7 @@ export class DataGridComponent<T = any> implements OnInit {
   protected readonly hiddenColumnsCount = computed(() => 
     this.columns().length - this.visibleColumns().size
   );
+  protected readonly hasActions = computed(() => this.actions().length > 0);
   protected readonly pageNumbers = computed(() => {
     const total = this.totalPages();
     const current = this.currentPage();
@@ -202,6 +211,18 @@ export class DataGridComponent<T = any> implements OnInit {
 
   setData(response: GridResponseDto<T>) {
     this.data.set(response);
+  }
+
+  /** Re-emits the current grid state so the consumer can reload the data (e.g. after CRUD). */
+  reload(): void {
+    const request: GridRequestDto = {
+      page: this.currentPage(),
+      pageSize: this.currentPageSize(),
+      sorting: this.sorting().length > 0 ? this.sorting() : undefined,
+      filters: this.filters().length > 0 ? this.filters() : undefined,
+      search: this.searchTerm() || undefined,
+    };
+    this.gridStateChange.emit(request);
   }
 
   // Sorting
@@ -568,5 +589,28 @@ export class DataGridComponent<T = any> implements OnInit {
 
   protected isDragOver(index: number): boolean {
     return this.dragOverColumnIndex === index && this.draggedColumnIndex !== index;
+  }
+
+  // Row actions
+  protected onActionClick(event: Event, action: GridAction<T>, row: T) {
+    event.stopPropagation();
+    action.handler(row);
+  }
+
+  protected isActionVisible(action: GridAction<T>, row: T): boolean {
+    return action.visible ? action.visible(row) : true;
+  }
+
+  protected actionIcon(action: GridAction<T>): string {
+    if (action.icon) return action.icon;
+    switch (action.kind) {
+      case 'edit': return 'edit';
+      case 'delete': return 'delete';
+      default: return 'chevron-right';
+    }
+  }
+
+  protected actionCssClass(kind: GridActionKind): string {
+    return `action-btn action-${kind}`;
   }
 }

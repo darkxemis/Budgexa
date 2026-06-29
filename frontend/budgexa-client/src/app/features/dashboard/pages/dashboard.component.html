@@ -22,13 +22,15 @@
         (cardClick)="navigateToInvoices()">
       </app-dashboard-card>
 
-      <!-- Tarjeta de Usuarios -->
-      <app-dashboard-card
-        iconSrc="assets/images/dashboard/users-icon.svg"
-        title="dashboard.cards.users.title"
-        description="dashboard.cards.users.description"
-        (cardClick)="navigateToUsers()">
-      </app-dashboard-card>
+      <!-- Tarjeta de Usuarios (solo para administradores) -->
+      @if (canManageUsers()) {
+        <app-dashboard-card
+          iconSrc="assets/images/dashboard/users-icon.svg"
+          title="dashboard.cards.users.title"
+          description="dashboard.cards.users.description"
+          (cardClick)="navigateToUsers()">
+        </app-dashboard-card>
+      }
     </section>
   </main>
 </div>

@@ -199,7 +199,7 @@ The handler builds a deterministic prompt, calls the local Ollama model, parses 
 - **Branching** — work happens on `develop`; `main` tracks releases.
 - **Commits** — [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `refactor`, `chore`, `docs`, `style`, `test`).
 - **Code style** — see [`.ai/README.md`](./.ai/README.md) for the full set of conventions used by both humans and AI assistants in this repo.
-- **Testing** — backend covered by **229+ unit tests** across `Budgexa.Domain.Tests`, `Budgexa.Application.Tests`, `Budgexa.Infrastructure.Tests` and `Budgexa.API.Tests` (xUnit + FluentAssertions + NSubstitute + EF Core InMemory).
+- **Testing** — backend covered by **unit tests** across `Budgexa.Domain.Tests`, `Budgexa.Application.Tests`, `Budgexa.Infrastructure.Tests` and `Budgexa.API.Tests` (xUnit + FluentAssertions + NSubstitute + EF Core InMemory).
 
 ### Running the backend test suite
 

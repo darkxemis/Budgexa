@@ -58,6 +58,23 @@ export interface GridColumnDef<T = any> {
   cellTemplate?: (row: T) => string;
 }
 
+// Grid Row Action Configuration
+// Each action becomes its own narrow column at the end of the grid.
+// Consumers add only the actions they want, so columns are independently optional.
+export type GridActionKind = 'edit' | 'delete' | 'custom';
+
+export interface GridAction<T = any> {
+  kind: GridActionKind;
+  /** Translation key for the column header and button tooltip. */
+  label: string;
+  /** Handler invoked when the row action button is clicked. */
+  handler: (row: T) => void;
+  /** Optional predicate to hide the button for a particular row (column stays visible). */
+  visible?: (row: T) => boolean;
+  /** Optional icon override. Defaults to a sensible icon per kind. */
+  icon?: string;
+}
+
 // GridFilterOption is just an alias for SelectorOption
 export type GridFilterOption = SelectorOption;
 

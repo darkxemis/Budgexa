@@ -1,0 +1,44 @@
+<div class="modal-backdrop" (click)="onCancel()">
+  <div
+    class="modal-container"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'confirm-dialog-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header" [class.danger]="variant() === 'danger'">
+      <span class="icon-wrapper" aria-hidden="true">
+        <app-icon [name]="resolvedIcon()" [size]="22" />
+      </span>
+      <h2 id="confirm-dialog-title">{{ title() | translate }}</h2>
+    </div>
+
+    <div class="modal-body">
+      <p>{{ message() | translate: messageParams() }}</p>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onCancel()"
+        [disabled]="loading()"
+      >
+        {{ cancelLabel() | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.btn-danger]="variant() === 'danger'"
+        [class.btn-primary]="variant() === 'primary'"
+        (click)="onConfirm()"
+        [disabled]="loading()"
+      >
+        {{ confirmLabel() | translate }}
+        @if (loading()) {
+          <app-spinner [size]="14" color="#fff" />
+        }
+      </button>
+    </div>
+  </div>
+</div>

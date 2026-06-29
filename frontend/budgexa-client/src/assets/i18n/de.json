@@ -49,6 +49,9 @@
   "cancel": "Abbrechen",
   "save": "Speichern",
   "saving": "Speichern...",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "confirm": "Bestätigen",
   "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
 
   "dashboard": {
@@ -78,6 +81,26 @@
   "users": {
     "title": "Benutzer",
     "placeholder": "Benutzerverwaltung in Kürze...",
+    "create": "Benutzer erstellen",
+    "created": "Benutzer erfolgreich erstellt",
+    "updated": "Benutzer erfolgreich aktualisiert",
+    "deleted": "Benutzer erfolgreich gelöscht",
+    "delete": {
+      "title": "Benutzer löschen",
+      "message": "Möchten Sie den Benutzer {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Benutzer erstellen",
+      "editTitle": "Benutzer bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Benutzer erfolgreich erstellt",
+      "updated": "Benutzer erfolgreich aktualisiert",
+      "roles": "Rollen",
+      "rolesRequired": "Bitte mindestens eine Rolle auswählen.",
+      "noRoles": "Keine Rollen verfügbar",
+      "passwordStrength": "Mindestens 8 Zeichen mit Groß-, Kleinbuchstaben, Ziffer und Sonderzeichen."
+    },
     "grid": {
       "email": "E-Mail",
       "firstName": "Vorname",

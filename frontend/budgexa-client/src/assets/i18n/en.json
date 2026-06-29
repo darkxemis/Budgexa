@@ -49,6 +49,9 @@
   "cancel": "Cancel",
   "save": "Save",
   "saving": "Saving...",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirm": "Confirm",
   "settingsUpdated": "Settings updated successfully",
 
   "dashboard": {
@@ -78,6 +81,26 @@
   "users": {
     "title": "Users",
     "placeholder": "User management coming soon...",
+    "create": "Create User",
+    "created": "User created successfully",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully",
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete the user {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create User",
+      "editTitle": "Edit User",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "User created successfully",
+      "updated": "User updated successfully",
+      "roles": "Roles",
+      "rolesRequired": "Please select at least one role.",
+      "noRoles": "No roles available",
+      "passwordStrength": "Minimum 8 characters with upper, lower, number and symbol."
+    },
     "grid": {
       "email": "Email",
       "firstName": "First Name",

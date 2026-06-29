@@ -49,6 +49,9 @@
   "cancel": "Odustani",
   "save": "Spremi",
   "saving": "Spremanje...",
+  "edit": "Uredi",
+  "delete": "Obriši",
+  "confirm": "Potvrdi",
   "settingsUpdated": "Postavke uspješno ažurirane",
 
   "dashboard": {
@@ -78,6 +81,26 @@
   "users": {
     "title": "Korisnici",
     "placeholder": "Upravljanje korisnicima uskoro...",
+    "create": "Kreiraj korisnika",
+    "created": "Korisnik uspješno kreiran",
+    "updated": "Korisnik uspješno ažuriran",
+    "deleted": "Korisnik uspješno obrisan",
+    "delete": {
+      "title": "Obriši korisnika",
+      "message": "Jeste li sigurni da želite obrisati korisnika {{ name }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj korisnika",
+      "editTitle": "Uredi korisnika",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Korisnik uspješno kreiran",
+      "updated": "Korisnik uspješno ažuriran",
+      "roles": "Uloge",
+      "rolesRequired": "Odaberite najmanje jednu ulogu.",
+      "noRoles": "Nema dostupnih uloga",
+      "passwordStrength": "Najmanje 8 znakova s velikim slovom, malim slovom, brojem i simbolom."
+    },
     "grid": {
       "email": "E-pošta",
       "firstName": "Ime",

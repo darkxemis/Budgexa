@@ -1,13 +1,17 @@
-import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserMenuComponent } from '../../components/user-menu/user-menu.component';
 import { IconComponent, IconName } from '../../components/icon/icon.component';
+import { UserStore } from '../../../core/state/user.store';
+import { ADMIN_ROLES, RoleName } from '../../../core/constants/roles.constants';
 
 interface NavItem {
   path: string;
   icon: IconName;
   label: string;
+  /** Optional role allow-list. When omitted the item is visible to every authenticated user. */
+  roles?: readonly RoleName[];
   active?: boolean;
 }
 
@@ -21,14 +25,22 @@ interface NavItem {
 })
 export class MainLayoutComponent {
   private readonly router = inject(Router);
-  
+  private readonly userStore = inject(UserStore);
+
   protected sidebarCollapsed = signal(true);
 
-  protected navItems: NavItem[] = [
+  private readonly allNavItems: readonly NavItem[] = [
     { path: '/dashboard', icon: 'home', label: 'nav.dashboard' },
     { path: '/invoices', icon: 'invoice', label: 'nav.invoices' },
-    { path: '/users', icon: 'users', label: 'nav.users' },
+    { path: '/users', icon: 'users', label: 'nav.users', roles: ADMIN_ROLES },
   ];
+
+  protected readonly navItems = computed<readonly NavItem[]>(() => {
+    const userRoles = (this.userStore.user()?.roles ?? []) as RoleName[];
+    return this.allNavItems.filter(item =>
+      !item.roles || item.roles.some(role => userRoles.includes(role))
+    );
+  });
 
   protected toggleSidebar(): void {
     this.sidebarCollapsed.update(value => !value);

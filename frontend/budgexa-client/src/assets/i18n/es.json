@@ -49,6 +49,9 @@
   "cancel": "Cancelar",
   "save": "Guardar",
   "saving": "Guardando...",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "confirm": "Confirmar",
   "settingsUpdated": "Configuración actualizada correctamente",
 
   "dashboard": {
@@ -78,6 +81,26 @@
   "users": {
     "title": "Usuarios",
     "placeholder": "Gestión de usuarios próximamente...",
+    "create": "Crear Usuario",
+    "created": "Usuario creado correctamente",
+    "updated": "Usuario actualizado correctamente",
+    "deleted": "Usuario eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Usuario",
+      "message": "¿Seguro que deseas eliminar al usuario {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Usuario",
+      "editTitle": "Editar Usuario",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Usuario creado correctamente",
+      "updated": "Usuario actualizado correctamente",
+      "roles": "Roles",
+      "rolesRequired": "Selecciona al menos un rol.",
+      "noRoles": "No hay roles disponibles",
+      "passwordStrength": "Mínimo 8 caracteres con mayúscula, minúscula, número y símbolo."
+    },
     "grid": {
       "email": "Correo Electrónico",
       "firstName": "Nombre",
