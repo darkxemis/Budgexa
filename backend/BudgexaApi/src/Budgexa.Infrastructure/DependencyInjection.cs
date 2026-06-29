@@ -7,7 +7,6 @@ using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.AI;
 using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.Persistence;
-using Budgexa.Infrastructure.Repositories;
 using Budgexa.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -34,12 +33,7 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<IStatusRepository, StatusRepository>();
-        services.AddScoped<ILanguageRepository, LanguageRepository>();
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
     }
 
     private static void AddServices(this IServiceCollection services)

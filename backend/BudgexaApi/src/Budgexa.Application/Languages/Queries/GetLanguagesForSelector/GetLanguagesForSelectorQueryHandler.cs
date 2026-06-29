@@ -2,30 +2,28 @@ namespace Budgexa.Application.Languages.Queries.GetLanguagesForSelector;
 
 using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Common.Interfaces;
-using Budgexa.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class GetLanguagesForSelectorQueryHandler(
-    ILanguageRepository languageRepository,
+    IApplicationDbContext db,
     ICurrentUserService currentUserService
 ) : IRequestHandler<GetLanguagesForSelectorQuery, List<SelectorDto>>
 {
     public async Task<List<SelectorDto>> Handle(GetLanguagesForSelectorQuery request, CancellationToken cancellationToken)
     {
-        var languages = await languageRepository.GetAllAsync(cancellationToken);
         var userLanguageId = await currentUserService.GetLanguageIdAsync(cancellationToken);
 
-        var selectorItems = languages
-            .Select(l =>
-            {
-                var translation = l.Translations
-                    .FirstOrDefault(t => t.TranslationLanguageId == userLanguageId);
-
-                var displayName = translation?.Translation ?? l.Name;
-
-                return new SelectorDto(l.Id, displayName);
-            })
-            .ToList();
+        var selectorItems = await db.Languages
+            .AsNoTracking()
+            .OrderBy(l => l.Name)
+            .Select(l => new SelectorDto(
+                l.Id,
+                l.Translations
+                    .Where(t => t.TranslationLanguageId == userLanguageId)
+                    .Select(t => t.Translation)
+                    .FirstOrDefault() ?? l.Name))
+            .ToListAsync(cancellationToken);
 
         // Apply search filter if specified
         if (!string.IsNullOrWhiteSpace(request.SearchQuery))

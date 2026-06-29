@@ -3,13 +3,12 @@ namespace Budgexa.Infrastructure.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Budgexa.Application.Common.Interfaces;
-using Budgexa.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class CurrentUserService(
     IHttpContextAccessor httpContextAccessor,
-    IUserRepository userRepository,
-    ILanguageRepository languageRepository
+    IApplicationDbContext db
 ) : ICurrentUserService
 {
     private ClaimsPrincipal? User => httpContextAccessor.HttpContext?.User;
@@ -40,10 +39,15 @@ public sealed class CurrentUserService(
         var languageCode = httpContext?.Request.Headers["X-Language-Code"].FirstOrDefault();
         if (!string.IsNullOrEmpty(languageCode))
         {
-            var language = await languageRepository.GetByCodeAsync(languageCode, cancellationToken);
-            if (language != null)
+            var languageId = await db.Languages
+                .AsNoTracking()
+                .Where(l => l.Code == languageCode)
+                .Select(l => (Guid?)l.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (languageId.HasValue)
             {
-                return language.Id;
+                return languageId.Value;
             }
         }
 
@@ -52,8 +56,13 @@ public sealed class CurrentUserService(
             return Guid.Empty;
 
         // Fall back to language ID from database
-        var user = await userRepository.GetByIdAsync(UserId, cancellationToken);
-        return user?.LanguageId ?? Guid.Empty;
+        var userLanguageId = await db.Users
+            .AsNoTracking()
+            .Where(u => u.Id == UserId)
+            .Select(u => (Guid?)u.LanguageId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return userLanguageId ?? Guid.Empty;
     }
 
     public string Email

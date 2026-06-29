@@ -2,26 +2,27 @@
 
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Roles.DTOs;
-using Budgexa.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class GetAllRolesQueryHandler(
-    IRoleRepository roleRepository,
+    IApplicationDbContext db,
     ICurrentUserService currentUserService
 ) : IRequestHandler<GetAllRolesQuery, List<RoleDto>>
 {
     public async Task<List<RoleDto>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
     {
-        var roles = await roleRepository.GetAllAsync(cancellationToken);
+        var isSuperAdmin = currentUserService.Roles.Contains("superadministrator");
 
-        var userRoles = currentUserService.Roles;
-        var isSuperAdmin = userRoles.Contains("superadministrator");
+        var query = db.Roles.AsNoTracking();
 
         if (!isSuperAdmin)
         {
-            roles = roles.Where(r => r.Name == "administrator" || r.Name == "freelance").ToList();
+            query = query.Where(r => r.Name == "administrator" || r.Name == "freelance");
         }
 
-        return roles.Select(role => new RoleDto(role.Id, role.Name)).ToList();
+        return await query
+            .Select(r => new RoleDto(r.Id, r.Name))
+            .ToListAsync(cancellationToken);
     }
 }

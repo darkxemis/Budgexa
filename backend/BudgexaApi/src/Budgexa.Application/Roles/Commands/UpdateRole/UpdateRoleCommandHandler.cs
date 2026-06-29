@@ -1,29 +1,31 @@
 namespace Budgexa.Application.Roles.Commands.UpdateRole;
 
 using System.Net;
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Domain.Exceptions;
-using Budgexa.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class UpdateRoleCommandHandler(
-    IRoleRepository roleRepository,
-    IUnitOfWork unitOfWork
+    IApplicationDbContext db
 ) : IRequestHandler<UpdateRoleCommand>
 {
     public async Task Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
     {
-        var role = await roleRepository.GetByIdAsync(request.Id, cancellationToken)
+        var role = await db.Roles
+            .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.Role.NotFound, "Role not found.");
 
         var dto = request.Dto;
 
-        var existingRole = await roleRepository.GetByNameAsync(dto.Name, cancellationToken);
-        if (existingRole is not null && existingRole.Id != request.Id)
+        var nameTaken = await db.Roles
+            .AsNoTracking()
+            .AnyAsync(r => r.Name == dto.Name && r.Id != request.Id, cancellationToken);
+        if (nameTaken)
             throw new AppException(HttpStatusCode.Conflict, ErrorTags.Role.NameExists, "Role name already exists.");
 
         role.Update(dto.Name);
 
-        roleRepository.Update(role);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await db.SaveChangesAsync(cancellationToken);
     }
 }

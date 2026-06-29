@@ -3,23 +3,29 @@ namespace Budgexa.Application.Auth.Queries.Login;
 using MediatR;
 using System.Net;
 using Budgexa.Application.Auth.DTOs;
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Domain.Entities;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class LoginQueryHandler(
-    IUserRepository userRepository,
-    IRefreshTokenRepository refreshTokenRepository,
+    IApplicationDbContext db,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher,
-    IUnitOfWork unitOfWork,
     IJwtSettingsProvider jwtSettingsProvider,
     ILoginLockoutSettingsProvider lockoutSettingsProvider
 ) : IRequestHandler<LoginQuery, AuthResponse>
 {
     public async Task<AuthResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailForUpdateAsync(request.Email, cancellationToken)
+        var user = await db.Users
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .Include(u => u.Language)
+            .Include(u => u.Status)
+            .Include(u => u.Company)
+            .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken)
             ?? throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
 
         if (user.IsLockedOut())
@@ -41,7 +47,7 @@ public sealed class LoginQueryHandler(
                 lockoutSettingsProvider.MaxFailedAttempts,
                 TimeSpan.FromMinutes(lockoutSettingsProvider.LockoutMinutes)
             );
-            await unitOfWork.SaveChangesAsync(cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             throw new AppException(HttpStatusCode.Unauthorized, ErrorTags.Auth.InvalidCredentials, "Invalid email or password.");
         }
 
@@ -59,8 +65,8 @@ public sealed class LoginQueryHandler(
         var accessToken = jwtTokenGenerator.GenerateToken(user);
         var refreshToken = RefreshToken.Create(user.Id, jwtSettingsProvider.RefreshTokenExpirationInDays);
 
-        await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await db.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+        await db.SaveChangesAsync(cancellationToken);
 
         return new AuthResponse(
             user.Id,

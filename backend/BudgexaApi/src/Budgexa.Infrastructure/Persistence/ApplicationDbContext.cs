@@ -1,11 +1,11 @@
 namespace Budgexa.Infrastructure.Persistence;
 
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Domain.Entities;
-using Budgexa.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : DbContext(options), IUnitOfWork
+    : DbContext(options), IApplicationDbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
@@ -14,6 +14,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Status> Statuses => Set<Status>();
     public DbSet<StatusTranslation> StatusTranslations => Set<StatusTranslation>();
     public DbSet<Language> Languages => Set<Language>();
+    public DbSet<LanguageTranslation> LanguageTranslations => Set<LanguageTranslation>();
+    public DbSet<Company> Companies => Set<Company>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

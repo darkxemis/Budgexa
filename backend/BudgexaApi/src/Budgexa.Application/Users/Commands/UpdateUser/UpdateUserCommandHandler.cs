@@ -1,28 +1,33 @@
 namespace Budgexa.Application.Users.Commands.UpdateUser;
 
 using System.Net;
+using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Users.DTOs;
 using Budgexa.Domain.Exceptions;
 using Budgexa.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 public sealed class UpdateUserCommandHandler(
-    IUserRepository userRepository,
-    IPasswordHasher passwordHasher,
-    IUnitOfWork unitOfWork
+    IApplicationDbContext db,
+    IPasswordHasher passwordHasher
 ) : IRequestHandler<UpdateUserCommand, UserDto>
 {
     public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdForUpdateAsync(request.Id, cancellationToken)
+        var user = await db.Users
+            .Include(u => u.UserRoles)
+            .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
         var dto = request.Dto;
 
         if (user.Email != dto.Email)
         {
-            var existingUser = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
-            if (existingUser is not null)
+            var emailTaken = await db.Users
+                .AsNoTracking()
+                .AnyAsync(u => u.Email == dto.Email, cancellationToken);
+            if (emailTaken)
                 throw new AppException(HttpStatusCode.Conflict, ErrorTags.User.EmailAlreadyExists, "Email already exists.");
         }
 
@@ -40,20 +45,24 @@ public sealed class UpdateUserCommandHandler(
 
         user.SetRoles(dto.RoleIds);
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await db.SaveChangesAsync(cancellationToken);
 
-        var updatedUser = await userRepository.GetByIdAsync(user.Id, cancellationToken)
+        var updatedUser = await db.Users
+            .AsNoTracking()
+            .Where(u => u.Id == user.Id)
+            .Select(u => new UserDto(
+                u.Id,
+                u.Email,
+                u.FirstName,
+                u.LastName,
+                new CompanyInfo(u.Company.Id, u.Company.Name),
+                new LanguageInfo(u.Language.Id, u.Language.Name),
+                u.UserRoles.Select(ur => new RoleInfo(ur.Role.Id, ur.Role.Name)).ToList(),
+                u.CreatedAt,
+                u.UpdatedAt))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return updatedUser
             ?? throw new AppException(HttpStatusCode.InternalServerError, ErrorTags.Server.InternalError, "Failed to retrieve updated user.");
-
-        return new UserDto(
-            updatedUser.Id,
-            updatedUser.Email,
-            updatedUser.FirstName,
-            updatedUser.LastName,
-            new CompanyInfo(updatedUser.Company.Id, updatedUser.Company.Name),
-            new LanguageInfo(updatedUser.Language.Id, updatedUser.Language.Name),
-            updatedUser.UserRoles.Select(ur => new RoleInfo(ur.Role.Id, ur.Role.Name)).ToList(),
-            updatedUser.CreatedAt,
-            updatedUser.UpdatedAt);
     }
 }
