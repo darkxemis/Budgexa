@@ -3,6 +3,7 @@ namespace Budgexa.Infrastructure;
 using Budgexa.Application.Auth;
 using Budgexa.Application.Budgets.Services;
 using Budgexa.Application.Common.Interfaces;
+using Budgexa.Domain.Constants;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.AI;
 using Budgexa.Infrastructure.Authentication;
@@ -102,8 +103,8 @@ public static class DependencyInjection
 
         services.AddAuthorizationBuilder()
             .AddPolicy("AdminOnly", policy => 
-                policy.RequireRole("administrator", "superadministrator"))
+                policy.RequireRole(RoleNames.Administrator, RoleNames.SuperAdministrator))
             .AddPolicy("SuperAdminOnly", policy => 
-                policy.RequireRole("superadministrator"));
+                policy.RequireRole(RoleNames.SuperAdministrator));
     }
 }

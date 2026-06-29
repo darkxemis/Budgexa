@@ -21,9 +21,9 @@ internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.ToTable("roles");
 
         builder.HasData(
-            Role.Create("freelance", RoleIds.Freelance),
-            Role.Create("administrator", RoleIds.Administrator),
-            Role.Create("superadministrator", RoleIds.SuperAdministrator)
+            Role.Create(RoleNames.Freelance, RoleIds.Freelance),
+            Role.Create(RoleNames.Administrator, RoleIds.Administrator),
+            Role.Create(RoleNames.SuperAdministrator, RoleIds.SuperAdministrator)
         );
     }
 }

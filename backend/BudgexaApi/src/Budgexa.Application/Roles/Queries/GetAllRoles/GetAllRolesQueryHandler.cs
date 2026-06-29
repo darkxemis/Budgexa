@@ -2,6 +2,7 @@
 
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Roles.DTOs;
+using Budgexa.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,13 +13,13 @@ public sealed class GetAllRolesQueryHandler(
 {
     public async Task<List<RoleDto>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
     {
-        var isSuperAdmin = currentUserService.Roles.Contains("superadministrator");
+        var isSuperAdmin = currentUserService.Roles.Contains(RoleNames.SuperAdministrator);
 
         var query = db.Roles.AsNoTracking();
 
         if (!isSuperAdmin)
         {
-            query = query.Where(r => r.Name == "administrator" || r.Name == "freelance");
+            query = query.Where(r => r.Id == RoleIds.Administrator || r.Id == RoleIds.Freelance);
         }
 
         return await query

@@ -32,7 +32,6 @@
 │     Budgexa.Infrastructure              │
 │    (Infrastructure Layer)               │
 │  - DbContext (EF Core)                  │
-│  - Repositories                         │
 │  - External Services                    │
 │  - Migrations                           │
 └─────────────────────────────────────────┘
@@ -54,7 +53,7 @@ MediatR (Send Command/Query)
   ↓
 Handler
   ↓
-Repository
+IApplicationDbContext (EF Core)
   ↓
 Database
 ```
@@ -71,7 +70,9 @@ Database
 - **Provider**: PostgreSQL / SQL Server
 - **ORM**: Entity Framework Core
 - **Migrations**: Code-first
-- **Patterns**: Repository + Unit of Work
+- **Data Access**: Handlers depend on `IApplicationDbContext` and query/mutate EF Core directly. No Repository or Unit of Work abstractions are used.
+  - **Queries**: project directly to DTOs via `Select()` with `AsNoTracking()`.
+  - **Commands**: load aggregates with the DbContext, mutate them through domain methods, then call `SaveChangesAsync` explicitly in the handler.
 
 ## Key Technologies
 - **MediatR** - CQRS and request handling

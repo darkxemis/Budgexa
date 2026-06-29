@@ -10,8 +10,8 @@
 1. **Clean Architecture** - Separate concerns across layers
 2. **SOLID** - Follow SOLID principles
 3. **Minimal APIs** - Use endpoint groups
-4. **CQRS** - Command Query Responsibility Segregation (MediatR)
-5. **Repository Pattern** - Data access abstraction
+4. **CQRS / Vertical Slices** - Command Query Responsibility Segregation (MediatR), one handler per slice
+5. **Direct DbContext access** - Handlers depend on `IApplicationDbContext` (no Repository / Unit of Work). Queries project to DTOs with `Select()` + `AsNoTracking()`; commands load aggregates, mutate via domain methods, and call `SaveChangesAsync` explicitly.
 
 ## Project Structure
 ```
@@ -26,13 +26,13 @@ Budgexa.Application/   # Application layer
 
 Budgexa.Domain/        # Domain layer
 ├── Entities/          # Domain entities
-├── Interfaces/        # Repository interfaces
+├── Constants/         # Well-known IDs and constants (e.g. StatusIds)
+├── Enums/             # Domain enums
 └── Exceptions/        # Domain exceptions
 
 Budgexa.Infrastructure/ # Infrastructure layer
-├── Persistence/       # EF Core DbContext
-├── Repositories/      # Repository implementations
-└── Services/          # External services
+├── Persistence/       # EF Core DbContext, configurations, migrations
+└── Services/          # External services (JWT, password hashing, current user, etc.)
 ```
 
 ## Endpoint Pattern
