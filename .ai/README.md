@@ -8,7 +8,7 @@ Full-stack financial management application with Angular 21 frontend and .NET 10
 2. **Convention over Configuration** - Use established patterns
 3. **DRY** - Don't Repeat Yourself
 4. **Type Safety** - Leverage TypeScript and C# type systems
-5. **Testing** - Write tests for critical functionality
+5. **Testing** - Backend code must keep the `tests/` suite green. Add unit tests for new domain rules, handlers, validators, behaviors and middleware before closing a change.
 
 ## Code Style
 - **Indentation**: 2 spaces (TypeScript), 4 spaces (C#)
@@ -33,9 +33,11 @@ chore: Maintenance tasks
 ## Project Structure
 ```
 Budgexa/
-├── frontend/budgexa-client/    # Angular 21 SPA
+├── frontend/budgexa-client/    # Angular 22 SPA
 │   └── .ai/                    # Frontend AI rules
-├── backend/BudgexaApi/         # .NET 9 API
+├── backend/BudgexaApi/         # .NET 10 API (src/ + tests/)
+│   ├── src/                    # Production projects (API, Application, Domain, Infrastructure)
+│   ├── tests/                  # xUnit unit tests, one project per src layer
 │   └── .ai/                    # Backend AI rules
 └── docker-compose.yml          # Docker orchestration
 ```

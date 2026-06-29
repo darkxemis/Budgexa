@@ -80,3 +80,43 @@ Database
 - **AutoMapper** - Object mapping
 - **Serilog** - Structured logging
 - **JWT** - Authentication
+
+## Testing Architecture
+Each production project has a mirrored test project under `tests/`:
+
+```
+backend/BudgexaApi/
+├── src/
+│   ├── Budgexa.API/
+│   ├── Budgexa.Application/
+│   ├── Budgexa.Domain/
+│   └── Budgexa.Infrastructure/
+└── tests/
+    ├── Budgexa.Domain.Tests/         # Pure entity / constant / exception tests (no I/O)
+    ├── Budgexa.Application.Tests/    # Handlers, validators, MediatR behaviors, helpers
+    ├── Budgexa.Infrastructure.Tests/ # JWT, password hashing, current-user, settings
+    └── Budgexa.API.Tests/            # Middleware (GlobalExceptionHandler, etc.)
+```
+
+### Stack
+- **xUnit** test framework
+- **FluentAssertions** for readable assertions
+- **NSubstitute** for mocking interfaces (`IPasswordHasher`, `IJwtTokenGenerator`, `ICurrentUserService`, `IAiService`, etc.)
+- **EF Core InMemory** provider for handler tests that touch `IApplicationDbContext`
+- **FluentValidation** for validator tests (no separate `TestHelper` package on .NET 10)
+
+### Conventions
+- Application handler tests use `TestDbContextFactory.Create()` + `TestDataSeeder` (in `tests/Budgexa.Application.Tests/TestHelpers/`) to spin up isolated InMemory databases per test.
+- Grid query tests (anything reaching `GridQueryExtensions.ToGridResponseAsync`) must run against an EF Core context, not a plain `IQueryable`, because the helper internally calls `ToListAsync`.
+- Types that NSubstitute proxies (e.g. nested test request records used with `IValidator<T>`) must be `public` — the strong-named `FluentValidation` assembly rejects internal proxy targets.
+- JWT tests parse tokens with `JwtSecurityTokenHandler.ReadJwtToken(...)` instead of comparing opaque strings.
+- `CurrentUserService` tests build an explicit `ClaimsPrincipal` + `DefaultHttpContext` to verify claim/header precedence.
+
+### Running tests
+```bash
+# Full suite (from backend/BudgexaApi)
+dotnet test
+
+# Single layer
+dotnet test tests/Budgexa.Application.Tests/Budgexa.Application.Tests.csproj
+```

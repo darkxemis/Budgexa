@@ -68,6 +68,7 @@ The backend follows **Clean Architecture** with a strict dependency rule (outer 
 - Entity Framework Core 10 (SQL Server)
 - MediatR 14 · FluentValidation 12 · Gridify
 - OllamaSharp · BCrypt.Net‑Next · Serilog · Scalar
+- **Testing**: xUnit · FluentAssertions · NSubstitute · EF Core InMemory
 
 ### Frontend
 - **Angular 22** (standalone components, signals)
@@ -86,11 +87,16 @@ The backend follows **Clean Architecture** with a strict dependency rule (outer 
 ```
 Budgexa/
 ├── backend/BudgexaApi/                  # .NET 10 solution
-│   └── src/
-│       ├── Budgexa.API/                 # Endpoints, middleware, Program.cs
-│       ├── Budgexa.Application/         # CQRS handlers, DTOs, validators
-│       ├── Budgexa.Domain/              # Entities, value objects, contracts
-│       └── Budgexa.Infrastructure/      # EF Core, JWT, AI, persistence
+│   ├── src/
+│   │   ├── Budgexa.API/                 # Endpoints, middleware, Program.cs
+│   │   ├── Budgexa.Application/         # CQRS handlers, DTOs, validators
+│   │   ├── Budgexa.Domain/              # Entities, value objects, contracts
+│   │   └── Budgexa.Infrastructure/      # EF Core, JWT, AI, persistence
+│   └── tests/
+│       ├── Budgexa.Domain.Tests/        # Domain entities, exceptions, constants
+│       ├── Budgexa.Application.Tests/   # CQRS handlers, validators, behaviors
+│       ├── Budgexa.Infrastructure.Tests/# Auth, JWT, current-user services
+│       └── Budgexa.API.Tests/           # Middleware, error handling
 ├── frontend/budgexa-client/             # Angular 22 SPA
 ├── .ai/                                 # AI assistant rules & conventions
 ├── docker-compose.dev.yml               # Local development stack
@@ -193,6 +199,22 @@ The handler builds a deterministic prompt, calls the local Ollama model, parses 
 - **Branching** — work happens on `develop`; `main` tracks releases.
 - **Commits** — [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `refactor`, `chore`, `docs`, `style`, `test`).
 - **Code style** — see [`.ai/README.md`](./.ai/README.md) for the full set of conventions used by both humans and AI assistants in this repo.
+- **Testing** — backend covered by **229+ unit tests** across `Budgexa.Domain.Tests`, `Budgexa.Application.Tests`, `Budgexa.Infrastructure.Tests` and `Budgexa.API.Tests` (xUnit + FluentAssertions + NSubstitute + EF Core InMemory).
+
+### Running the backend test suite
+
+```bash
+cd backend/BudgexaApi
+dotnet test
+```
+
+Or target a single layer:
+
+```bash
+dotnet test tests/Budgexa.Application.Tests/Budgexa.Application.Tests.csproj
+```
+
+In Visual Studio you can also use **Test Explorer** to discover and run them interactively.
 
 ### Run the backend without Docker
 
