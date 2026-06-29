@@ -7,6 +7,7 @@ using Budgexa.Domain.Constants;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.AI;
 using Budgexa.Infrastructure.Authentication;
+using Budgexa.Infrastructure.BackgroundServices;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,8 +26,17 @@ public static class DependencyInjection
         services.AddPersistence(configuration);
         services.AddAuth(configuration);
         services.AddServices();
+        services.AddBackgroundJobs(configuration);
 
         return services;
+    }
+
+    private static void AddBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MaintenanceSettings>(configuration.GetSection(MaintenanceSettings.SectionName));
+
+        services.AddHostedService<RefreshTokenCleanupService>();
+        services.AddHostedService<UserLockoutCleanupService>();
     }
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
