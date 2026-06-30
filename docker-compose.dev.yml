@@ -1,0 +1,86 @@
+services:
+  sqlserver:
+    container_name: budgexa-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    networks:
+      - budgexa-net
+
+  ollama:
+    container_name: budgexa-ollama
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - budgexa-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+    - OLLAMA_CONTEXT_LENGTH=65536
+    - OLLAMA_NUM_PARALLEL=1
+    - OLLAMA_MAX_LOADED_MODELS=1
+    - OLLAMA_KEEP_ALIVE=10
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  budgexaapi:
+    container_name: budgexa-api
+    build:
+      context: .
+      dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - JwtSettings__Secret=${JWT_SECRET}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=BudgexaDev123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-dev.pfx
+      - Ollama__BaseUrl=http://host.docker.internal:11434
+    ports:
+      - "5000:80"
+      - "5443:443"
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./backend/BudgexaApi/https:/https:ro
+    networks:
+      - budgexa-net
+
+  budgexa-client:
+    container_name: budgexa-client
+    build:
+      context: ./frontend/budgexa-client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4300:4300"
+    volumes:
+      - ./frontend/budgexa-client:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - budgexa-net
+    depends_on:
+      - budgexaapi
+
+networks:
+  budgexa-net:
+    driver: bridge
+
+volumes:
+  ollama-data:

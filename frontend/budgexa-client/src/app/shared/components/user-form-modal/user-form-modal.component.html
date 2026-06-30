@@ -1,0 +1,145 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'user-form-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <h2 id="user-form-title">{{ titleKey() | translate }}</h2>
+      <button
+        type="button"
+        class="close-btn"
+        (click)="onClose()"
+        [attr.aria-label]="'cancel' | translate"
+        [disabled]="loading()"
+      >
+        &times;
+      </button>
+    </div>
+
+    @if (loadingData()) {
+      <div class="modal-loading">
+        <app-spinner [size]="28" />
+        <span>{{ 'loading' | translate }}...</span>
+      </div>
+    } @else {
+      <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="input-group full-width">
+            <label for="user-email">{{ 'email' | translate }}</label>
+            <input
+              id="user-email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              [placeholder]="'email' | translate"
+            />
+            <app-form-error [control]="form.controls.email" />
+          </div>
+
+          <div class="input-group">
+            <label for="user-firstName">{{ 'firstName' | translate }}</label>
+            <input
+              id="user-firstName"
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              [placeholder]="'firstName' | translate"
+            />
+            <app-form-error [control]="form.controls.firstName" />
+          </div>
+
+          <div class="input-group">
+            <label for="user-lastName">{{ 'lastName' | translate }}</label>
+            <input
+              id="user-lastName"
+              type="text"
+              formControlName="lastName"
+              autocomplete="family-name"
+              [placeholder]="'lastName' | translate"
+            />
+            <app-form-error [control]="form.controls.lastName" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="user-password">
+              {{ (isEdit() ? 'newPassword' : 'password') | translate }}
+            </label>
+            <input
+              id="user-password"
+              type="password"
+              formControlName="password"
+              autocomplete="new-password"
+              [placeholder]="(isEdit() ? 'newPasswordPlaceholder' : 'password') | translate"
+            />
+            <app-form-error [control]="form.controls.password" />
+            @if (isEdit()) {
+              <small class="input-hint">{{ 'passwordHint' | translate }}</small>
+            } @else {
+              <small class="input-hint">{{ 'users.form.passwordStrength' | translate }}</small>
+            }
+          </div>
+
+          <div class="input-group full-width">
+            <label for="user-language">{{ 'language' | translate }}</label>
+            <select id="user-language" formControlName="languageId">
+              <option value="" disabled>{{ 'loading' | translate }}...</option>
+              @for (lang of languages(); track lang.id) {
+                <option [value]="lang.id">{{ lang.name }}</option>
+              }
+            </select>
+            <app-form-error [control]="form.controls.languageId" />
+          </div>
+
+          <div class="input-group full-width">
+            <label>{{ 'users.form.roles' | translate }}</label>
+            <div class="roles-chips" role="group" [attr.aria-label]="'users.form.roles' | translate">
+              @for (role of roles(); track role.id) {
+                <button
+                  type="button"
+                  class="role-chip"
+                  [class.selected]="isRoleSelected(role.id)"
+                  (click)="toggleRole(role.id)"
+                >
+                  @if (isRoleSelected(role.id)) {
+                    <app-icon name="check" [size]="14" />
+                  }
+                  <span>{{ role.name }}</span>
+                </button>
+              }
+              @if (roles().length === 0) {
+                <span class="empty-roles">{{ 'users.form.noRoles' | translate }}</span>
+              }
+            </div>
+            @if (hasRoleError()) {
+              <small class="error-text">{{ 'users.form.rolesRequired' | translate }}</small>
+            }
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            {{ 'cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || form.disabled"
+          >
+            {{ submitKey() | translate }}
+            @if (loading()) {
+              <app-spinner [size]="14" color="#fff" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

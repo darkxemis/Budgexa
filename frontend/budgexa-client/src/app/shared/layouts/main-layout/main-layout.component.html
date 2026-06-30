@@ -1,0 +1,57 @@
+<div class="main-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="sidebarCollapsed()">
+    <div class="sidebar-header">
+      <div class="logo">
+        <app-icon name="logo" customClass="logo-icon" />
+        <span class="logo-text">Budgexa</span>
+      </div>
+      <button class="collapse-btn" (click)="toggleSidebar()" [attr.aria-label]="'nav.toggleSidebar' | translate">
+        <app-icon [name]="sidebarCollapsed() ? 'chevron-right' : 'collapse'" />
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of navItems(); track item.path) {
+        <button 
+          class="nav-item" 
+          [class.active]="isActiveRoute(item.path)"
+          (click)="navigateTo(item.path)"
+          [attr.aria-label]="item.label | translate">
+          
+          <app-icon [name]="item.icon" customClass="nav-icon" />
+          
+          <span class="nav-label">{{ item.label | translate }}</span>
+        </button>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="version-info">
+        <span class="version-label">v1.0.0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header class="top-header">
+      <button class="mobile-menu-btn" (click)="toggleSidebar()" [attr.aria-label]="'nav.menu' | translate">
+        <app-icon name="menu" />
+      </button>
+      
+      <div class="header-actions">
+        <app-user-menu></app-user-menu>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Overlay for mobile -->
+  @if (!sidebarCollapsed()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+</div>

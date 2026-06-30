@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Documento de fondo (morado claro) -->
+  <g opacity="0.5">
+    <rect x="38" y="38" width="60" height="72" rx="10" fill="#C9B8F9"/>
+  </g>
+  
+  <!-- Documento principal (morado con gradiente) -->
+  <rect x="22" y="18" width="68" height="82" rx="12" fill="url(#gradient1)"/>
+  
+  <!-- Esquina doblada superior derecha -->
+  <path d="M 72 18 L 72 35 L 89 35 Q 90 35 90 34 L 90 20 Q 90 18 88 18 Z" fill="#5B1FD9"/>
+  
+  <!-- Líneas de texto (blancas) -->
+  <rect x="32" y="40" width="38" height="4" rx="2" fill="white"/>
+  <rect x="32" y="50" width="48" height="4" rx="2" fill="white"/>
+  <rect x="32" y="60" width="32" height="4" rx="2" fill="white"/>
+  
+  <!-- Definiciones de gradiente -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B6EF9;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7B2FF2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B1FE5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

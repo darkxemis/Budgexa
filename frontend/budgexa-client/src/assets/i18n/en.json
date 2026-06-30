@@ -1,0 +1,162 @@
+{
+  "welcome": "Welcome {{ name }}",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "connecting": "Connecting...",
+  "enter": "Enter",
+  "loading": "Loading",
+  "validations": {
+    "required": "This field is required.",
+    "email": "Invalid email format.",
+    "minlength": "Does not meet minimum length.",
+    "maxlength": "Exceeds maximum length.",
+    "pattern": "Invalid format.",
+    "invalid": "Invalid value."
+  },
+
+  "user.emailAlreadyExists": "An account with this email already exists.",
+  "auth.invalidCredentials": "Invalid email or password.",
+  "auth.invalidRefreshToken": "Invalid session. Please log in again.",
+  "auth.accountLocked": "Your account is locked.",
+  "auth.contractExpired": "Your contract has expired. Please contact your administrator.",
+  "user.notFound": "User not found.",
+  "role.notFound": "Role not found.",
+  "role.nameExists": "Role name already exists.",
+  "status.notFound": "Status not found.",
+  "server.internalError": "Internal server error. Please try again later.",
+  "validation.failed": "Validation failed. Please check your input.",
+
+  "settings": "Settings",
+  "logout": "Logout",
+  "noUserInfo": "No user info loaded.",
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "invoices": "Invoices",
+    "users": "Users",
+    "toggleSidebar": "Toggle sidebar",
+    "menu": "Menu"
+  },
+
+  "userSettings": "User Settings",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "newPassword": "New Password",
+  "newPasswordPlaceholder": "Leave empty to keep current password",
+  "passwordHint": "Leave empty if you don't want to change your password",
+  "language": "Language",
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "settingsUpdated": "Settings updated successfully",
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Select an option to get started",
+    "cards": {
+      "invoices": {
+        "title": "Invoices",
+        "description": "Manage and track your invoices"
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage users and permissions"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Invoices",
+    "welcome": "Welcome to Invoices",
+    "description": "Manage your invoices efficiently. Create, view, and track all your invoices in one place.",
+    "create": "Create New Invoice",
+    "list": "Your Invoices",
+    "no-invoices": "No invoices yet. Create your first invoice to get started."
+  },
+
+  "users": {
+    "title": "Users",
+    "placeholder": "User management coming soon...",
+    "create": "Create User",
+    "created": "User created successfully",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully",
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete the user {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create User",
+      "editTitle": "Edit User",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "User created successfully",
+      "updated": "User updated successfully",
+      "roles": "Roles",
+      "rolesRequired": "Please select at least one role.",
+      "noRoles": "No roles available",
+      "passwordStrength": "Minimum 8 characters with upper, lower, number and symbol."
+    },
+    "grid": {
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "company": "Company",
+      "language": "Language",
+      "status": "Status",
+      "roles": "Roles",
+      "createdAt": "Created At"
+    }
+  },
+
+  "grid": {
+    "search": "Search...",
+    "clearSearch": "Clear search",
+    "refresh": "Refresh",
+    "clear": "Clear",
+    "clearAll": "Clear All",
+    "noResults": "No results found",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove filter",
+    "loading": "Loading...",
+    "filter": "Filter",
+    "noData": "No data available",
+    "showing": "Showing",
+    "of": "of",
+    "items": "items",
+    "previous": "Previous",
+    "next": "Next",
+    "pageSize": "Items per page",
+    "filterBy": "Filter by",
+    "operator": "Operator",
+    "value": "Value",
+    "enterValue": "Enter filter value...",
+    "selectValue": "Select a value...",
+    "searchOrSelect": "Search or select...",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "sortMultiple": "Click to sort (supports multiple columns)",
+    "resetColumns": "Reset Column Order",
+    "clearFilters": "Clear Filters",
+    "columns": "Columns",
+    "manageColumns": "Manage Columns",
+    "showAll": "Show All",
+    "operators": {
+      "equal": "Equals",
+      "notEqual": "Not Equals",
+      "contains": "Contains",
+      "notContains": "Not Contains",
+      "startsWith": "Starts With",
+      "endsWith": "Ends With",
+      "greaterThan": "Greater Than",
+      "lessThan": "Less Than",
+      "greaterThanOrEqual": "Greater or Equal",
+      "lessThanOrEqual": "Less or Equal"
+    }
+  }
+}
+

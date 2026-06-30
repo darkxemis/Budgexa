@@ -1,0 +1,162 @@
+{
+  "welcome": "Bienvenido {{ name }}",
+  "login": "Iniciar sesión",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "connecting": "Conectando...",
+  "enter": "Entrar",
+  "loading": "Cargando",
+  "validations": {
+    "required": "Este campo es obligatorio.",
+    "email": "Formato de correo inválido.",
+    "minlength": "No cumple la longitud mínima.",
+    "maxlength": "Supera la longitud máxima.",
+    "pattern": "Formato inválido.",
+    "invalid": "Valor inválido."
+  },
+
+  "user.emailAlreadyExists": "Ya existe una cuenta con este correo.",
+  "auth.invalidCredentials": "Correo o contraseña incorrectos.",
+  "auth.invalidRefreshToken": "Sesión inválida. Por favor, inicia sesión de nuevo.",
+  "auth.accountLocked": "Tu cuenta está bloqueada.",
+  "auth.contractExpired": "Su contrato ha expirado. Por favor, contacte con su administrador.",
+  "user.notFound": "Usuario no encontrado.",
+  "role.notFound": "Rol no encontrado.",
+  "role.nameExists": "El nombre del rol ya existe.",
+  "status.notFound": "Estado no encontrado.",
+  "server.internalError": "Error interno del servidor. Intenta más tarde.",
+  "validation.failed": "Validación fallida. Revisa los datos.",
+
+  "settings": "Configuración",
+  "logout": "Cerrar sesión",
+  "noUserInfo": "No hay información de usuario cargada.",
+
+  "nav": {
+    "dashboard": "Panel de Control",
+    "invoices": "Facturas",
+    "users": "Usuarios",
+    "toggleSidebar": "Alternar barra lateral",
+    "menu": "Menú"
+  },
+
+  "userSettings": "Configuración de Usuario",
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "newPassword": "Nueva Contraseña",
+  "newPasswordPlaceholder": "Dejar vacío para mantener la contraseña actual",
+  "passwordHint": "Dejar vacío si no deseas cambiar tu contraseña",
+  "language": "Idioma",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "saving": "Guardando...",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "confirm": "Confirmar",
+  "settingsUpdated": "Configuración actualizada correctamente",
+
+  "dashboard": {
+    "title": "Panel de Control",
+    "subtitle": "Selecciona una opción para comenzar",
+    "cards": {
+      "invoices": {
+        "title": "Facturas",
+        "description": "Gestiona y rastrea tus facturas"
+      },
+      "users": {
+        "title": "Usuarios",
+        "description": "Gestiona usuarios y permisos"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Facturas",
+    "welcome": "Bienvenido a Facturas",
+    "description": "Gestiona tus facturas de manera eficiente. Crea, visualiza y rastrea todas tus facturas en un solo lugar.",
+    "create": "Crear Nueva Factura",
+    "list": "Tus Facturas",
+    "no-invoices": "Aún no hay facturas. Crea tu primera factura para comenzar."
+  },
+
+  "users": {
+    "title": "Usuarios",
+    "placeholder": "Gestión de usuarios próximamente...",
+    "create": "Crear Usuario",
+    "created": "Usuario creado correctamente",
+    "updated": "Usuario actualizado correctamente",
+    "deleted": "Usuario eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Usuario",
+      "message": "¿Seguro que deseas eliminar al usuario {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Usuario",
+      "editTitle": "Editar Usuario",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Usuario creado correctamente",
+      "updated": "Usuario actualizado correctamente",
+      "roles": "Roles",
+      "rolesRequired": "Selecciona al menos un rol.",
+      "noRoles": "No hay roles disponibles",
+      "passwordStrength": "Mínimo 8 caracteres con mayúscula, minúscula, número y símbolo."
+    },
+    "grid": {
+      "email": "Correo Electrónico",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "company": "Empresa",
+      "language": "Idioma",
+      "status": "Estado",
+      "roles": "Roles",
+      "createdAt": "Fecha de Creación"
+    }
+  },
+
+  "grid": {
+    "search": "Buscar...",
+    "clearSearch": "Limpiar búsqueda",
+    "refresh": "Actualizar",
+    "clear": "Limpiar",
+    "clearAll": "Limpiar Todo",
+    "noResults": "No se encontraron resultados",
+    "activeFilters": "Filtros activos",
+    "removeFilter": "Eliminar filtro",
+    "loading": "Cargando...",
+    "filter": "Filtrar",
+    "noData": "No hay datos disponibles",
+    "showing": "Mostrando",
+    "of": "de",
+    "items": "elementos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageSize": "Elementos por página",
+    "filterBy": "Filtrar por",
+    "operator": "Operador",
+    "value": "Valor",
+    "enterValue": "Ingrese valor del filtro...",
+    "selectValue": "Seleccionar un valor...",
+    "searchOrSelect": "Buscar o seleccionar...",
+    "cancel": "Cancelar",
+    "apply": "Aplicar",
+    "sortMultiple": "Clic para ordenar (soporta múltiples columnas)",
+    "resetColumns": "Restaurar Orden de Columnas",
+    "clearFilters": "Limpiar Filtros",
+    "columns": "Columnas",
+    "manageColumns": "Administrar Columnas",
+    "showAll": "Mostrar Todas",
+    "operators": {
+      "equal": "Igual a",
+      "notEqual": "Diferente de",
+      "contains": "Contiene",
+      "notContains": "No Contiene",
+      "startsWith": "Empieza con",
+      "endsWith": "Termina con",
+      "greaterThan": "Mayor que",
+      "lessThan": "Menor que",
+      "greaterThanOrEqual": "Mayor o Igual",
+      "lessThanOrEqual": "Menor o Igual"
+    }
+  }
+}
+

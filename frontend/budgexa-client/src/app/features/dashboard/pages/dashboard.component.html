@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1 class="dashboard-title">{{ 'dashboard.title' | translate }}</h1>
+    <app-user-menu></app-user-menu>
+  </header>
+
+  <main class="dashboard-main">
+    @if (user(); as userInfo) {
+      <div class="welcome-section">
+        <div class="welcome-icon">👋</div>
+        <h2>{{ 'welcome' | translate:{ name: userInfo.firstName } }}</h2>
+        <p class="welcome-subtitle">{{ 'dashboard.subtitle' | translate }}</p>
+      </div>
+    }
+
+    <section class="dashboard-grid">
+      <!-- Tarjeta de Facturas -->
+      <app-dashboard-card
+        iconSrc="assets/images/dashboard/invoices-icon.svg"
+        title="dashboard.cards.invoices.title"
+        description="dashboard.cards.invoices.description"
+        (cardClick)="navigateToInvoices()">
+      </app-dashboard-card>
+
+      <!-- Tarjeta de Usuarios (solo para administradores) -->
+      @if (canManageUsers()) {
+        <app-dashboard-card
+          iconSrc="assets/images/dashboard/users-icon.svg"
+          title="dashboard.cards.users.title"
+          description="dashboard.cards.users.description"
+          (cardClick)="navigateToUsers()">
+        </app-dashboard-card>
+      }
+    </section>
+  </main>
+</div>

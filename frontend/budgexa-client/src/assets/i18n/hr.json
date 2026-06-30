@@ -1,0 +1,161 @@
+{
+  "welcome": "Dobrodošli {{ name }}",
+  "login": "Prijava",
+  "email": "E-pošta",
+  "password": "Lozinka",
+  "connecting": "Povezivanje...",
+  "enter": "Prijava",
+  "loading": "Učitavanje",
+  "validations": {
+    "required": "Ovo polje je obavezno.",
+    "email": "Neispravan format e-pošte.",
+    "minlength": "Ne ispunjava minimalnu duljinu.",
+    "maxlength": "Prelazi maksimalnu duljinu.",
+    "pattern": "Neispravan format.",
+    "invalid": "Neispravna vrijednost."
+  },
+
+  "user.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
+  "auth.invalidCredentials": "Neispravna e-pošta ili lozinka.",
+  "auth.invalidRefreshToken": "Nevažeća sesija. Prijavite se ponovno.",
+  "auth.accountLocked": "Vaš račun je zaključan.",
+  "auth.contractExpired": "Vaš ugovor je istekao. Kontaktirajte svog administratora.",
+  "user.notFound": "Korisnik nije pronađen.",
+  "role.notFound": "Uloga nije pronađena.",
+  "role.nameExists": "Naziv uloge već postoji.",
+  "status.notFound": "Status nije pronađen.",
+  "server.internalError": "Interna pogreška poslužitelja. Pokušajte kasnije.",
+  "validation.failed": "Validacija nije uspjela. Provjerite unos.",
+
+  "settings": "Postavke",
+  "logout": "Odjava",
+  "noUserInfo": "Nema učitanih korisničkih podataka.",
+
+  "nav": {
+    "dashboard": "Nadzorna ploča",
+    "invoices": "Računi",
+    "users": "Korisnici",
+    "toggleSidebar": "Prebaci bočnu traku",
+    "menu": "Izbornik"
+  },
+
+  "userSettings": "Korisničke Postavke",
+  "firstName": "Ime",
+  "lastName": "Prezime",
+  "newPassword": "Nova Lozinka",
+  "newPasswordPlaceholder": "Ostavite prazno da zadržite trenutnu lozinku",
+  "passwordHint": "Ostavite prazno ako ne želite promijeniti lozinku",
+  "language": "Jezik",
+  "cancel": "Odustani",
+  "save": "Spremi",
+  "saving": "Spremanje...",
+  "edit": "Uredi",
+  "delete": "Obriši",
+  "confirm": "Potvrdi",
+  "settingsUpdated": "Postavke uspješno ažurirane",
+
+  "dashboard": {
+    "title": "Nadzorna ploča",
+    "subtitle": "Odaberite opciju za početak",
+    "cards": {
+      "invoices": {
+        "title": "Računi",
+        "description": "Upravljajte i pratite svoje račune"
+      },
+      "users": {
+        "title": "Korisnici",
+        "description": "Upravljajte korisnicima i dozvolama"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Računi",
+    "welcome": "Dobrodošli u Račune",
+    "description": "Učinkovito upravljajte svojim računima. Kreirajte, pregledavajte i pratite sve svoje račune na jednom mjestu.",
+    "create": "Kreiraj Novi Račun",
+    "list": "Vaši Računi",
+    "no-invoices": "Još nema računa. Kreirajte svoj prvi račun da započnete."
+  },
+
+  "users": {
+    "title": "Korisnici",
+    "placeholder": "Upravljanje korisnicima uskoro...",
+    "create": "Kreiraj korisnika",
+    "created": "Korisnik uspješno kreiran",
+    "updated": "Korisnik uspješno ažuriran",
+    "deleted": "Korisnik uspješno obrisan",
+    "delete": {
+      "title": "Obriši korisnika",
+      "message": "Jeste li sigurni da želite obrisati korisnika {{ name }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj korisnika",
+      "editTitle": "Uredi korisnika",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Korisnik uspješno kreiran",
+      "updated": "Korisnik uspješno ažuriran",
+      "roles": "Uloge",
+      "rolesRequired": "Odaberite najmanje jednu ulogu.",
+      "noRoles": "Nema dostupnih uloga",
+      "passwordStrength": "Najmanje 8 znakova s velikim slovom, malim slovom, brojem i simbolom."
+    },
+    "grid": {
+      "email": "E-pošta",
+      "firstName": "Ime",
+      "lastName": "Prezime",
+      "company": "Tvrtka",
+      "language": "Jezik",
+      "status": "Status",
+      "roles": "Uloge",
+      "createdAt": "Kreirano"
+    }
+  },
+
+  "grid": {
+    "search": "Pretraži...",
+    "clearSearch": "Očisti pretragu",
+    "refresh": "Osvježi",
+    "clear": "Očisti",
+    "clearAll": "Očisti sve",
+    "noResults": "Nema rezultata",
+    "activeFilters": "Aktivni filteri",
+    "removeFilter": "Ukloni filter",
+    "loading": "Učitavanje...",
+    "filter": "Filter",
+    "noData": "Nema dostupnih podataka",
+    "showing": "Prikazuje se",
+    "of": "od",
+    "items": "stavki",
+    "previous": "Prethodno",
+    "next": "Sljedeće",
+    "pageSize": "Stavki po stranici",
+    "filterBy": "Filtriraj po",
+    "operator": "Operator",
+    "value": "Vrijednost",
+    "enterValue": "Unesite vrijednost filtera...",
+    "selectValue": "Odaberite vrijednost...",
+    "searchOrSelect": "Pretraži ili odaberi...",
+    "cancel": "Odustani",
+    "apply": "Primijeni",
+    "sortMultiple": "Kliknite za sortiranje (podržava više stupaca)",
+    "resetColumns": "Vrati Redoslijed Stupaca",
+    "clearFilters": "Očisti Filtere",
+    "columns": "Stupci",
+    "manageColumns": "Upravljanje Stupcima",
+    "showAll": "Prikaži Sve",
+    "operators": {
+      "equal": "Jednako",
+      "notEqual": "Nije jednako",
+      "contains": "Sadrži",
+      "notContains": "Ne sadrži",
+      "startsWith": "Počinje s",
+      "endsWith": "Završava s",
+      "greaterThan": "Veće od",
+      "lessThan": "Manje od",
+      "greaterThanOrEqual": "Veće ili jednako",
+      "lessThanOrEqual": "Manje ili jednako"
+    }
+  }
+}

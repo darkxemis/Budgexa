@@ -1,0 +1,161 @@
+{
+  "welcome": "Willkommen {{ name }}",
+  "login": "Anmelden",
+  "email": "E-Mail",
+  "password": "Passwort",
+  "connecting": "Verbinden...",
+  "enter": "Einloggen",
+  "loading": "Laden",
+  "validations": {
+    "required": "Dieses Feld ist erforderlich.",
+    "email": "Ungültiges E-Mail-Format.",
+    "minlength": "Erfüllt nicht die Mindestlänge.",
+    "maxlength": "Überschreitet die maximale Länge.",
+    "pattern": "Ungültiges Format.",
+    "invalid": "Ungültiger Wert."
+  },
+
+  "user.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
+  "auth.invalidCredentials": "Ungültige E-Mail oder Passwort.",
+  "auth.invalidRefreshToken": "Ungültige Sitzung. Bitte erneut anmelden.",
+  "auth.accountLocked": "Ihr Konto ist gesperrt.",
+  "auth.contractExpired": "Ihr Vertrag ist abgelaufen. Bitte kontaktieren Sie Ihren Administrator.",
+  "user.notFound": "Benutzer nicht gefunden.",
+  "role.notFound": "Rolle nicht gefunden.",
+  "role.nameExists": "Rollenname existiert bereits.",
+  "status.notFound": "Status nicht gefunden.",
+  "server.internalError": "Interner Serverfehler. Bitte später erneut versuchen.",
+  "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen.",
+
+  "settings": "Einstellungen",
+  "logout": "Abmelden",
+  "noUserInfo": "Keine Benutzerinformationen geladen.",
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "invoices": "Rechnungen",
+    "users": "Benutzer",
+    "toggleSidebar": "Seitenleiste umschalten",
+    "menu": "Menü"
+  },
+
+  "userSettings": "Benutzereinstellungen",
+  "firstName": "Vorname",
+  "lastName": "Nachname",
+  "newPassword": "Neues Passwort",
+  "newPasswordPlaceholder": "Leer lassen, um das aktuelle Passwort beizubehalten",
+  "passwordHint": "Leer lassen, wenn Sie Ihr Passwort nicht ändern möchten",
+  "language": "Sprache",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "saving": "Speichern...",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "confirm": "Bestätigen",
+  "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Wählen Sie eine Option, um zu beginnen",
+    "cards": {
+      "invoices": {
+        "title": "Rechnungen",
+        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
+      },
+      "users": {
+        "title": "Benutzer",
+        "description": "Benutzer und Berechtigungen verwalten"
+      }
+    }
+  },
+
+  "invoices": {
+    "title": "Rechnungen",
+    "welcome": "Willkommen bei Rechnungen",
+    "description": "Verwalten Sie Ihre Rechnungen effizient. Erstellen, anzeigen und verfolgen Sie alle Ihre Rechnungen an einem Ort.",
+    "create": "Neue Rechnung erstellen",
+    "list": "Ihre Rechnungen",
+    "no-invoices": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung, um zu beginnen."
+  },
+
+  "users": {
+    "title": "Benutzer",
+    "placeholder": "Benutzerverwaltung in Kürze...",
+    "create": "Benutzer erstellen",
+    "created": "Benutzer erfolgreich erstellt",
+    "updated": "Benutzer erfolgreich aktualisiert",
+    "deleted": "Benutzer erfolgreich gelöscht",
+    "delete": {
+      "title": "Benutzer löschen",
+      "message": "Möchten Sie den Benutzer {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Benutzer erstellen",
+      "editTitle": "Benutzer bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Benutzer erfolgreich erstellt",
+      "updated": "Benutzer erfolgreich aktualisiert",
+      "roles": "Rollen",
+      "rolesRequired": "Bitte mindestens eine Rolle auswählen.",
+      "noRoles": "Keine Rollen verfügbar",
+      "passwordStrength": "Mindestens 8 Zeichen mit Groß-, Kleinbuchstaben, Ziffer und Sonderzeichen."
+    },
+    "grid": {
+      "email": "E-Mail",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "company": "Unternehmen",
+      "language": "Sprache",
+      "status": "Status",
+      "roles": "Rollen",
+      "createdAt": "Erstellt am"
+    }
+  },
+
+  "grid": {
+    "search": "Suchen...",
+    "clearSearch": "Suche löschen",
+    "refresh": "Aktualisieren",
+    "clear": "Löschen",
+    "clearAll": "Alles löschen",
+    "noResults": "Keine Ergebnisse gefunden",
+    "activeFilters": "Aktive Filter",
+    "removeFilter": "Filter entfernen",
+    "loading": "Lädt...",
+    "filter": "Filter",
+    "noData": "Keine Daten verfügbar",
+    "showing": "Anzeigen",
+    "of": "von",
+    "items": "Elemente",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageSize": "Elemente pro Seite",
+    "filterBy": "Filtern nach",
+    "operator": "Operator",
+    "value": "Wert",
+    "enterValue": "Filterwert eingeben...",
+    "selectValue": "Wert auswählen...",
+    "searchOrSelect": "Suchen oder auswählen...",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden",
+    "sortMultiple": "Klicken zum Sortieren (unterstützt mehrere Spalten)",
+    "resetColumns": "Spaltenreihenfolge Zurücksetzen",
+    "clearFilters": "Filter Löschen",
+    "columns": "Spalten",
+    "manageColumns": "Spalten Verwalten",
+    "showAll": "Alle Anzeigen",
+    "operators": {
+      "equal": "Gleich",
+      "notEqual": "Nicht gleich",
+      "contains": "Enthält",
+      "notContains": "Enthält nicht",
+      "startsWith": "Beginnt mit",
+      "endsWith": "Endet mit",
+      "greaterThan": "Größer als",
+      "lessThan": "Kleiner als",
+      "greaterThanOrEqual": "Größer oder gleich",
+      "lessThanOrEqual": "Kleiner oder gleich"
+    }
+  }
+}

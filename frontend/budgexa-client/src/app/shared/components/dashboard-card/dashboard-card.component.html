@@ -1,0 +1,7 @@
+<div class="dashboard-card" (click)="handleClick()">
+  <div class="card-icon">
+    <img [src]="iconSrc()" [alt]="title()" />
+  </div>
+  <h3>{{ title() | translate }}</h3>
+  <p>{{ description() | translate }}</p>
+</div>

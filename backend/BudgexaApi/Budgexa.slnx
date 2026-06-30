@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Budgexa.API/Budgexa.API.csproj" />
+    <Project Path="src/Budgexa.Application/Budgexa.Application.csproj" />
+    <Project Path="src/Budgexa.Domain/Budgexa.Domain.csproj" />
+    <Project Path="src/Budgexa.Infrastructure/Budgexa.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Budgexa.Domain.Tests/Budgexa.Domain.Tests.csproj" />
+    <Project Path="tests/Budgexa.Application.Tests/Budgexa.Application.Tests.csproj" />
+    <Project Path="tests/Budgexa.Infrastructure.Tests/Budgexa.Infrastructure.Tests.csproj" />
+    <Project Path="tests/Budgexa.API.Tests/Budgexa.API.Tests.csproj" />
+  </Folder>
+</Solution>

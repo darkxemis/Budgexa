@@ -1,0 +1,78 @@
+<div class="autocomplete-selector">
+  <div class="autocomplete-input-wrapper">
+    <input
+      #searchInput
+      type="text"
+      [value]="searchText()"
+      (input)="onInput($any($event.target).value)"
+      (focus)="onFocus()"
+      (keydown)="onKeyDown($event)"
+      [placeholder]="placeholder() | translate"
+      [disabled]="disabled()"
+      class="autocomplete-input"
+      autocomplete="off"
+    />
+    
+    <!-- Clear button -->
+    @if (searchText() && !disabled()) {
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearSelection()"
+        [title]="'grid.clear' | translate"
+      >
+        ✕
+      </button>
+    }
+    
+    <!-- Dropdown indicator -->
+    <div class="dropdown-indicator" [class.open]="showDropdown()">
+      <app-icon name="chevron-down" [size]="12" />
+    </div>
+  </div>
+  
+  <!-- Loading indicator -->
+  @if (loading()) {
+    <div class="loading-indicator">
+      <div class="spinner"></div>
+      <span>{{ 'grid.loading' | translate }}</span>
+    </div>
+  }
+  
+  <!-- Dropdown menu -->
+  @if (showDropdown() && !loading()) {
+    <div class="autocomplete-dropdown">
+      @if (filteredOptions().length > 0) {
+        <div class="autocomplete-options">
+          @for (option of filteredOptions(); track option.id; let i = $index) {
+            <div
+              class="autocomplete-option"
+              [class.highlighted]="highlightedIndex() === i"
+              [class.selected]="selectedOption()?.id === option.id"
+              (click)="selectOption(option)"
+              (mouseenter)="highlightedIndex.set(i)"
+            >
+              <div class="option-content">
+                <span class="option-name">{{ option.name }}</span>
+                @if (selectedOption()?.id === option.id) {
+                  <app-icon 
+                    name="check" 
+                    customClass="check-icon"
+                    [size]="16" 
+                  />
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      
+      <!-- No results message -->
+      @if (filteredOptions().length === 0) {
+        <div class="no-results">
+          <span>{{ 'grid.noResults' | translate }}</span>
+        </div>
+      }
+    </div>
+  }
+</div>
