@@ -14,6 +14,34 @@
     }
 
     <section class="dashboard-grid">
+      <!-- Tarjeta de Clientes (freelance y administradores) -->
+      @if (canManageCustomers()) {
+        <app-dashboard-card
+          iconSrc="assets/images/dashboard/users-icon.svg"
+          title="dashboard.cards.customers.title"
+          description="dashboard.cards.customers.description"
+          (cardClick)="navigateToCustomers()">
+        </app-dashboard-card>
+      }
+
+      <!-- Tarjeta de Artículos (freelance y administradores) -->
+      @if (canManageItems()) {
+        <app-dashboard-card
+          iconSrc="assets/images/dashboard/invoices-icon.svg"
+          title="dashboard.cards.items.title"
+          description="dashboard.cards.items.description"
+          (cardClick)="navigateToItems()">
+        </app-dashboard-card>
+      }
+
+      <!-- Tarjeta de Presupuestos -->
+      <app-dashboard-card
+        iconSrc="assets/images/dashboard/invoices-icon.svg"
+        title="dashboard.cards.budgets.title"
+        description="dashboard.cards.budgets.description"
+        (cardClick)="navigateToBudgets()">
+      </app-dashboard-card>
+
       <!-- Tarjeta de Facturas -->
       <app-dashboard-card
         iconSrc="assets/images/dashboard/invoices-icon.svg"

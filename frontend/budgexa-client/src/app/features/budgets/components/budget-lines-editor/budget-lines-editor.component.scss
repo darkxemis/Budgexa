@@ -1,0 +1,234 @@
+// ─── Shared constants ───────────────────────────────────────────────────────
+$label-h:    16px;   // Fixed label height – prevents multi-line wrapping issues
+$input-h:    34px;   // All interactive fields the same height
+$cell-gap:   4px;    // Gap between label and field inside a cell
+$col-gap:    8px;    // Gap between columns
+
+// ─── Wrapper ────────────────────────────────────────────────────────────────
+.lines-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// ─── Header row ─────────────────────────────────────────────────────────────
+.lines-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+}
+
+.empty-lines {
+  margin: 0;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.lines-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// ─── Single line row ────────────────────────────────────────────────────────
+// Columns: [item-selector] [description] [unit] [qty] [price] [disc] [tax] [subtotal] [total] [delete]
+.line-row {
+  display: grid;
+  grid-template-columns: 160px 2fr 72px 72px 96px 80px 72px 96px 96px 36px;
+  gap: $col-gap;
+  align-items: start;    // All cells start at the top so labels + inputs align
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+
+  @media (max-width: 1400px) {
+    grid-template-columns: 150px 1.8fr 66px 66px 88px 72px 66px 88px 88px 36px;
+  }
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// ─── Generic cell (label + field) ───────────────────────────────────────────
+.line-cell {
+  display: flex;
+  flex-direction: column;
+  gap: $cell-gap;
+
+  // Every label is exactly $label-h tall and never wraps.
+  // This guarantees all input fields sit at the same vertical position.
+  label {
+    display: block;
+    height: $label-h;
+    line-height: $label-h;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  // Shared field style
+  input {
+    height: $input-h;
+    padding: 0 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: #0f172a;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover:not(:disabled) {
+      border-color: #94a3b8;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    &:disabled {
+      background: #f8fafc;
+      color: #94a3b8;
+      cursor: not-allowed;
+      border-color: #f1f5f9;
+    }
+  }
+}
+
+// ─── Hint text below item selector ──────────────────────────────────────────
+.input-hint {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-style: italic;
+  line-height: 1.3;
+  margin: 0;
+  padding-top: 2px;
+}
+
+// ─── Read-only computed cells ────────────────────────────────────────────────
+.line-computed {
+  .computed {
+    display: flex;
+    align-items: center;
+    height: $input-h;
+    padding: 0 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+    white-space: nowrap;
+  }
+}
+
+// ─── Delete button cell ──────────────────────────────────────────────────────
+.line-actions {
+  // Skip label height + gap so the button aligns with inputs
+  padding-top: $label-h + $cell-gap;
+
+  .btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: $input-h;
+    background: transparent;
+    color: #ef4444;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #fef2f2;
+    }
+  }
+}
+
+.lines-totals {
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-end;
+
+  .totals-row {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9375rem;
+    color: #334155;
+  }
+
+  .totals-total {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 1rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.4rem;
+    margin-top: 0.2rem;
+  }
+
+  .totals-label {
+    color: #64748b;
+  }
+
+  .totals-value {
+    min-width: 8rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  border: 1px solid transparent;
+
+  &.btn-sm {
+    padding: 0.4rem 0.75rem;
+  }
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #e2e8f0;
+
+  &:hover {
+    background: #e2e8f0;
+  }
+}

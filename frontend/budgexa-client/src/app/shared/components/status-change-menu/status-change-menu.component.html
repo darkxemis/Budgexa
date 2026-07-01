@@ -1,0 +1,36 @@
+<div class="status-change-menu">
+  <button
+    type="button"
+    class="status-change-btn"
+    (click)="toggle($event)"
+    [disabled]="disabled()"
+  >
+    {{ buttonLabel() | translate }}
+    <span class="chevron">▾</span>
+  </button>
+
+  @if (open()) {
+    <div class="status-dropdown" role="menu">
+      @if (loading()) {
+        <div class="status-loading">
+          <app-spinner [size]="16" />
+        </div>
+      } @else if (options().length === 0) {
+        <div class="status-empty">{{ 'grid.noResults' | translate }}</div>
+      } @else {
+        @for (option of options(); track option.id) {
+          <button
+            type="button"
+            class="status-option"
+            [class.current]="option.id === currentStatusId()"
+            [disabled]="option.id === currentStatusId()"
+            (click)="select(option)"
+            role="menuitem"
+          >
+            {{ option.name }}
+          </button>
+        }
+      }
+    </div>
+  }
+</div>

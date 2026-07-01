@@ -17,16 +17,16 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
-import { FormErrorComponent } from '../form-error/form-error.component';
-import { IconComponent } from '../icon/icon.component';
-import { SpinnerComponent } from '../spinner/spinner.component';
-import { LanguageApiService } from '../../../core/api/language-api.service';
-import { RoleApiService } from '../../../core/api/role-api.service';
-import { UserApiService } from '../../../core/api/user-api.service';
-import { Guid } from '../../../core/models/guid.model';
-import { Language, RoleInfo, UserDetailDto } from '../../../core/models/user.model';
-import { ToastService } from '../toast/toast.service';
-import { ToastType } from '../toast/toast.type';
+import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { LanguageApiService } from '../../../../core/api/language-api.service';
+import { RoleApiService } from '../../../../core/api/role-api.service';
+import { UserApiService } from '../../../../core/api/user-api.service';
+import { Guid } from '../../../../core/models/guid.model';
+import { Language, RoleInfo, UserDetailDto } from '../../../../core/models/user.model';
+import { ToastService } from '../../../../shared/components/toast/toast.service';
+import { ToastType } from '../../../../shared/components/toast/toast.type';
 
 export type UserFormMode = 'create' | 'edit';
 

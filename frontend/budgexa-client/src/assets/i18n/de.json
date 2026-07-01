@@ -24,6 +24,19 @@
   "role.notFound": "Rolle nicht gefunden.",
   "role.nameExists": "Rollenname existiert bereits.",
   "status.notFound": "Status nicht gefunden.",
+  "customer.notFound": "Kunde nicht gefunden.",
+  "customer.taxIdAlreadyExists": "Ein Kunde mit dieser Steuernummer existiert bereits.",
+  "item.notFound": "Artikel nicht gefunden.",
+  "item.skuAlreadyExists": "Ein Artikel mit dieser SKU existiert bereits.",
+  "budget.notFound": "Angebot nicht gefunden.",
+  "budget.numberAlreadyExists": "Ein Angebot mit dieser Nummer existiert bereits.",
+  "budget.invalidStatusTransition": "Ungültiger Statuswechsel für dieses Angebot.",
+  "budget.lineNotFound": "Angebotszeile nicht gefunden.",
+  "invoice.notFound": "Rechnung nicht gefunden.",
+  "invoice.numberAlreadyExists": "Eine Rechnung mit dieser Nummer existiert bereits.",
+  "invoice.invalidStatusTransition": "Ungültiger Statuswechsel für diese Rechnung.",
+  "invoice.lineNotFound": "Rechnungszeile nicht gefunden.",
+  "invoice.alreadyPaid": "Die Rechnung ist bereits vollständig bezahlt.",
   "server.internalError": "Interner Serverfehler. Bitte später erneut versuchen.",
   "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Dashboard",
+    "customers": "Kunden",
+    "items": "Artikel",
+    "budgets": "Angebote",
     "invoices": "Rechnungen",
     "users": "Benutzer",
     "toggleSidebar": "Seitenleiste umschalten",
@@ -58,6 +74,18 @@
     "title": "Dashboard",
     "subtitle": "Wählen Sie eine Option, um zu beginnen",
     "cards": {
+      "customers": {
+        "title": "Kunden",
+        "description": "Verwalten Sie Ihre Kundendatenbank"
+      },
+      "items": {
+        "title": "Artikel",
+        "description": "Verwalten Sie Ihren Produkt- und Servicekatalog"
+      },
+      "budgets": {
+        "title": "Angebote",
+        "description": "Erstellen und verfolgen Sie Ihre Angebote"
+      },
       "invoices": {
         "title": "Rechnungen",
         "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
@@ -69,13 +97,228 @@
     }
   },
 
+  "customers": {
+    "title": "Kunden",
+    "create": "Kunde erstellen",
+    "created": "Kunde erfolgreich erstellt",
+    "updated": "Kunde erfolgreich aktualisiert",
+    "deleted": "Kunde erfolgreich gelöscht",
+    "delete": {
+      "title": "Kunde löschen",
+      "message": "Möchten Sie den Kunden {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Kunde erstellen",
+      "editTitle": "Kunde bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Kunde erfolgreich erstellt",
+      "updated": "Kunde erfolgreich aktualisiert",
+      "legalName": "Firmenname",
+      "tradeName": "Handelsname",
+      "taxId": "Steuernummer",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "addressLine": "Adresse",
+      "postalCode": "Postleitzahl",
+      "city": "Stadt",
+      "province": "Bundesland",
+      "country": "Land",
+      "notes": "Notizen"
+    },
+    "grid": {
+      "legalName": "Firmenname",
+      "tradeName": "Handelsname",
+      "taxId": "Steuernummer",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "city": "Stadt",
+      "country": "Land",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    }
+  },
+
+  "items": {
+    "title": "Artikel",
+    "create": "Artikel erstellen",
+    "created": "Artikel erfolgreich erstellt",
+    "updated": "Artikel erfolgreich aktualisiert",
+    "deleted": "Artikel erfolgreich gelöscht",
+    "delete": {
+      "title": "Artikel löschen",
+      "message": "Möchten Sie den Artikel {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Artikel erstellen",
+      "editTitle": "Artikel bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Artikel erfolgreich erstellt",
+      "updated": "Artikel erfolgreich aktualisiert",
+      "sku": "SKU",
+      "name": "Name",
+      "description": "Beschreibung",
+      "type": "Typ",
+      "unit": "Einheit",
+      "unitPrice": "Einzelpreis",
+      "taxRate": "MwSt. (%)",
+      "currency": "Währung"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Name",
+      "type": "Typ",
+      "unit": "Einheit",
+      "unitPrice": "Einzelpreis",
+      "taxRate": "MwSt. (%)",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "types": {
+      "product": "Produkt",
+      "service": "Dienstleistung"
+    }
+  },
+
+  "budgets": {
+    "title": "Angebote",
+    "create": "Angebot erstellen",
+    "created": "Angebot erfolgreich erstellt",
+    "updated": "Angebot erfolgreich aktualisiert",
+    "deleted": "Angebot erfolgreich gelöscht",
+    "delete": {
+      "title": "Angebot löschen",
+      "message": "Möchten Sie das Angebot {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Angebot erstellen",
+      "editTitle": "Angebot bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Angebot erfolgreich erstellt",
+      "updated": "Angebot erfolgreich aktualisiert",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "validUntil": "Gültig bis",
+      "customer": "Kunde",
+      "currency": "Währung",
+      "notes": "Notizen",
+      "termsAndConditions": "Allgemeine Geschäftsbedingungen",
+      "lines": "Positionen",
+      "addLine": "Position hinzufügen",
+      "removeLine": "Position entfernen",
+      "selectItem": "Artikel auswählen",
+      "selectItemPlaceholder": "Artikel suchen...",
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie ✕ zum Löschen und manuellen Bearbeiten)",
+      "item": "Artikel",
+      "description": "Beschreibung",
+      "unit": "Einheit",
+      "quantity": "Menge",
+      "unitPrice": "Einzelpreis",
+      "discount": "Rabatt (%)",
+      "taxRate": "MwSt. (%)",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "MwSt.-Betrag",
+      "total": "Gesamt",
+      "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen."
+    },
+    "grid": {
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "validUntil": "Gültig bis",
+      "customer": "Kunde",
+      "total": "Gesamt",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "status": {
+      "change": "Status ändern",
+      "changed": "Status erfolgreich aktualisiert"
+    }
+  },
+
   "invoices": {
     "title": "Rechnungen",
-    "welcome": "Willkommen bei Rechnungen",
-    "description": "Verwalten Sie Ihre Rechnungen effizient. Erstellen, anzeigen und verfolgen Sie alle Ihre Rechnungen an einem Ort.",
-    "create": "Neue Rechnung erstellen",
-    "list": "Ihre Rechnungen",
-    "no-invoices": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung, um zu beginnen."
+    "create": "Rechnung erstellen",
+    "created": "Rechnung erfolgreich erstellt",
+    "updated": "Rechnung erfolgreich aktualisiert",
+    "deleted": "Rechnung erfolgreich gelöscht",
+    "delete": {
+      "title": "Rechnung löschen",
+      "message": "Möchten Sie die Rechnung {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Rechnung erstellen",
+      "editTitle": "Rechnung bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Rechnung erfolgreich erstellt",
+      "updated": "Rechnung erfolgreich aktualisiert",
+      "series": "Serie",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "dueDate": "Fälligkeitsdatum",
+      "customer": "Kunde",
+      "budget": "Ursprungsangebot",
+      "currency": "Währung",
+      "notes": "Notizen",
+      "lines": "Positionen",
+      "addLine": "Position hinzufügen",
+      "removeLine": "Position entfernen",
+      "item": "Artikel",
+      "description": "Beschreibung",
+      "unit": "Einheit",
+      "quantity": "Menge",
+      "unitPrice": "Einzelpreis",
+      "discount": "Rabatt (%)",
+      "taxRate": "MwSt. (%)",
+      "withholdingRate": "Einbehalt (%)",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "MwSt.-Betrag",
+      "withholdingAmount": "Einbehalt",
+      "total": "Gesamt",
+      "amountPaid": "Bezahlt",
+      "amountDue": "Offen",
+      "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen.",
+      "selectItem": "Artikel auswählen",
+      "selectItemPlaceholder": "Artikel suchen...",
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)"
+    },
+    "grid": {
+      "series": "Serie",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "dueDate": "Fälligkeitsdatum",
+      "customer": "Kunde",
+      "total": "Gesamt",
+      "amountPaid": "Bezahlt",
+      "amountDue": "Offen",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "status": {
+      "change": "Status ändern",
+      "changed": "Status erfolgreich aktualisiert"
+    },
+    "payment": {
+      "register": "Zahlung erfassen",
+      "registered": "Zahlung erfolgreich erfasst",
+      "amount": "Betrag",
+      "method": "Methode",
+      "reference": "Referenz",
+      "methods": {
+        "cash": "Bargeld",
+        "bankTransfer": "Banküberweisung",
+        "card": "Karte",
+        "directDebit": "Lastschrift",
+        "bizum": "Bizum",
+        "other": "Andere"
+      }
+    }
   },
 
   "users": {

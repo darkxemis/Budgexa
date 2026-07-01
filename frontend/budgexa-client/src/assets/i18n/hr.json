@@ -24,6 +24,19 @@
   "role.notFound": "Uloga nije pronađena.",
   "role.nameExists": "Naziv uloge već postoji.",
   "status.notFound": "Status nije pronađen.",
+  "customer.notFound": "Klijent nije pronađen.",
+  "customer.taxIdAlreadyExists": "Klijent s ovim OIB-om već postoji.",
+  "item.notFound": "Stavka nije pronađena.",
+  "item.skuAlreadyExists": "Stavka s ovim SKU-om već postoji.",
+  "budget.notFound": "Ponuda nije pronađena.",
+  "budget.numberAlreadyExists": "Ponuda s ovim brojem već postoji.",
+  "budget.invalidStatusTransition": "Nevaljana promjena statusa za ovu ponudu.",
+  "budget.lineNotFound": "Stavka ponude nije pronađena.",
+  "invoice.notFound": "Račun nije pronađen.",
+  "invoice.numberAlreadyExists": "Račun s ovim brojem već postoji.",
+  "invoice.invalidStatusTransition": "Nevaljana promjena statusa za ovaj račun.",
+  "invoice.lineNotFound": "Stavka računa nije pronađena.",
+  "invoice.alreadyPaid": "Račun je već u potpunosti plaćen.",
   "server.internalError": "Interna pogreška poslužitelja. Pokušajte kasnije.",
   "validation.failed": "Validacija nije uspjela. Provjerite unos.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Nadzorna ploča",
+    "customers": "Klijenti",
+    "items": "Stavke",
+    "budgets": "Ponude",
     "invoices": "Računi",
     "users": "Korisnici",
     "toggleSidebar": "Prebaci bočnu traku",
@@ -58,6 +74,18 @@
     "title": "Nadzorna ploča",
     "subtitle": "Odaberite opciju za početak",
     "cards": {
+      "customers": {
+        "title": "Klijenti",
+        "description": "Upravljajte svojim portfeljem klijenata"
+      },
+      "items": {
+        "title": "Stavke",
+        "description": "Upravljajte katalogom proizvoda i usluga"
+      },
+      "budgets": {
+        "title": "Ponude",
+        "description": "Kreirajte i pratite svoje ponude"
+      },
       "invoices": {
         "title": "Računi",
         "description": "Upravljajte i pratite svoje račune"
@@ -69,13 +97,228 @@
     }
   },
 
+  "customers": {
+    "title": "Klijenti",
+    "create": "Kreiraj klijenta",
+    "created": "Klijent uspješno kreiran",
+    "updated": "Klijent uspješno ažuriran",
+    "deleted": "Klijent uspješno obrisan",
+    "delete": {
+      "title": "Obriši klijenta",
+      "message": "Jeste li sigurni da želite obrisati klijenta {{ name }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj klijenta",
+      "editTitle": "Uredi klijenta",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Klijent uspješno kreiran",
+      "updated": "Klijent uspješno ažuriran",
+      "legalName": "Naziv tvrtke",
+      "tradeName": "Trgovački naziv",
+      "taxId": "OIB",
+      "email": "E-pošta",
+      "phone": "Telefon",
+      "addressLine": "Adresa",
+      "postalCode": "Poštanski broj",
+      "city": "Grad",
+      "province": "Županija",
+      "country": "Država",
+      "notes": "Napomene"
+    },
+    "grid": {
+      "legalName": "Naziv tvrtke",
+      "tradeName": "Trgovački naziv",
+      "taxId": "OIB",
+      "email": "E-pošta",
+      "phone": "Telefon",
+      "city": "Grad",
+      "country": "Država",
+      "status": "Status",
+      "createdAt": "Kreirano"
+    }
+  },
+
+  "items": {
+    "title": "Stavke",
+    "create": "Kreiraj stavku",
+    "created": "Stavka uspješno kreirana",
+    "updated": "Stavka uspješno ažurirana",
+    "deleted": "Stavka uspješno obrisana",
+    "delete": {
+      "title": "Obriši stavku",
+      "message": "Jeste li sigurni da želite obrisati stavku {{ name }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj stavku",
+      "editTitle": "Uredi stavku",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Stavka uspješno kreirana",
+      "updated": "Stavka uspješno ažurirana",
+      "sku": "SKU",
+      "name": "Naziv",
+      "description": "Opis",
+      "type": "Vrsta",
+      "unit": "Jedinica",
+      "unitPrice": "Jedinična cijena",
+      "taxRate": "PDV (%)",
+      "currency": "Valuta"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Naziv",
+      "type": "Vrsta",
+      "unit": "Jedinica",
+      "unitPrice": "Jedinična cijena",
+      "taxRate": "PDV (%)",
+      "currency": "Valuta",
+      "status": "Status",
+      "createdAt": "Kreirano"
+    },
+    "types": {
+      "product": "Proizvod",
+      "service": "Usluga"
+    }
+  },
+
+  "budgets": {
+    "title": "Ponude",
+    "create": "Kreiraj ponudu",
+    "created": "Ponuda uspješno kreirana",
+    "updated": "Ponuda uspješno ažurirana",
+    "deleted": "Ponuda uspješno obrisana",
+    "delete": {
+      "title": "Obriši ponudu",
+      "message": "Jeste li sigurni da želite obrisati ponudu {{ number }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj ponudu",
+      "editTitle": "Uredi ponudu",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Ponuda uspješno kreirana",
+      "updated": "Ponuda uspješno ažurirana",
+      "number": "Broj",
+      "issueDate": "Datum izdavanja",
+      "validUntil": "Vrijedi do",
+      "customer": "Klijent",
+      "currency": "Valuta",
+      "notes": "Napomene",
+      "termsAndConditions": "Uvjeti i odredbe",
+      "lines": "Stavke",
+      "addLine": "Dodaj stavku",
+      "removeLine": "Ukloni stavku",
+      "selectItem": "Odaberi stavku",
+      "selectItemPlaceholder": "Pretraži stavke...",
+      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite ✕ za brisanje i ručno uređivanje)",
+      "item": "Stavka",
+      "description": "Opis",
+      "unit": "Jedinica",
+      "quantity": "Količina",
+      "unitPrice": "Jedinična cijena",
+      "discount": "Popust (%)",
+      "taxRate": "PDV (%)",
+      "subtotal": "Međuzbroj",
+      "taxAmount": "Iznos PDV-a",
+      "total": "Ukupno",
+      "noLines": "Još nema stavki. Dodajte barem jednu za izračun ukupnih iznosa."
+    },
+    "grid": {
+      "number": "Broj",
+      "issueDate": "Datum izdavanja",
+      "validUntil": "Vrijedi do",
+      "customer": "Klijent",
+      "total": "Ukupno",
+      "currency": "Valuta",
+      "status": "Status",
+      "createdAt": "Kreirano"
+    },
+    "status": {
+      "change": "Promijeni status",
+      "changed": "Status uspješno ažuriran"
+    }
+  },
+
   "invoices": {
     "title": "Računi",
-    "welcome": "Dobrodošli u Račune",
-    "description": "Učinkovito upravljajte svojim računima. Kreirajte, pregledavajte i pratite sve svoje račune na jednom mjestu.",
-    "create": "Kreiraj Novi Račun",
-    "list": "Vaši Računi",
-    "no-invoices": "Još nema računa. Kreirajte svoj prvi račun da započnete."
+    "create": "Kreiraj račun",
+    "created": "Račun uspješno kreiran",
+    "updated": "Račun uspješno ažuriran",
+    "deleted": "Račun uspješno obrisan",
+    "delete": {
+      "title": "Obriši račun",
+      "message": "Jeste li sigurni da želite obrisati račun {{ number }}? Ova radnja se ne može poništiti."
+    },
+    "form": {
+      "createTitle": "Kreiraj račun",
+      "editTitle": "Uredi račun",
+      "create": "Kreiraj",
+      "creating": "Kreiranje...",
+      "created": "Račun uspješno kreiran",
+      "updated": "Račun uspješno ažuriran",
+      "series": "Serija",
+      "number": "Broj",
+      "issueDate": "Datum izdavanja",
+      "dueDate": "Datum dospijeća",
+      "customer": "Klijent",
+      "budget": "Izvorna ponuda",
+      "currency": "Valuta",
+      "notes": "Napomene",
+      "lines": "Stavke",
+      "addLine": "Dodaj stavku",
+      "removeLine": "Ukloni stavku",
+      "item": "Stavka",
+      "description": "Opis",
+      "unit": "Jedinica",
+      "quantity": "Količina",
+      "unitPrice": "Jedinična cijena",
+      "discount": "Popust (%)",
+      "taxRate": "PDV (%)",
+      "withholdingRate": "Zadržavanje (%)",
+      "subtotal": "Međuzbroj",
+      "taxAmount": "Iznos PDV-a",
+      "withholdingAmount": "Zadržavanje",
+      "total": "Ukupno",
+      "amountPaid": "Plaćeno",
+      "amountDue": "Preostalo",
+      "noLines": "Još nema stavki. Dodajte barem jednu za izračun ukupnih iznosa.",
+      "selectItem": "Odaberi stavku",
+      "selectItemPlaceholder": "Pretraži stavke...",
+      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite × za brisanje i ručno uređivanje)"
+    },
+    "grid": {
+      "series": "Serija",
+      "number": "Broj",
+      "issueDate": "Datum izdavanja",
+      "dueDate": "Datum dospijeća",
+      "customer": "Klijent",
+      "total": "Ukupno",
+      "amountPaid": "Plaćeno",
+      "amountDue": "Preostalo",
+      "currency": "Valuta",
+      "status": "Status",
+      "createdAt": "Kreirano"
+    },
+    "status": {
+      "change": "Promijeni status",
+      "changed": "Status uspješno ažuriran"
+    },
+    "payment": {
+      "register": "Evidentiraj plaćanje",
+      "registered": "Plaćanje uspješno evidentirano",
+      "amount": "Iznos",
+      "method": "Način",
+      "reference": "Referenca",
+      "methods": {
+        "cash": "Gotovina",
+        "bankTransfer": "Bankovna doznaka",
+        "card": "Kartica",
+        "directDebit": "Trajni nalog",
+        "bizum": "Bizum",
+        "other": "Ostalo"
+      }
+    }
   },
 
   "users": {

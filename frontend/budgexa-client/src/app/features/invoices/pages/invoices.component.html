@@ -1,12 +1,63 @@
 <div class="invoices-container">
   <div class="page-header">
     <h1 class="page-title">{{ 'invoices.title' | translate }}</h1>
-    <p class="page-description">{{ 'invoices.description' | translate }}</p>
+
+    <button
+      type="button"
+      class="btn btn-primary create-btn"
+      (click)="openCreate()"
+    >
+      <app-icon name="plus" [size]="16" />
+      <span>{{ 'invoices.create' | translate }}</span>
+    </button>
   </div>
 
   <main class="invoices-main">
     <div class="invoices-grid">
-      <p class="placeholder-text">{{ 'invoices.no-invoices' | translate }}</p>
+      <app-data-grid
+        [columns]="columns"
+        [actions]="actions"
+        [loading]="loading()"
+        [defaultPageSize]="10"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        [showSearch]="true"
+        [showPagination]="true"
+        (gridStateChange)="onGridStateChange($event)"
+      ></app-data-grid>
     </div>
   </main>
+
+  @if (formModalOpen()) {
+    <app-invoice-form-modal
+      [mode]="formMode()"
+      [invoiceId]="editingInvoiceId()"
+      (saved)="onFormSaved()"
+      (close)="onFormClosed()"
+    />
+  }
+
+  @if (paymentModalOpen() && paymentInvoice(); as invoice) {
+    <app-invoice-payment-modal
+      [invoiceId]="invoice.id"
+      [invoiceNumber]="invoice.series + '-' + invoice.number"
+      [currency]="invoice.currency"
+      [amountDue]="invoice.amountDue"
+      (registered)="onPaymentRegistered()"
+      (close)="onPaymentClosed()"
+    />
+  }
+
+  @if (deleteDialogOpen()) {
+    <app-confirm-dialog
+      title="invoices.delete.title"
+      message="invoices.delete.message"
+      [messageParams]="deleteMessageParams()"
+      confirmLabel="delete"
+      cancelLabel="cancel"
+      variant="danger"
+      [loading]="deleting()"
+      (confirm)="confirmDelete()"
+      (cancel)="cancelDelete()"
+    />
+  }
 </div>

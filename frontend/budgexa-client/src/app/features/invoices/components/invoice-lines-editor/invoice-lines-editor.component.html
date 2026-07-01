@@ -1,0 +1,133 @@
+<div class="lines-editor">
+  <div class="lines-header">
+    <h3>{{ 'invoices.form.lines' | translate }}</h3>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="addLine()">
+      + {{ 'invoices.form.addLine' | translate }}
+    </button>
+  </div>
+
+  @if (lines().length === 0) {
+    <p class="empty-lines">{{ 'invoices.form.noLines' | translate }}</p>
+  } @else {
+    <div class="lines-table">
+      @for (line of lines().controls; track $index; let i = $index) {
+        <div class="line-row" [formGroup]="line">
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.selectItem' | translate">{{ 'invoices.form.selectItem' | translate }}</label>
+            <app-autocomplete-selector
+              [options]="loadItemOptions"
+              [initialValue]="line.controls.itemId.value"
+              [placeholder]="'invoices.form.selectItemPlaceholder' | translate"
+              [disabled]="isItemSelected(i)"
+              (valueChange)="onItemSelected(i, $event)"
+            />
+            <small class="input-hint">{{ 'invoices.form.selectItemHint' | translate }}</small>
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.description' | translate">{{ 'invoices.form.description' | translate }}</label>
+            <input
+              type="text"
+              formControlName="description"
+              [placeholder]="'invoices.form.description' | translate"
+            />
+            <app-form-error [control]="line.controls.description" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.unit' | translate">{{ 'invoices.form.unit' | translate }}</label>
+            <input
+              type="text"
+              formControlName="unit"
+              [placeholder]="'invoices.form.unit' | translate"
+            />
+            <app-form-error [control]="line.controls.unit" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.quantity' | translate">{{ 'invoices.form.quantity' | translate }}</label>
+            <input type="number" min="1" step="1" formControlName="quantity" />
+            <app-form-error [control]="line.controls.quantity" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.unitPrice' | translate">{{ 'invoices.form.unitPrice' | translate }}</label>
+            <input type="number" min="0" step="0.01" formControlName="unitPrice" />
+            <app-form-error [control]="line.controls.unitPrice" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.discount' | translate">{{ 'invoices.form.discount' | translate }}</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              formControlName="discountPercentage"
+            />
+            <app-form-error [control]="line.controls.discountPercentage" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.taxRate' | translate">{{ 'invoices.form.taxRate' | translate }}</label>
+            <input type="number" min="0" max="100" step="0.01" formControlName="taxRate" />
+            <app-form-error [control]="line.controls.taxRate" />
+          </div>
+
+          <div class="line-cell">
+            <label [title]="'invoices.form.withholdingRate' | translate">{{ 'invoices.form.withholdingRate' | translate }}</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              formControlName="withholdingRate"
+            />
+            <app-form-error [control]="line.controls.withholdingRate" />
+          </div>
+
+          <div class="line-cell line-computed">
+            <label [title]="'invoices.form.subtotal' | translate">{{ 'invoices.form.subtotal' | translate }}</label>
+            <span class="computed">{{ lineSubtotal(i).toFixed(2) }} {{ currency() }}</span>
+          </div>
+
+          <div class="line-cell line-computed">
+            <label [title]="'invoices.form.total' | translate">{{ 'invoices.form.total' | translate }}</label>
+            <span class="computed">{{ lineTotal(i).toFixed(2) }} {{ currency() }}</span>
+          </div>
+
+          <div class="line-cell line-actions">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removeLine(i)"
+              [attr.aria-label]="'invoices.form.removeLine' | translate"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="lines-totals">
+      <div class="totals-row">
+        <span class="totals-label">{{ 'invoices.form.subtotal' | translate }}:</span>
+        <span class="totals-value">{{ totals().subtotal.toFixed(2) }} {{ currency() }}</span>
+      </div>
+      <div class="totals-row">
+        <span class="totals-label">{{ 'invoices.form.taxAmount' | translate }}:</span>
+        <span class="totals-value">{{ totals().taxAmount.toFixed(2) }} {{ currency() }}</span>
+      </div>
+      <div class="totals-row">
+        <span class="totals-label">{{ 'invoices.form.withholdingAmount' | translate }}:</span>
+        <span class="totals-value">-{{ totals().withholdingAmount.toFixed(2) }} {{ currency() }}</span>
+      </div>
+      <div class="totals-row totals-total">
+        <span class="totals-label">{{ 'invoices.form.total' | translate }}:</span>
+        <span class="totals-value">{{ totals().total.toFixed(2) }} {{ currency() }}</span>
+      </div>
+    </div>
+  }
+</div>

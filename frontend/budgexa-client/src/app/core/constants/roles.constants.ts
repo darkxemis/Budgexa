@@ -14,3 +14,10 @@ export const ADMIN_ROLES: readonly RoleName[] = [
   ROLE_NAMES.Administrator,
   ROLE_NAMES.SuperAdministrator,
 ];
+
+/** Roles allowed to manage customers and items sections. */
+export const ALL_ROLES: readonly RoleName[] = [
+  ROLE_NAMES.Freelance,
+  ROLE_NAMES.Administrator,
+  ROLE_NAMES.SuperAdministrator,
+];

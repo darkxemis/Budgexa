@@ -31,8 +31,11 @@ export class MainLayoutComponent {
 
   private readonly allNavItems: readonly NavItem[] = [
     { path: '/dashboard', icon: 'home', label: 'nav.dashboard' },
+    { path: '/customers', icon: 'briefcase', label: 'nav.customers' },
+    { path: '/items', icon: 'package', label: 'nav.items' },
+    { path: '/budgets', icon: 'clipboard', label: 'nav.budgets' },
     { path: '/invoices', icon: 'invoice', label: 'nav.invoices' },
-    { path: '/users', icon: 'users', label: 'nav.users', roles: ADMIN_ROLES },
+    { path: '/users', icon: 'shield', label: 'nav.users', roles: ADMIN_ROLES },
   ];
 
   protected readonly navItems = computed<readonly NavItem[]>(() => {

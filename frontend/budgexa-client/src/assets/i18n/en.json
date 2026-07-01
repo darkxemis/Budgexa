@@ -24,6 +24,19 @@
   "role.notFound": "Role not found.",
   "role.nameExists": "Role name already exists.",
   "status.notFound": "Status not found.",
+  "customer.notFound": "Customer not found.",
+  "customer.taxIdAlreadyExists": "A customer with this tax ID already exists.",
+  "item.notFound": "Item not found.",
+  "item.skuAlreadyExists": "An item with this SKU already exists.",
+  "budget.notFound": "Budget not found.",
+  "budget.numberAlreadyExists": "A budget with this number already exists.",
+  "budget.invalidStatusTransition": "Invalid status transition for this budget.",
+  "budget.lineNotFound": "Budget line not found.",
+  "invoice.notFound": "Invoice not found.",
+  "invoice.numberAlreadyExists": "An invoice with this number already exists.",
+  "invoice.invalidStatusTransition": "Invalid status transition for this invoice.",
+  "invoice.lineNotFound": "Invoice line not found.",
+  "invoice.alreadyPaid": "The invoice is already fully paid.",
   "server.internalError": "Internal server error. Please try again later.",
   "validation.failed": "Validation failed. Please check your input.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Dashboard",
+    "customers": "Customers",
+    "items": "Items",
+    "budgets": "Budgets",
     "invoices": "Invoices",
     "users": "Users",
     "toggleSidebar": "Toggle sidebar",
@@ -58,6 +74,18 @@
     "title": "Dashboard",
     "subtitle": "Select an option to get started",
     "cards": {
+      "customers": {
+        "title": "Customers",
+        "description": "Manage your customer portfolio"
+      },
+      "items": {
+        "title": "Items",
+        "description": "Manage your product and service catalog"
+      },
+      "budgets": {
+        "title": "Budgets",
+        "description": "Create and track your budgets"
+      },
       "invoices": {
         "title": "Invoices",
         "description": "Manage and track your invoices"
@@ -69,13 +97,228 @@
     }
   },
 
+  "customers": {
+    "title": "Customers",
+    "create": "Create Customer",
+    "created": "Customer created successfully",
+    "updated": "Customer updated successfully",
+    "deleted": "Customer deleted successfully",
+    "delete": {
+      "title": "Delete Customer",
+      "message": "Are you sure you want to delete the customer {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Customer",
+      "editTitle": "Edit Customer",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Customer created successfully",
+      "updated": "Customer updated successfully",
+      "legalName": "Legal Name",
+      "tradeName": "Trade Name",
+      "taxId": "Tax ID",
+      "email": "Email",
+      "phone": "Phone",
+      "addressLine": "Address",
+      "postalCode": "Postal Code",
+      "city": "City",
+      "province": "Province",
+      "country": "Country",
+      "notes": "Notes"
+    },
+    "grid": {
+      "legalName": "Legal Name",
+      "tradeName": "Trade Name",
+      "taxId": "Tax ID",
+      "email": "Email",
+      "phone": "Phone",
+      "city": "City",
+      "country": "Country",
+      "status": "Status",
+      "createdAt": "Created At"
+    }
+  },
+
+  "items": {
+    "title": "Items",
+    "create": "Create Item",
+    "created": "Item created successfully",
+    "updated": "Item updated successfully",
+    "deleted": "Item deleted successfully",
+    "delete": {
+      "title": "Delete Item",
+      "message": "Are you sure you want to delete the item {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Item",
+      "editTitle": "Edit Item",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Item created successfully",
+      "updated": "Item updated successfully",
+      "sku": "SKU",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "unit": "Unit",
+      "unitPrice": "Unit Price",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Name",
+      "type": "Type",
+      "unit": "Unit",
+      "unitPrice": "Unit Price",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "types": {
+      "product": "Product",
+      "service": "Service"
+    }
+  },
+
+  "budgets": {
+    "title": "Budgets",
+    "create": "Create Budget",
+    "created": "Budget created successfully",
+    "updated": "Budget updated successfully",
+    "deleted": "Budget deleted successfully",
+    "delete": {
+      "title": "Delete Budget",
+      "message": "Are you sure you want to delete budget {{ number }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Budget",
+      "editTitle": "Edit Budget",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Budget created successfully",
+      "updated": "Budget updated successfully",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "validUntil": "Valid Until",
+      "customer": "Customer",
+      "currency": "Currency",
+      "notes": "Notes",
+      "termsAndConditions": "Terms and Conditions",
+      "lines": "Lines",
+      "addLine": "Add Line",
+      "removeLine": "Remove Line",
+      "selectItem": "Select Item",
+      "selectItemPlaceholder": "Search item...",
+      "selectItemHint": "Optional: select an item from the catalog (use ✕ to clear and edit manually)",
+      "item": "Item",
+      "description": "Description",
+      "unit": "Unit",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "discount": "Discount (%)",
+      "taxRate": "Tax Rate (%)",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "total": "Total",
+      "noLines": "No lines yet. Add at least one to compute totals."
+    },
+    "grid": {
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "validUntil": "Valid Until",
+      "customer": "Customer",
+      "total": "Total",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "status": {
+      "change": "Change Status",
+      "changed": "Status updated successfully"
+    }
+  },
+
   "invoices": {
     "title": "Invoices",
-    "welcome": "Welcome to Invoices",
-    "description": "Manage your invoices efficiently. Create, view, and track all your invoices in one place.",
-    "create": "Create New Invoice",
-    "list": "Your Invoices",
-    "no-invoices": "No invoices yet. Create your first invoice to get started."
+    "create": "Create Invoice",
+    "created": "Invoice created successfully",
+    "updated": "Invoice updated successfully",
+    "deleted": "Invoice deleted successfully",
+    "delete": {
+      "title": "Delete Invoice",
+      "message": "Are you sure you want to delete invoice {{ number }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Invoice",
+      "editTitle": "Edit Invoice",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Invoice created successfully",
+      "updated": "Invoice updated successfully",
+      "series": "Series",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "customer": "Customer",
+      "budget": "Source budget",
+      "currency": "Currency",
+      "notes": "Notes",
+      "lines": "Lines",
+      "addLine": "Add Line",
+      "removeLine": "Remove Line",
+      "item": "Item",
+      "description": "Description",
+      "unit": "Unit",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "discount": "Discount (%)",
+      "taxRate": "Tax Rate (%)",
+      "withholdingRate": "Withholding (%)",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "withholdingAmount": "Withholding",
+      "total": "Total",
+      "amountPaid": "Paid",
+      "amountDue": "Due",
+      "noLines": "No lines yet. Add at least one to compute totals.",
+      "selectItem": "Select Item",
+      "selectItemPlaceholder": "Search item...",
+      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)"
+    },
+    "grid": {
+      "series": "Series",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "customer": "Customer",
+      "total": "Total",
+      "amountPaid": "Paid",
+      "amountDue": "Due",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "status": {
+      "change": "Change Status",
+      "changed": "Status updated successfully"
+    },
+    "payment": {
+      "register": "Register Payment",
+      "registered": "Payment registered successfully",
+      "amount": "Amount",
+      "method": "Method",
+      "reference": "Reference",
+      "methods": {
+        "cash": "Cash",
+        "bankTransfer": "Bank Transfer",
+        "card": "Card",
+        "directDebit": "Direct Debit",
+        "bizum": "Bizum",
+        "other": "Other"
+      }
+    }
   },
 
   "users": {

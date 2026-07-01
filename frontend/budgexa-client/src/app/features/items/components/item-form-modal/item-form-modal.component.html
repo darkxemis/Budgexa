@@ -1,0 +1,146 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'item-form-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <h2 id="item-form-title">{{ titleKey() | translate }}</h2>
+      <button
+        type="button"
+        class="close-btn"
+        (click)="onClose()"
+        [attr.aria-label]="'cancel' | translate"
+        [disabled]="loading()"
+      >
+        &times;
+      </button>
+    </div>
+
+    @if (loadingData()) {
+      <div class="modal-loading">
+        <app-spinner [size]="28" />
+        <span>{{ 'loading' | translate }}...</span>
+      </div>
+    } @else {
+      <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="item-sku">{{ 'items.form.sku' | translate }}</label>
+            <input
+              id="item-sku"
+              type="text"
+              formControlName="sku"
+              [placeholder]="'items.form.sku' | translate"
+            />
+            <app-form-error [control]="form.controls.sku" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-name">{{ 'items.form.name' | translate }}</label>
+            <input
+              id="item-name"
+              type="text"
+              formControlName="name"
+              [placeholder]="'items.form.name' | translate"
+            />
+            <app-form-error [control]="form.controls.name" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="item-description">{{ 'items.form.description' | translate }}</label>
+            <textarea
+              id="item-description"
+              formControlName="description"
+              rows="3"
+              [placeholder]="'items.form.description' | translate"
+            ></textarea>
+            <app-form-error [control]="form.controls.description" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-type">{{ 'items.form.type' | translate }}</label>
+            <select id="item-type" formControlName="type">
+              <option [ngValue]="ItemType.Product">{{ 'items.types.product' | translate }}</option>
+              <option [ngValue]="ItemType.Service">{{ 'items.types.service' | translate }}</option>
+            </select>
+            <app-form-error [control]="form.controls.type" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-unit">{{ 'items.form.unit' | translate }}</label>
+            <input
+              id="item-unit"
+              type="text"
+              formControlName="unit"
+              [placeholder]="'items.form.unit' | translate"
+            />
+            <app-form-error [control]="form.controls.unit" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-unitPrice">{{ 'items.form.unitPrice' | translate }}</label>
+            <input
+              id="item-unitPrice"
+              type="number"
+              step="0.01"
+              min="0"
+              formControlName="unitPrice"
+              [placeholder]="'items.form.unitPrice' | translate"
+            />
+            <app-form-error [control]="form.controls.unitPrice" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-taxRate">{{ 'items.form.taxRate' | translate }}</label>
+            <input
+              id="item-taxRate"
+              type="number"
+              step="0.01"
+              min="0"
+              max="100"
+              formControlName="taxRate"
+              [placeholder]="'items.form.taxRate' | translate"
+            />
+            <app-form-error [control]="form.controls.taxRate" />
+          </div>
+
+          <div class="input-group">
+            <label for="item-currency">{{ 'items.form.currency' | translate }}</label>
+            <input
+              id="item-currency"
+              type="text"
+              maxlength="3"
+              formControlName="currency"
+              [placeholder]="'items.form.currency' | translate"
+            />
+            <app-form-error [control]="form.controls.currency" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            {{ 'cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || form.disabled"
+          >
+            {{ submitKey() | translate }}
+            @if (loading()) {
+              <app-spinner [size]="14" color="#fff" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

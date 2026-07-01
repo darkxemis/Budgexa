@@ -1,0 +1,52 @@
+<div class="customers-container">
+  <div class="page-header">
+    <h1 class="page-title">{{ 'customers.title' | translate }}</h1>
+
+    <button
+      type="button"
+      class="btn btn-primary create-btn"
+      (click)="openCreate()"
+    >
+      <app-icon name="plus" [size]="16" />
+      <span>{{ 'customers.create' | translate }}</span>
+    </button>
+  </div>
+
+  <main class="customers-main">
+    <div class="customers-grid">
+      <app-data-grid
+        [columns]="columns"
+        [actions]="actions"
+        [loading]="loading()"
+        [defaultPageSize]="10"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        [showSearch]="true"
+        [showPagination]="true"
+        (gridStateChange)="onGridStateChange($event)"
+      ></app-data-grid>
+    </div>
+  </main>
+
+  @if (formModalOpen()) {
+    <app-customer-form-modal
+      [mode]="formMode()"
+      [customerId]="editingCustomerId()"
+      (saved)="onFormSaved()"
+      (close)="onFormClosed()"
+    />
+  }
+
+  @if (deleteDialogOpen()) {
+    <app-confirm-dialog
+      title="customers.delete.title"
+      message="customers.delete.message"
+      [messageParams]="deleteMessageParams()"
+      confirmLabel="delete"
+      cancelLabel="cancel"
+      variant="danger"
+      [loading]="deleting()"
+      (confirm)="confirmDelete()"
+      (cancel)="cancelDelete()"
+    />
+  }
+</div>

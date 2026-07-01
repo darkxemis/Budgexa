@@ -1,0 +1,87 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container payment-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'invoice-payment-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <div class="header-title">
+        <h2 id="invoice-payment-title">{{ 'invoices.payment.register' | translate }}</h2>
+        @if (invoiceNumber()) {
+          <span class="invoice-ref">#{{ invoiceNumber() }}</span>
+        }
+      </div>
+      <button
+        type="button"
+        class="close-btn"
+        (click)="onClose()"
+        [attr.aria-label]="'cancel' | translate"
+        [disabled]="loading()"
+      >
+        &times;
+      </button>
+    </div>
+
+    <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (amountDue() > 0) {
+        <div class="due-info">
+          <span>{{ 'invoices.form.amountDue' | translate }}:</span>
+          <strong>{{ amountDue().toFixed(2) }} {{ currency() }}</strong>
+        </div>
+      }
+
+      <div class="input-group">
+        <label for="payment-amount">{{ 'invoices.payment.amount' | translate }}</label>
+        <input
+          id="payment-amount"
+          type="number"
+          min="0.01"
+          step="0.01"
+          formControlName="amount"
+        />
+        <app-form-error [control]="form.controls.amount" />
+      </div>
+
+      <div class="input-group">
+        <label for="payment-method">{{ 'invoices.payment.method' | translate }}</label>
+        <select id="payment-method" formControlName="method">
+          @for (option of methods; track option.value) {
+            <option [ngValue]="option.value">{{ option.labelKey | translate }}</option>
+          }
+        </select>
+        <app-form-error [control]="form.controls.method" />
+      </div>
+
+      <div class="input-group">
+        <label for="payment-reference">{{ 'invoices.payment.reference' | translate }}</label>
+        <input
+          id="payment-reference"
+          type="text"
+          formControlName="reference"
+          maxlength="200"
+          [placeholder]="'invoices.payment.reference' | translate"
+        />
+        <app-form-error [control]="form.controls.reference" />
+      </div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="loading()"
+        >
+          {{ 'cancel' | translate }}
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading() || form.disabled">
+          {{ loading() ? ('saving' | translate) : ('invoices.payment.register' | translate) }}
+          @if (loading()) {
+            <app-spinner [size]="14" color="#fff" />
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

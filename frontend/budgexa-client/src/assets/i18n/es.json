@@ -24,6 +24,19 @@
   "role.notFound": "Rol no encontrado.",
   "role.nameExists": "El nombre del rol ya existe.",
   "status.notFound": "Estado no encontrado.",
+  "customer.notFound": "Cliente no encontrado.",
+  "customer.taxIdAlreadyExists": "Ya existe un cliente con este NIF/CIF.",
+  "item.notFound": "Artículo no encontrado.",
+  "item.skuAlreadyExists": "Ya existe un artículo con este SKU.",
+  "budget.notFound": "Presupuesto no encontrado.",
+  "budget.numberAlreadyExists": "Ya existe un presupuesto con este número.",
+  "budget.invalidStatusTransition": "Transición de estado no válida para este presupuesto.",
+  "budget.lineNotFound": "Línea de presupuesto no encontrada.",
+  "invoice.notFound": "Factura no encontrada.",
+  "invoice.numberAlreadyExists": "Ya existe una factura con este número.",
+  "invoice.invalidStatusTransition": "Transición de estado no válida para esta factura.",
+  "invoice.lineNotFound": "Línea de factura no encontrada.",
+  "invoice.alreadyPaid": "La factura ya está completamente pagada.",
   "server.internalError": "Error interno del servidor. Intenta más tarde.",
   "validation.failed": "Validación fallida. Revisa los datos.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Panel de Control",
+    "customers": "Clientes",
+    "items": "Artículos",
+    "budgets": "Presupuestos",
     "invoices": "Facturas",
     "users": "Usuarios",
     "toggleSidebar": "Alternar barra lateral",
@@ -58,6 +74,18 @@
     "title": "Panel de Control",
     "subtitle": "Selecciona una opción para comenzar",
     "cards": {
+      "customers": {
+        "title": "Clientes",
+        "description": "Gestiona tu cartera de clientes"
+      },
+      "items": {
+        "title": "Artículos",
+        "description": "Administra tu catálogo de productos y servicios"
+      },
+      "budgets": {
+        "title": "Presupuestos",
+        "description": "Crea y da seguimiento a tus presupuestos"
+      },
       "invoices": {
         "title": "Facturas",
         "description": "Gestiona y rastrea tus facturas"
@@ -69,13 +97,228 @@
     }
   },
 
+  "customers": {
+    "title": "Clientes",
+    "create": "Crear Cliente",
+    "created": "Cliente creado correctamente",
+    "updated": "Cliente actualizado correctamente",
+    "deleted": "Cliente eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Cliente",
+      "message": "¿Seguro que deseas eliminar al cliente {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Cliente",
+      "editTitle": "Editar Cliente",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Cliente creado correctamente",
+      "updated": "Cliente actualizado correctamente",
+      "legalName": "Razón Social",
+      "tradeName": "Nombre Comercial",
+      "taxId": "NIF/CIF",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "addressLine": "Dirección",
+      "postalCode": "Código Postal",
+      "city": "Ciudad",
+      "province": "Provincia",
+      "country": "País",
+      "notes": "Notas"
+    },
+    "grid": {
+      "legalName": "Razón Social",
+      "tradeName": "Nombre Comercial",
+      "taxId": "NIF/CIF",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "city": "Ciudad",
+      "country": "País",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    }
+  },
+
+  "items": {
+    "title": "Artículos",
+    "create": "Crear Artículo",
+    "created": "Artículo creado correctamente",
+    "updated": "Artículo actualizado correctamente",
+    "deleted": "Artículo eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Artículo",
+      "message": "¿Seguro que deseas eliminar el artículo {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Artículo",
+      "editTitle": "Editar Artículo",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Artículo creado correctamente",
+      "updated": "Artículo actualizado correctamente",
+      "sku": "SKU",
+      "name": "Nombre",
+      "description": "Descripción",
+      "type": "Tipo",
+      "unit": "Unidad",
+      "unitPrice": "Precio Unitario",
+      "taxRate": "IVA (%)",
+      "currency": "Moneda"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Nombre",
+      "type": "Tipo",
+      "unit": "Unidad",
+      "unitPrice": "Precio Unitario",
+      "taxRate": "IVA (%)",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "types": {
+      "product": "Producto",
+      "service": "Servicio"
+    }
+  },
+
+  "budgets": {
+    "title": "Presupuestos",
+    "create": "Crear Presupuesto",
+    "created": "Presupuesto creado correctamente",
+    "updated": "Presupuesto actualizado correctamente",
+    "deleted": "Presupuesto eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Presupuesto",
+      "message": "¿Seguro que deseas eliminar el presupuesto {{ number }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Presupuesto",
+      "editTitle": "Editar Presupuesto",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Presupuesto creado correctamente",
+      "updated": "Presupuesto actualizado correctamente",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "validUntil": "Válido Hasta",
+      "customer": "Cliente",
+      "currency": "Moneda",
+      "notes": "Notas",
+      "termsAndConditions": "Términos y Condiciones",
+      "lines": "Líneas",
+      "addLine": "Añadir Línea",
+      "removeLine": "Quitar Línea",
+      "selectItem": "Seleccionar Artículo",
+      "selectItemPlaceholder": "Buscar artículo...",
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)",
+      "item": "Artículo",
+      "description": "Descripción",
+      "unit": "Unidad",
+      "quantity": "Cantidad",
+      "unitPrice": "Precio Unitario",
+      "discount": "Descuento (%)",
+      "taxRate": "IVA (%)",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "total": "Total",
+      "noLines": "No hay líneas. Añade al menos una para calcular los totales."
+    },
+    "grid": {
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "validUntil": "Válido Hasta",
+      "customer": "Cliente",
+      "total": "Total",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "status": {
+      "change": "Cambiar Estado",
+      "changed": "Estado actualizado correctamente"
+    }
+  },
+
   "invoices": {
     "title": "Facturas",
-    "welcome": "Bienvenido a Facturas",
-    "description": "Gestiona tus facturas de manera eficiente. Crea, visualiza y rastrea todas tus facturas en un solo lugar.",
-    "create": "Crear Nueva Factura",
-    "list": "Tus Facturas",
-    "no-invoices": "Aún no hay facturas. Crea tu primera factura para comenzar."
+    "create": "Crear Factura",
+    "created": "Factura creada correctamente",
+    "updated": "Factura actualizada correctamente",
+    "deleted": "Factura eliminada correctamente",
+    "delete": {
+      "title": "Eliminar Factura",
+      "message": "¿Seguro que deseas eliminar la factura {{ number }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Factura",
+      "editTitle": "Editar Factura",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Factura creada correctamente",
+      "updated": "Factura actualizada correctamente",
+      "series": "Serie",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "dueDate": "Fecha de Vencimiento",
+      "customer": "Cliente",
+      "budget": "Presupuesto de origen",
+      "currency": "Moneda",
+      "notes": "Notas",
+      "lines": "Líneas",
+      "addLine": "Añadir Línea",
+      "removeLine": "Quitar Línea",
+      "item": "Artículo",
+      "description": "Descripción",
+      "unit": "Unidad",
+      "quantity": "Cantidad",
+      "unitPrice": "Precio Unitario",
+      "discount": "Descuento (%)",
+      "taxRate": "IVA (%)",
+      "withholdingRate": "Retención IRPF (%)",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "withholdingAmount": "Retención",
+      "total": "Total",
+      "amountPaid": "Cobrado",
+      "amountDue": "Pendiente",
+      "noLines": "No hay líneas. Añade al menos una para calcular los totales.",
+      "selectItem": "Seleccionar Artículo",
+      "selectItemPlaceholder": "Buscar artículo...",
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)"
+    },
+    "grid": {
+      "series": "Serie",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "dueDate": "Fecha de Vencimiento",
+      "customer": "Cliente",
+      "total": "Total",
+      "amountPaid": "Cobrado",
+      "amountDue": "Pendiente",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "status": {
+      "change": "Cambiar Estado",
+      "changed": "Estado actualizado correctamente"
+    },
+    "payment": {
+      "register": "Registrar Pago",
+      "registered": "Pago registrado correctamente",
+      "amount": "Importe",
+      "method": "Método",
+      "reference": "Referencia",
+      "methods": {
+        "cash": "Efectivo",
+        "bankTransfer": "Transferencia Bancaria",
+        "card": "Tarjeta",
+        "directDebit": "Domiciliación",
+        "bizum": "Bizum",
+        "other": "Otro"
+      }
+    }
   },
 
   "users": {
