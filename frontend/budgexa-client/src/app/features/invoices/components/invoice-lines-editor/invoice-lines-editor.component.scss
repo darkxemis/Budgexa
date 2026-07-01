@@ -194,6 +194,16 @@ $col-gap:   8px;
     margin-top: 0.2rem;
   }
 
+  .totals-discount,
+  .totals-withholding {
+    color: #dc2626;
+    .totals-value.discount,
+    .totals-value.withholding {
+      color: #dc2626;
+      font-weight: 600;
+    }
+  }
+
   .totals-label {
     color: #64748b;
   }

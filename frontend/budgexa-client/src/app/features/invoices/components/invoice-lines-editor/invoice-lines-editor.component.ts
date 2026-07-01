@@ -45,7 +45,9 @@ export type InvoiceLineFormGroup = FormGroup<{
 }>;
 
 export interface InvoiceTotals {
-  subtotal: number;
+  grossSubtotal: number;    // Total before discounts
+  discountAmount: number;   // Total discount applied
+  subtotal: number;         // Total after discounts (net)
   taxAmount: number;
   withholdingAmount: number;
   total: number;
@@ -84,10 +86,14 @@ export class InvoiceLinesEditorComponent {
   protected readonly totals = computed<InvoiceTotals>(() => {
     this._lineVersion(); // tracked dependency → rerun on value changes
     const rows = this.lines().controls.map(control => control.getRawValue());
+    let grossSubtotal = 0;
+    let discountAmount = 0;
     let subtotal = 0;
     let taxAmount = 0;
     let withholdingAmount = 0;
     for (const row of rows) {
+      const gross = row.quantity * row.unitPrice;
+      const discount = gross * (row.discountPercentage / 100);
       const t = computeLineTotals({
         quantity: row.quantity,
         unitPrice: row.unitPrice,
@@ -95,12 +101,14 @@ export class InvoiceLinesEditorComponent {
         taxRate: row.taxRate,
         withholdingRate: row.withholdingRate,
       });
+      grossSubtotal     += Math.round(gross * 100) / 100;
+      discountAmount    += Math.round(discount * 100) / 100;
       subtotal          += Math.round(t.subtotal          * 100) / 100;
       taxAmount         += Math.round(t.taxAmount         * 100) / 100;
       withholdingAmount += Math.round(t.withholdingAmount * 100) / 100;
     }
     const total = Math.round((subtotal + taxAmount - withholdingAmount) * 100) / 100;
-    return { subtotal, taxAmount, withholdingAmount, total };
+    return { grossSubtotal, discountAmount, subtotal, taxAmount, withholdingAmount, total };
   });
 
   constructor() {
@@ -197,7 +205,8 @@ export class InvoiceLinesEditorComponent {
       itemId: fb.control<Guid | null>(preset?.itemId ?? null),
       description: [preset?.description ?? '', [Validators.required, Validators.maxLength(500)]],
       unit: [preset?.unit ?? '', [Validators.required, Validators.maxLength(50)]],
-      quantity: [preset?.quantity ?? 1, [Validators.required, Validators.min(1)]],
+      // Quantity supports decimals: e.g., 2.5 hours, 1.75 kg, 3 units
+      quantity: [preset?.quantity ?? 1, [Validators.required, Validators.min(0.01)]],
       unitPrice: [preset?.unitPrice ?? 0, [Validators.required, Validators.min(0)]],
       discountPercentage: [
         preset?.discountPercentage ?? 0,

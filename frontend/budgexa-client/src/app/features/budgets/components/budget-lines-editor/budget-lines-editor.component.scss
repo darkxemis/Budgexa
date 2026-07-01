@@ -196,6 +196,14 @@ $col-gap:    8px;    // Gap between columns
     margin-top: 0.2rem;
   }
 
+  .totals-discount {
+    color: #dc2626;
+    .totals-value.discount {
+      color: #dc2626;
+      font-weight: 600;
+    }
+  }
+
   .totals-label {
     color: #64748b;
   }

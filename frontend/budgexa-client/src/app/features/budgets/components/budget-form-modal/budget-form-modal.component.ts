@@ -74,7 +74,7 @@ export class BudgetFormModalComponent implements OnInit {
   protected readonly loading = signal(false);
   protected readonly loadingData = signal(false);
   protected readonly changingStatus = signal(false);
-  protected readonly totals = signal<BudgetTotals>({ subtotal: 0, taxAmount: 0, total: 0 });
+  protected readonly totals = signal<BudgetTotals>({ grossSubtotal: 0, discountAmount: 0, subtotal: 0, taxAmount: 0, total: 0 });
   protected readonly initialCustomerId = signal<Guid | null>(null);
   protected readonly currentStatusId = signal<Guid | null>(null);
   protected readonly currentStatusName = signal<string | null>(null);
@@ -217,7 +217,8 @@ export class BudgetFormModalComponent implements OnInit {
         sortOrder: index,
         description: (line.description ?? '').trim(),
         unit: (line.unit ?? '').trim(),
-        quantity: Math.max(1, Math.round(Number(line.quantity) || 1)),
+        // Allow decimal quantities: 2.5 hours, 1.75 kg, etc.
+        quantity: Math.max(0.01, Number(line.quantity) || 0.01),
         unitPrice: Number(line.unitPrice) || 0,
         discountPercentage: Number(line.discountPercentage) || 0,
         taxRate: Number(line.taxRate) || 0,
@@ -293,13 +294,20 @@ export class BudgetFormModalComponent implements OnInit {
   }
 
   private recomputeTotals(): void {
+    let grossSubtotal = 0;
+    let discountAmount = 0;
     let subtotal = 0;
     let taxAmount = 0;
     for (const ctrl of this.linesArray.controls) {
-      const t = computeLineTotals(ctrl.getRawValue());
+      const raw = ctrl.getRawValue();
+      const gross = raw.quantity * raw.unitPrice;
+      const discount = gross * (raw.discountPercentage / 100);
+      const t = computeLineTotals(raw);
+      grossSubtotal += gross;
+      discountAmount += discount;
       subtotal += t.subtotal;
       taxAmount += t.taxAmount;
     }
-    this.totals.set({ subtotal, taxAmount, total: subtotal + taxAmount });
+    this.totals.set({ grossSubtotal, discountAmount, subtotal, taxAmount, total: subtotal + taxAmount });
   }
 }

@@ -47,7 +47,8 @@
 
           <div class="line-cell">
             <label [title]="'invoices.form.quantity' | translate">{{ 'invoices.form.quantity' | translate }}</label>
-            <input type="number" min="1" step="1" formControlName="quantity" />
+            <input type="number" min="0.01" step="0.01" formControlName="quantity" />
+            <small class="input-hint">{{ 'invoices.form.quantityHint' | translate }}</small>
             <app-form-error [control]="line.controls.quantity" />
           </div>
 
@@ -113,17 +114,29 @@
 
     <div class="lines-totals">
       <div class="totals-row">
-        <span class="totals-label">{{ 'invoices.form.subtotal' | translate }}:</span>
+        <span class="totals-label">{{ 'invoices.form.grossSubtotal' | translate }}:</span>
+        <span class="totals-value">{{ totals().grossSubtotal.toFixed(2) }} {{ currency() }}</span>
+      </div>
+      @if (totals().discountAmount > 0) {
+        <div class="totals-row totals-discount">
+          <span class="totals-label">{{ 'invoices.form.discountAmount' | translate }}:</span>
+          <span class="totals-value discount">-{{ totals().discountAmount.toFixed(2) }} {{ currency() }}</span>
+        </div>
+      }
+      <div class="totals-row">
+        <span class="totals-label">{{ 'invoices.form.netSubtotal' | translate }}:</span>
         <span class="totals-value">{{ totals().subtotal.toFixed(2) }} {{ currency() }}</span>
       </div>
       <div class="totals-row">
         <span class="totals-label">{{ 'invoices.form.taxAmount' | translate }}:</span>
         <span class="totals-value">{{ totals().taxAmount.toFixed(2) }} {{ currency() }}</span>
       </div>
-      <div class="totals-row">
-        <span class="totals-label">{{ 'invoices.form.withholdingAmount' | translate }}:</span>
-        <span class="totals-value">-{{ totals().withholdingAmount.toFixed(2) }} {{ currency() }}</span>
-      </div>
+      @if (totals().withholdingAmount > 0) {
+        <div class="totals-row totals-withholding">
+          <span class="totals-label">{{ 'invoices.form.withholdingAmount' | translate }}:</span>
+          <span class="totals-value withholding">-{{ totals().withholdingAmount.toFixed(2) }} {{ currency() }}</span>
+        </div>
+      }
       <div class="totals-row totals-total">
         <span class="totals-label">{{ 'invoices.form.total' | translate }}:</span>
         <span class="totals-value">{{ totals().total.toFixed(2) }} {{ currency() }}</span>
