@@ -26,12 +26,10 @@ import { SpinnerComponent } from '../spinner/spinner.component';
   templateUrl: './status-change-menu.component.html',
   styleUrl: './status-change-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(document:click)': 'onDocumentClick($event)',
-  },
 })
 export class StatusChangeMenuComponent {
   private readonly statusApi = inject(StatusApiService);
+  private _blurTimer?: ReturnType<typeof setTimeout>;
 
   /** Status selector group (e.g. "Budget" or "Invoice"). */
   readonly group = input.required<string>();
@@ -65,16 +63,19 @@ export class StatusChangeMenuComponent {
     this.open.update(value => !value);
   }
 
+  protected onBlur(): void {
+    this._blurTimer = setTimeout(() => {
+      this.open.set(false);
+    }, 150);
+  }
+
+  protected cancelBlur(): void {
+    clearTimeout(this._blurTimer);
+  }
+
   protected select(option: SelectorOption): void {
     this.open.set(false);
     this.statusSelected.emit(option.id);
-  }
-
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.status-change-menu')) {
-      this.open.set(false);
-    }
   }
 
   private async loadOptions(group: string): Promise<void> {
