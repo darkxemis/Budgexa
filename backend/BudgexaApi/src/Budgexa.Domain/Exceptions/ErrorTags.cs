@@ -27,6 +27,35 @@ public static class ErrorTags
         public const string NotFound = "status.notFound";
     }
 
+    public static class Customer
+    {
+        public const string NotFound = "customer.notFound";
+        public const string TaxIdAlreadyExists = "customer.taxIdAlreadyExists";
+    }
+
+    public static class Item
+    {
+        public const string NotFound = "item.notFound";
+        public const string SkuAlreadyExists = "item.skuAlreadyExists";
+    }
+
+    public static class Budget
+    {
+        public const string NotFound = "budget.notFound";
+        public const string NumberAlreadyExists = "budget.numberAlreadyExists";
+        public const string InvalidStatusTransition = "budget.invalidStatusTransition";
+        public const string LineNotFound = "budget.lineNotFound";
+    }
+
+    public static class Invoice
+    {
+        public const string NotFound = "invoice.notFound";
+        public const string NumberAlreadyExists = "invoice.numberAlreadyExists";
+        public const string InvalidStatusTransition = "invoice.invalidStatusTransition";
+        public const string LineNotFound = "invoice.lineNotFound";
+        public const string AlreadyPaid = "invoice.alreadyPaid";
+    }
+
     public static class Server
     {
         public const string InternalError = "server.internalError";

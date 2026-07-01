@@ -22,6 +22,164 @@ namespace Budgexa.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Budgexa.Domain.Entities.Budget", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nchar(3)")
+                        .HasColumnOrder(11)
+                        .IsFixedLength();
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(6);
+
+                    b.Property<DateOnly>("IssueDate")
+                        .HasColumnType("date")
+                        .HasColumnOrder(9);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnOrder(15);
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(8);
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(7);
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(12);
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(13);
+
+                    b.Property<string>("TermsAndConditions")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnOrder(16);
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(14);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<DateOnly?>("ValidUntil")
+                        .HasColumnType("date")
+                        .HasColumnOrder(10);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("CompanyId", "Number")
+                        .IsUnique();
+
+                    b.ToTable("Budgets", (string)null);
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.BudgetLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(8);
+
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(2);
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnOrder(6);
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int")
+                        .HasColumnOrder(3);
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(10);
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(11);
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(9);
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(12);
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnOrder(5);
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(7);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("BudgetLines", (string)null);
+                });
+
             modelBuilder.Entity("Budgexa.Domain.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
@@ -67,6 +225,377 @@ namespace Budgexa.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies", (string)null);
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("AddressLine")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnOrder(12);
+
+                    b.Property<string>("City")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnOrder(13);
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(16);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(10);
+
+                    b.Property<string>("LegalName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(7);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnOrder(17);
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(11);
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnOrder(14);
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnOrder(15);
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(9);
+
+                    b.Property<string>("TradeName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(8);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("CompanyId", "TaxId")
+                        .IsUnique();
+
+                    b.ToTable("Customers", (string)null);
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Invoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(18);
+
+                    b.Property<Guid?>("BudgetId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(8);
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nchar(3)")
+                        .HasColumnOrder(13)
+                        .IsFixedLength();
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(6);
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date")
+                        .HasColumnOrder(12);
+
+                    b.Property<DateOnly>("IssueDate")
+                        .HasColumnType("date")
+                        .HasColumnOrder(11);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnOrder(21);
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(10);
+
+                    b.Property<int?>("PaymentMethod")
+                        .HasColumnType("int")
+                        .HasColumnOrder(19);
+
+                    b.Property<string>("PaymentReference")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(20);
+
+                    b.Property<string>("Series")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnOrder(9);
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(7);
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(14);
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(15);
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(17);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("WithholdingAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(16);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("CompanyId", "Series", "Number")
+                        .IsUnique();
+
+                    b.ToTable("Invoices", (string)null);
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.InvoiceLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(8);
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(2);
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnOrder(6);
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int")
+                        .HasColumnOrder(3);
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(11);
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(12);
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(9);
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(14);
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnOrder(5);
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(7);
+
+                    b.Property<decimal>("WithholdingAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(13);
+
+                    b.Property<decimal>("WithholdingRate")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(10);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("InvoiceLines", (string)null);
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nchar(3)")
+                        .HasColumnOrder(14)
+                        .IsFixedLength();
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnOrder(9);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(8);
+
+                    b.Property<string>("Sku")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(7);
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(6);
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnOrder(13);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnOrder(10);
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnOrder(11);
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(12);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("CompanyId", "Sku")
+                        .IsUnique()
+                        .HasFilter("[Sku] IS NOT NULL");
+
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("Budgexa.Domain.Entities.Language", b =>
@@ -374,6 +903,90 @@ namespace Budgexa.Infrastructure.Migrations
                             Group = "Base",
                             Name = "Delete",
                             Value = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Draft",
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Sent",
+                            Value = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Approved",
+                            Value = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Rejected",
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Expired",
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-4111-8111-111111111111"),
+                            Group = "Budget",
+                            Name = "Invoiced",
+                            Value = 6
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "Draft",
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "Issued",
+                            Value = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "PartiallyPaid",
+                            Value = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "Paid",
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "Overdue",
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-2222-4222-8222-222222222222"),
+                            Group = "Invoice",
+                            Name = "Cancelled",
+                            Value = 6
                         });
                 });
 
@@ -458,6 +1071,342 @@ namespace Budgexa.Infrastructure.Migrations
                             LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
                             StatusId = new Guid("e5d4c3b2-a1f0-4e9d-8c7b-6a5f4e3d2c1b"),
                             Translation = "Izbriši"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("11111111-1111-4111-8111-111111111111"),
+                            Translation = "Draft"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("11111111-1111-4111-8111-111111111111"),
+                            Translation = "Borrador"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("11111111-1111-4111-8111-111111111111"),
+                            Translation = "Entwurf"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("11111111-1111-4111-8111-111111111111"),
+                            Translation = "Nacrt"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("22222222-1111-4111-8111-111111111111"),
+                            Translation = "Sent"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("22222222-1111-4111-8111-111111111111"),
+                            Translation = "Enviado"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("22222222-1111-4111-8111-111111111111"),
+                            Translation = "Gesendet"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("22222222-1111-4111-8111-111111111111"),
+                            Translation = "Poslano"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("33333333-1111-4111-8111-111111111111"),
+                            Translation = "Approved"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("33333333-1111-4111-8111-111111111111"),
+                            Translation = "Aprobado"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("33333333-1111-4111-8111-111111111111"),
+                            Translation = "Genehmigt"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("33333333-1111-4111-8111-111111111111"),
+                            Translation = "Odobreno"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("44444444-1111-4111-8111-111111111111"),
+                            Translation = "Rejected"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("44444444-1111-4111-8111-111111111111"),
+                            Translation = "Rechazado"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("44444444-1111-4111-8111-111111111111"),
+                            Translation = "Abgelehnt"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("44444444-1111-4111-8111-111111111111"),
+                            Translation = "Odbijeno"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("55555555-1111-4111-8111-111111111111"),
+                            Translation = "Expired"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("55555555-1111-4111-8111-111111111111"),
+                            Translation = "Caducado"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("55555555-1111-4111-8111-111111111111"),
+                            Translation = "Abgelaufen"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("55555555-1111-4111-8111-111111111111"),
+                            Translation = "Isteklo"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-4111-8111-aaaaaaaaaaa1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("66666666-1111-4111-8111-111111111111"),
+                            Translation = "Invoiced"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-4111-8111-aaaaaaaaaaa2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("66666666-1111-4111-8111-111111111111"),
+                            Translation = "Facturado"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-4111-8111-aaaaaaaaaaa3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("66666666-1111-4111-8111-111111111111"),
+                            Translation = "Fakturiert"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-4111-8111-aaaaaaaaaaa4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("66666666-1111-4111-8111-111111111111"),
+                            Translation = "Fakturirano"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("11111111-2222-4222-8222-222222222222"),
+                            Translation = "Draft"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("11111111-2222-4222-8222-222222222222"),
+                            Translation = "Borrador"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("11111111-2222-4222-8222-222222222222"),
+                            Translation = "Entwurf"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("11111111-2222-4222-8222-222222222222"),
+                            Translation = "Nacrt"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("22222222-2222-4222-8222-222222222222"),
+                            Translation = "Issued"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("22222222-2222-4222-8222-222222222222"),
+                            Translation = "Emitida"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("22222222-2222-4222-8222-222222222222"),
+                            Translation = "Ausgestellt"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("22222222-2222-4222-8222-222222222222"),
+                            Translation = "Izdano"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("33333333-2222-4222-8222-222222222222"),
+                            Translation = "Partially paid"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("33333333-2222-4222-8222-222222222222"),
+                            Translation = "Parcialmente pagada"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("33333333-2222-4222-8222-222222222222"),
+                            Translation = "Teilweise bezahlt"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("33333333-2222-4222-8222-222222222222"),
+                            Translation = "Djelomično plaćeno"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("44444444-2222-4222-8222-222222222222"),
+                            Translation = "Paid"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("44444444-2222-4222-8222-222222222222"),
+                            Translation = "Pagada"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("44444444-2222-4222-8222-222222222222"),
+                            Translation = "Bezahlt"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("44444444-2222-4222-8222-222222222222"),
+                            Translation = "Plaćeno"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("55555555-2222-4222-8222-222222222222"),
+                            Translation = "Overdue"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("55555555-2222-4222-8222-222222222222"),
+                            Translation = "Vencida"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("55555555-2222-4222-8222-222222222222"),
+                            Translation = "Überfällig"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("55555555-2222-4222-8222-222222222222"),
+                            Translation = "Dospjelo"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-2222-4222-8222-bbbbbbbbbbb1"),
+                            LanguageId = new Guid("b2c1d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"),
+                            StatusId = new Guid("66666666-2222-4222-8222-222222222222"),
+                            Translation = "Cancelled"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-2222-4222-8222-bbbbbbbbbbb2"),
+                            LanguageId = new Guid("c3d2e1f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f"),
+                            StatusId = new Guid("66666666-2222-4222-8222-222222222222"),
+                            Translation = "Cancelada"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-2222-4222-8222-bbbbbbbbbbb3"),
+                            LanguageId = new Guid("d4e3f2a1-b5c6-4d7e-8f9a-0b1c2d3e4f5a"),
+                            StatusId = new Guid("66666666-2222-4222-8222-222222222222"),
+                            Translation = "Storniert"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-2222-4222-8222-bbbbbbbbbbb4"),
+                            LanguageId = new Guid("e5f4a3b2-c6d7-4e8f-9a0b-1c2d3e4f5a6b"),
+                            StatusId = new Guid("66666666-2222-4222-8222-222222222222"),
+                            Translation = "Otkazano"
                         });
                 });
 
@@ -553,6 +1502,141 @@ namespace Budgexa.Infrastructure.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("Budgexa.Domain.Entities.Budget", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Customer", "Customer")
+                        .WithMany("Budgets")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.BudgetLine", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Budget", "Budget")
+                        .WithMany("Lines")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Budget");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Invoice", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Budget", "Budget")
+                        .WithMany("Invoices")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Budgexa.Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Customer", "Customer")
+                        .WithMany("Invoices")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Budget");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.InvoiceLine", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Invoice", "Invoice")
+                        .WithMany("Lines")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Item", b =>
+                {
+                    b.HasOne("Budgexa.Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Budgexa.Domain.Entities.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("Budgexa.Domain.Entities.LanguageTranslation", b =>
                 {
                     b.HasOne("Budgexa.Domain.Entities.Language", "Language")
@@ -646,9 +1730,28 @@ namespace Budgexa.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Budgexa.Domain.Entities.Budget", b =>
+                {
+                    b.Navigation("Invoices");
+
+                    b.Navigation("Lines");
+                });
+
             modelBuilder.Entity("Budgexa.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Budgets");
+
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("Budgexa.Domain.Entities.Invoice", b =>
+                {
+                    b.Navigation("Lines");
                 });
 
             modelBuilder.Entity("Budgexa.Domain.Entities.Language", b =>

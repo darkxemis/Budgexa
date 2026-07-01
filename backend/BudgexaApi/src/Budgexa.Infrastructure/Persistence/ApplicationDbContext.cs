@@ -16,6 +16,12 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Language> Languages => Set<Language>();
     public DbSet<LanguageTranslation> LanguageTranslations => Set<LanguageTranslation>();
     public DbSet<Company> Companies => Set<Company>();
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Item> Items => Set<Item>();
+    public DbSet<Budget> Budgets => Set<Budget>();
+    public DbSet<BudgetLine> BudgetLines => Set<BudgetLine>();
+    public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

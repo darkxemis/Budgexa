@@ -58,7 +58,10 @@ app.UseAuthorization();
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapRoleEndpoints();
+app.MapCustomersEndpoints();
+app.MapItemsEndpoints();
 app.MapBudgetsEndpoints();
+app.MapInvoicesEndpoints();
 app.MapLanguagesEndpoints();
 app.MapStatusEndpoints();
 

@@ -5,7 +5,7 @@ using Budgexa.Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 
-public sealed class ValidationBehavior<TRequest, TResponse>(
+internal sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
