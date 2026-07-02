@@ -1,4 +1,4 @@
-namespace Budgexa.Application.Budgets.Services;
+namespace Budgexa.Application.PublicBudgets.Services;
 
 using Budgexa.Application.Budgets.DTOs;
 

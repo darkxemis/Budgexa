@@ -20,6 +20,8 @@ public interface IApplicationDbContext
     DbSet<BudgetLine> BudgetLines { get; }
     DbSet<Invoice> Invoices { get; }
     DbSet<InvoiceLine> InvoiceLines { get; }
+    DbSet<PublicBudget> PublicBudgets { get; }
+    DbSet<PublicBudgetLine> PublicBudgetLines { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

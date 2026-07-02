@@ -56,6 +56,14 @@ public static class ErrorTags
         public const string AlreadyPaid = "invoice.alreadyPaid";
     }
 
+    public static class PublicBudget
+    {
+        public const string CompanyNotFound = "publicBudget.companyNotFound";
+        public const string CompanyContractExpired = "publicBudget.companyContractExpired";
+        public const string ItemNotFound = "publicBudget.itemNotFound";
+        public const string ItemNotBelongToCompany = "publicBudget.itemNotBelongToCompany";
+    }
+
     public static class Server
     {
         public const string InternalError = "server.internalError";

@@ -1,8 +1,8 @@
 namespace Budgexa.Infrastructure;
 
 using Budgexa.Application.Auth;
-using Budgexa.Application.Budgets.Services;
 using Budgexa.Application.Common.Interfaces;
+using Budgexa.Application.PublicBudgets.Services;
 using Budgexa.Domain.Constants;
 using Budgexa.Domain.Interfaces;
 using Budgexa.Infrastructure.AI;
@@ -10,6 +10,7 @@ using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.BackgroundServices;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Services;
+using Budgexa.Infrastructure.Services.Pdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -51,6 +52,7 @@ public static class DependencyInjection
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<IPublicBudgetPdfService, PublicBudgetPdfService>();
         services.AddSingleton<IAiService, OllamaSharpAiService>();
     }
 

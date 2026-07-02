@@ -3,9 +3,12 @@ using Budgexa.API.Endpoints;
 using Budgexa.Application;
 using Budgexa.Infrastructure;
 using Budgexa.Infrastructure.Persistence;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 using Scalar.AspNetCore;
 using Serilog;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,19 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddFixedWindowLimiter("PublicBudgetLimit", cfg =>
+    {
+        cfg.Window = TimeSpan.FromHours(1);
+        cfg.PermitLimit = 5;
+        cfg.QueueLimit = 0;
+    });
+});
+
+QuestPDF.Settings.License = LicenseType.Community;
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -54,6 +70,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
@@ -64,6 +81,7 @@ app.MapBudgetsEndpoints();
 app.MapInvoicesEndpoints();
 app.MapLanguagesEndpoints();
 app.MapStatusEndpoints();
+app.MapPublicBudgetsEndpoints();
 
 // Automatically apply pending EF Core migrations at startup.
 // This ensures the database schema is always up to date with the latest model changes.

@@ -22,6 +22,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<BudgetLine> BudgetLines => Set<BudgetLine>();
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
+    public DbSet<PublicBudget> PublicBudgets => Set<PublicBudget>();
+    public DbSet<PublicBudgetLine> PublicBudgetLines => Set<PublicBudgetLine>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
