@@ -118,6 +118,11 @@
             />
             <app-form-error [control]="form.controls.currency" />
           </div>
+
+          <div class="input-group full-width computed-total">
+            <label>{{ 'items.form.totalWithTax' | translate }}</label>
+            <span class="computed-value">{{ totalWithTax() | number:'1.2-2' }} {{ form.controls.currency.value }}</span>
+          </div>
         </div>
 
         <div class="modal-actions">

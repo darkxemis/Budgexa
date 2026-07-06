@@ -9,11 +9,13 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
@@ -33,6 +35,7 @@ export type ItemFormMode = 'create' | 'edit';
     TranslateModule,
     SpinnerComponent,
     FormErrorComponent,
+    DecimalPipe,
   ],
   templateUrl: './item-form-modal.component.html',
   styleUrl: './item-form-modal.component.scss',
@@ -75,6 +78,17 @@ export class ItemFormModalComponent implements OnInit {
     unitPrice: [0, [Validators.required, Validators.min(0)]],
     taxRate: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
     currency: ['EUR', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]],
+  });
+
+  private readonly formValues = toSignal(this.form.valueChanges, {
+    initialValue: this.form.getRawValue(),
+  });
+
+  protected readonly totalWithTax = computed(() => {
+    const values = this.formValues();
+    const price = Number(values.unitPrice) || 0;
+    const tax = Number(values.taxRate) || 0;
+    return price + (price * tax / 100);
   });
 
   ngOnInit(): void {

@@ -163,7 +163,8 @@
       "unit": "Unit",
       "unitPrice": "Unit Price",
       "taxRate": "Tax Rate (%)",
-      "currency": "Currency"
+      "currency": "Currency",
+      "totalWithTax": "Total with Tax"
     },
     "grid": {
       "sku": "SKU",

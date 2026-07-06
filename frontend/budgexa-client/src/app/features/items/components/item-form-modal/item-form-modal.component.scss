@@ -133,6 +133,18 @@
     resize: vertical;
     min-height: 84px;
   }
+
+  &.computed-total {
+    .computed-value {
+      padding: 0.65rem 0.875rem;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+  }
 }
 
 .modal-actions {

@@ -163,7 +163,8 @@
       "unit": "Unidad",
       "unitPrice": "Precio Unitario",
       "taxRate": "IVA (%)",
-      "currency": "Moneda"
+      "currency": "Moneda",
+      "totalWithTax": "Total con IVA"
     },
     "grid": {
       "sku": "SKU",

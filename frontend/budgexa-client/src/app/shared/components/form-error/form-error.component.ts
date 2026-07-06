@@ -1,5 +1,5 @@
-import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -11,22 +11,41 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorComponent {
-  control = input.required<AbstractControl | null>();
+  readonly control = input.required<AbstractControl | null>();
 
   private readonly errorMessages: Record<string, string> = {
     required: 'validations.required',
     email: 'validations.email',
     minlength: 'validations.minlength',
     maxlength: 'validations.maxlength',
-    pattern: 'validations.pattern'
+    pattern: 'validations.pattern',
   };
 
-  errorKey = computed(() => {
-    const keys = Object.keys(this.control()?.errors || {});
-    return keys.length > 0 ? keys[0] : '';
+  private readonly touched = signal(false);
+  private readonly errors = signal<ValidationErrors | null>(null);
+
+  readonly showError = computed(() => this.touched() && this.errors() != null);
+
+  readonly errorMessage = computed(() => {
+    const keys = Object.keys(this.errors() || {});
+    const key = keys.length > 0 ? keys[0] : '';
+    return this.errorMessages[key] || 'validations.invalid';
   });
 
-  errorMessage = computed(() => {
-    return this.errorMessages[this.errorKey()] || 'validations.invalid';
-  });
+  constructor() {
+    effect((onCleanup) => {
+      const ctrl = this.control();
+      if (!ctrl) return;
+
+      this.touched.set(ctrl.touched);
+      this.errors.set(ctrl.errors);
+
+      const sub = ctrl.events.subscribe(() => {
+        this.touched.set(ctrl.touched);
+        this.errors.set(ctrl.errors);
+      });
+
+      onCleanup(() => sub.unsubscribe());
+    });
+  }
 }

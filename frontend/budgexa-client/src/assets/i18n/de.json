@@ -163,7 +163,8 @@
       "unit": "Einheit",
       "unitPrice": "Einzelpreis",
       "taxRate": "MwSt. (%)",
-      "currency": "Währung"
+      "currency": "Währung",
+      "totalWithTax": "Gesamt inkl. MwSt."
     },
     "grid": {
       "sku": "SKU",

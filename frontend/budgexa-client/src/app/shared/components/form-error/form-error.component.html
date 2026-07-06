@@ -1,4 +1,4 @@
-@if (control()?.touched && control()?.errors) {
+@if (showError()) {
   <div class="error-container">
     <small class="error-text">
       {{ errorMessage() | translate }}

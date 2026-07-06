@@ -163,7 +163,8 @@
       "unit": "Jedinica",
       "unitPrice": "Jedinična cijena",
       "taxRate": "PDV (%)",
-      "currency": "Valuta"
+      "currency": "Valuta",
+      "totalWithTax": "Ukupno s PDV-om"
     },
     "grid": {
       "sku": "SKU",
