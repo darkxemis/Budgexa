@@ -468,6 +468,13 @@
         "description": "Gestiona usuarios y permisos"
       }
     }
+  },
+  "shared": {
+    "voice": {
+      "start": "Pulsa para dictar",
+      "stop": "Pulsa para parar",
+      "listening": "Escuchando... habla ahora"
+    }
   }
 }
 

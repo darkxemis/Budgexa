@@ -469,5 +469,12 @@
         "description": "Upravljajte korisnicima i dozvolama"
       }
     }
+  },
+  "shared": {
+    "voice": {
+      "start": "Dodirnite za diktiranje",
+      "stop": "Dodirnite za zaustavljanje",
+      "listening": "Slušam... govorite sada"
+    }
   }
 }

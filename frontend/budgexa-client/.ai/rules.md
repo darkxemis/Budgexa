@@ -12,6 +12,7 @@
 3. **inject()** - Use with `readonly` keyword
 4. **Standalone** - All components standalone with explicit imports
 5. **TranslateModule** - Import when using `| translate` pipe
+6. **No `any`** - Never use `any`. Define interfaces, use `unknown`, or use `Record<string, unknown>` for untyped objects. For browser APIs not in TS stdlib, create a local interface with the minimal shape needed.
 
 ## Signals Rules (MANDATORY)
 - **Use `signal()`** for all mutable component state

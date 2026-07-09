@@ -469,5 +469,12 @@
         "description": "Verwalten Sie Benutzer und Berechtigungen"
       }
     }
+  },
+  "shared": {
+    "voice": {
+      "start": "Tippen zum Diktieren",
+      "stop": "Tippen zum Stoppen",
+      "listening": "Zuhören... sprechen Sie jetzt"
+    }
   }
 }

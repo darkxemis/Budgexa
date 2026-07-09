@@ -467,6 +467,13 @@
         "description": "Manage users and permissions"
       }
     }
+  },
+  "shared": {
+    "voice": {
+      "start": "Tap to dictate",
+      "stop": "Tap to stop",
+      "listening": "Listening... speak now"
+    }
   }
 }
 

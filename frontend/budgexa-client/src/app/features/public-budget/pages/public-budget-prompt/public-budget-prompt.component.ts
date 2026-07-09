@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { LanguageSelectorComponent } from '../../../../shared/components/language-selector/language-selector.component';
+import { VoiceInputComponent } from '../../../../shared/components/voice-input/voice-input.component';
 import { PublicBudgetApiService } from '../../services/public-budget-api.service';
 import { PublicBudgetStore } from '../../services/public-budget.store';
 import { Guid } from '../../../../core/models/guid.model';
@@ -11,7 +12,7 @@ import { Guid } from '../../../../core/models/guid.model';
 @Component({
   selector: 'app-public-budget-prompt',
   standalone: true,
-  imports: [FormsModule, TranslateModule, SpinnerComponent, LanguageSelectorComponent],
+  imports: [FormsModule, TranslateModule, SpinnerComponent, LanguageSelectorComponent, VoiceInputComponent],
   templateUrl: './public-budget-prompt.component.html',
   styleUrl: './public-budget-prompt.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
