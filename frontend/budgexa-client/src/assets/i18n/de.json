@@ -70,33 +70,6 @@
   "confirm": "Bestätigen",
   "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
 
-  "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Wählen Sie eine Option, um zu beginnen",
-    "cards": {
-      "customers": {
-        "title": "Kunden",
-        "description": "Verwalten Sie Ihre Kundendatenbank"
-      },
-      "items": {
-        "title": "Artikel",
-        "description": "Verwalten Sie Ihren Produkt- und Servicekatalog"
-      },
-      "budgets": {
-        "title": "Angebote",
-        "description": "Erstellen und verfolgen Sie Ihre Angebote"
-      },
-      "invoices": {
-        "title": "Rechnungen",
-        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
-      },
-      "users": {
-        "title": "Benutzer",
-        "description": "Benutzer und Berechtigungen verwalten"
-      }
-    }
-  },
-
   "customers": {
     "title": "Kunden",
     "create": "Kunde erstellen",
@@ -408,6 +381,93 @@
       "lessThan": "Kleiner als",
       "greaterThanOrEqual": "Größer oder gleich",
       "lessThanOrEqual": "Kleiner oder gleich"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "KI-Budgetgenerator",
+      "subtitle": "Beschreiben Sie, was Sie benötigen, und unsere KI erstellt ein detailliertes Angebot für Sie.",
+      "label": "Wofür benötigen Sie ein Angebot?",
+      "placeholder": "Beschreiben Sie die Produkte oder Dienstleistungen, die Sie benötigen. Zum Beispiel: 4 Aluminiumfenster, 2 Außentüren und Montage...",
+      "examplesTitle": "💡 Beispielanfragen:",
+      "example1": "Ich brauche 4 Aluminiumfenster (120x150cm), 2 PVC-Außentüren und Montage.",
+      "example2": "Angebot für das Streichen von 3 Zimmern, Deckenreparatur und Fassadenbehandlung.",
+      "example3": "Angebot für komplette Badsanierung inklusive Sanitär und Fliesen.",
+      "submit": "Angebot mit KI generieren",
+      "loadingTitle": "Ihr Angebot wird erstellt...",
+      "loadingMessage": "Unsere KI analysiert Ihre Anfrage und gleicht sie mit verfügbaren Produkten und Dienstleistungen ab. Dies kann einige Sekunden dauern."
+    },
+    "review": {
+      "title": "Ihr Angebot",
+      "subtitle": "Überprüfen Sie die Positionen, passen Sie Mengen an und laden Sie Ihr PDF-Angebot herunter.",
+      "itemsTitle": "Angebotspositionen",
+      "noItems": "Keine Positionen verfügbar. Gehen Sie zurück und beschreiben Sie Ihre Anforderungen.",
+      "unitPrice": "Einzelpreis",
+      "tax": "MwSt.",
+      "quantity": "Menge",
+      "lineTotal": "Zeilensumme",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "Steuerbetrag",
+      "total": "Gesamt",
+      "customerTitle": "Ihre Daten",
+      "firstNamePlaceholder": "Vorname eingeben",
+      "lastNamePlaceholder": "Nachname eingeben",
+      "phone": "Telefon",
+      "phonePlaceholder": "Telefonnummer eingeben",
+      "email": "E-Mail",
+      "emailPlaceholder": "E-Mail-Adresse eingeben",
+      "contactHint": "Bitte geben Sie mindestens eine Telefonnummer oder E-Mail an.",
+      "goBack": "← Zurück",
+      "download": "Bestätigen & PDF herunterladen",
+      "downloading": "PDF wird erstellt...",
+      "successTitle": "Angebot heruntergeladen!",
+      "successMessage": "Ihr Angebot wurde erfolgreich erstellt und heruntergeladen. Sie können bei Bedarf ein neues erstellen.",
+      "newBudget": "Neues Angebot erstellen",
+      "addItem": "Artikel aus Katalog hinzufügen",
+      "closeSearch": "Schließen",
+      "searchItemPlaceholder": "Produkte oder Dienstleistungen suchen...",
+      "noSearchResults": "Keine Artikel gefunden. Versuchen Sie einen anderen Suchbegriff."
+    },
+    "errors": {
+      "rateLimit": "Zu viele Anfragen. Bitte warten Sie einen Moment und versuchen Sie es erneut.",
+      "companyNotFound": "Unternehmen nicht gefunden. Bitte überprüfen Sie den Link.",
+      "itemsNotFound": "Einige Artikel sind nicht mehr verfügbar. Bitte gehen Sie zurück und versuchen Sie es erneut.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Wählen Sie eine Option zum Starten",
+    "aiShare": {
+      "title": "KI-Budget-Link für Kunden",
+      "description": "Teilen Sie diesen Link mit Ihren Kunden, damit sie KI-gestützte Angebote mit Ihrem Produktkatalog erstellen können.",
+      "copyLink": "📋 Link kopieren",
+      "copied": "Kopiert!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Kunden",
+        "description": "Verwalten Sie Ihr Kundenportfolio"
+      },
+      "items": {
+        "title": "Artikel",
+        "description": "Verwalten Sie Ihren Produkt- und Dienstleistungskatalog"
+      },
+      "budgets": {
+        "title": "Angebote",
+        "description": "Erstellen und verfolgen Sie Ihre Angebote"
+      },
+      "invoices": {
+        "title": "Rechnungen",
+        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
+      },
+      "users": {
+        "title": "Benutzer",
+        "description": "Verwalten Sie Benutzer und Berechtigungen"
+      }
     }
   }
 }

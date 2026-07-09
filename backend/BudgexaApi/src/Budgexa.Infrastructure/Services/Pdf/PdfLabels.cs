@@ -3,6 +3,8 @@ namespace Budgexa.Infrastructure.Services.Pdf;
 internal sealed record PdfLabels(
     string Title,
     string CustomerLabel,
+    string PhoneLabel,
+    string EmailLabel,
     string DateLabel,
     string ItemColumn,
     string QuantityColumn,

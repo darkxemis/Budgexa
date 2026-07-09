@@ -70,33 +70,6 @@
   "confirm": "Confirmar",
   "settingsUpdated": "Configuración actualizada correctamente",
 
-  "dashboard": {
-    "title": "Panel de Control",
-    "subtitle": "Selecciona una opción para comenzar",
-    "cards": {
-      "customers": {
-        "title": "Clientes",
-        "description": "Gestiona tu cartera de clientes"
-      },
-      "items": {
-        "title": "Artículos",
-        "description": "Administra tu catálogo de productos y servicios"
-      },
-      "budgets": {
-        "title": "Presupuestos",
-        "description": "Crea y da seguimiento a tus presupuestos"
-      },
-      "invoices": {
-        "title": "Facturas",
-        "description": "Gestiona y rastrea tus facturas"
-      },
-      "users": {
-        "title": "Usuarios",
-        "description": "Gestiona usuarios y permisos"
-      }
-    }
-  },
-
   "customers": {
     "title": "Clientes",
     "create": "Crear Cliente",
@@ -407,6 +380,93 @@
       "lessThan": "Menor que",
       "greaterThanOrEqual": "Mayor o Igual",
       "lessThanOrEqual": "Menor o Igual"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "Generador de Presupuestos con IA",
+      "subtitle": "Describe lo que necesitas y nuestra IA creará un presupuesto detallado para ti.",
+      "label": "¿Para qué necesitas un presupuesto?",
+      "placeholder": "Describe los productos o servicios que necesitas. Por ejemplo: 4 ventanas de aluminio, 2 puertas exteriores e instalación...",
+      "examplesTitle": "💡 Ejemplos de solicitudes:",
+      "example1": "Necesito 4 ventanas de aluminio (120x150cm), 2 puertas exteriores de PVC e instalación.",
+      "example2": "Presupuesto para pintar 3 habitaciones, reparación de techo y tratamiento de fachada exterior.",
+      "example3": "Presupuesto para reforma completa de baño incluyendo fontanería y alicatado.",
+      "submit": "Generar Presupuesto con IA",
+      "loadingTitle": "Generando tu presupuesto...",
+      "loadingMessage": "Nuestra IA está analizando tu solicitud y buscando los productos y servicios disponibles. Esto puede tardar unos segundos."
+    },
+    "review": {
+      "title": "Tu Presupuesto",
+      "subtitle": "Revisa los artículos, ajusta cantidades y descarga tu presupuesto en PDF.",
+      "itemsTitle": "Artículos del Presupuesto",
+      "noItems": "No hay artículos disponibles. Vuelve atrás y describe tus necesidades.",
+      "unitPrice": "Precio Unit.",
+      "tax": "IVA",
+      "quantity": "Cant.",
+      "lineTotal": "Total Línea",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "total": "Total",
+      "customerTitle": "Tu Información",
+      "firstNamePlaceholder": "Introduce tu nombre",
+      "lastNamePlaceholder": "Introduce tu apellido",
+      "phone": "Teléfono",
+      "phonePlaceholder": "Introduce tu número de teléfono",
+      "email": "Email",
+      "emailPlaceholder": "Introduce tu correo electrónico",
+      "contactHint": "Por favor, indica al menos un teléfono o email.",
+      "goBack": "← Volver",
+      "download": "Confirmar y Descargar PDF",
+      "downloading": "Generando PDF...",
+      "successTitle": "¡Presupuesto Descargado!",
+      "successMessage": "Tu presupuesto ha sido generado y descargado con éxito. Puedes generar uno nuevo si lo necesitas.",
+      "newBudget": "Generar Nuevo Presupuesto",
+      "addItem": "Añadir Artículo del Catálogo",
+      "closeSearch": "Cerrar",
+      "searchItemPlaceholder": "Buscar productos o servicios...",
+      "noSearchResults": "No se encontraron artículos. Prueba con otro término."
+    },
+    "errors": {
+      "rateLimit": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+      "companyNotFound": "Empresa no encontrada. Verifica que el enlace sea correcto.",
+      "itemsNotFound": "Algunos artículos ya no están disponibles. Vuelve atrás e inténtalo de nuevo.",
+      "generic": "Algo salió mal. Inténtalo de nuevo más tarde."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Selecciona una opción para comenzar",
+    "aiShare": {
+      "title": "Enlace IA para Clientes",
+      "description": "Comparte este enlace con tus clientes para que generen presupuestos con IA usando tu catálogo de productos.",
+      "copyLink": "📋 Copiar Enlace",
+      "copied": "¡Copiado!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Clientes",
+        "description": "Gestiona tu cartera de clientes"
+      },
+      "items": {
+        "title": "Artículos",
+        "description": "Gestiona tu catálogo de productos y servicios"
+      },
+      "budgets": {
+        "title": "Presupuestos",
+        "description": "Crea y gestiona tus presupuestos"
+      },
+      "invoices": {
+        "title": "Facturas",
+        "description": "Gestiona y controla tus facturas"
+      },
+      "users": {
+        "title": "Usuarios",
+        "description": "Gestiona usuarios y permisos"
+      }
     }
   }
 }

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
 using Scalar.AspNetCore;
 using Serilog;
-using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +39,13 @@ builder.Services.AddRateLimiter(options =>
     options.AddFixedWindowLimiter("PublicBudgetLimit", cfg =>
     {
         cfg.Window = TimeSpan.FromHours(1);
-        cfg.PermitLimit = 5;
+        cfg.PermitLimit = 10;
+        cfg.QueueLimit = 0;
+    });
+    options.AddFixedWindowLimiter("PublicItemSearchLimit", cfg =>
+    {
+        cfg.Window = TimeSpan.FromMinutes(1);
+        cfg.PermitLimit = 30;
         cfg.QueueLimit = 0;
     });
 });

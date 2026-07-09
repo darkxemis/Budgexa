@@ -7,6 +7,8 @@ internal static class PdfLabelsFactory
         "es" => new PdfLabels(
             Title: "Presupuesto",
             CustomerLabel: "Cliente",
+            PhoneLabel: "Teléfono",
+            EmailLabel: "Email",
             DateLabel: "Fecha",
             ItemColumn: "Descripción",
             QuantityColumn: "Cantidad",
@@ -21,6 +23,8 @@ internal static class PdfLabelsFactory
         "de" => new PdfLabels(
             Title: "Kostenvoranschlag",
             CustomerLabel: "Kunde",
+            PhoneLabel: "Telefon",
+            EmailLabel: "E-Mail",
             DateLabel: "Datum",
             ItemColumn: "Beschreibung",
             QuantityColumn: "Menge",
@@ -35,6 +39,8 @@ internal static class PdfLabelsFactory
         "hr" => new PdfLabels(
             Title: "Ponuda",
             CustomerLabel: "Klijent",
+            PhoneLabel: "Telefon",
+            EmailLabel: "Email",
             DateLabel: "Datum",
             ItemColumn: "Opis",
             QuantityColumn: "Količina",
@@ -49,6 +55,8 @@ internal static class PdfLabelsFactory
         _ => new PdfLabels(
             Title: "Budget",
             CustomerLabel: "Customer",
+            PhoneLabel: "Phone",
+            EmailLabel: "Email",
             DateLabel: "Date",
             ItemColumn: "Description",
             QuantityColumn: "Qty",

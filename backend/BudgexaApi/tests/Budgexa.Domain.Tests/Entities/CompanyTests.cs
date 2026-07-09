@@ -52,7 +52,7 @@ public class CompanyTests
         var newEnd = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(1));
         var updaterId = Guid.NewGuid();
 
-        company.Update("Acme Renamed", "New desc", newEnd, updaterId);
+        company.Update("Acme Renamed", "New desc", null, null, newEnd, updaterId);
 
         company.Name.Should().Be("Acme Renamed");
         company.Description.Should().Be("New desc");
@@ -70,7 +70,7 @@ public class CompanyTests
     {
         var company = Company.Create("Acme", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid());
 
-        var act = () => company.Update(name!, null, null, Guid.NewGuid());
+        var act = () => company.Update(name!, null, null, null, null, Guid.NewGuid());
 
         act.Should().Throw<ArgumentException>();
     }

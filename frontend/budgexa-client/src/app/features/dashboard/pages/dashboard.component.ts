@@ -1,4 +1,4 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UserStore } from '../../../core/state/user.store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ export class DashboardComponent {
   private readonly router = inject(Router);
 
   readonly user = this.userStore.user;
+  protected readonly linkCopied = signal(false);
 
   /** True when the current user can access the customers section. */
   protected readonly canManageCustomers = computed(() => {
@@ -37,6 +38,22 @@ export class DashboardComponent {
     const roles = (this.user()?.roles ?? []) as RoleName[];
     return roles.some(role => ADMIN_ROLES.includes(role));
   });
+
+  protected readonly publicBudgetLink = computed(() => {
+    const companyId = this.user()?.companyId;
+    if (!companyId) return '';
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    return `${origin}/public-budget/${companyId}/prompt`;
+  });
+
+  protected copyPublicLink(): void {
+    const link = this.publicBudgetLink();
+    if (!link) return;
+    navigator.clipboard.writeText(link).then(() => {
+      this.linkCopied.set(true);
+      setTimeout(() => this.linkCopied.set(false), 3000);
+    });
+  }
 
   protected navigateToCustomers(): void {
     this.router.navigate(['/customers']);

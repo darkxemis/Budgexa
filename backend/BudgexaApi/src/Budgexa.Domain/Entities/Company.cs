@@ -6,6 +6,8 @@ public sealed class Company : Entity
 {
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
+    public string? Phone { get; private set; }
+    public string? Email { get; private set; }
     public DateOnly StartDate { get; private set; }
     public DateOnly? EndDate { get; private set; }
 
@@ -17,6 +19,8 @@ public sealed class Company : Entity
         Guid id,
         string name,
         string? description,
+        string? phone,
+        string? email,
         DateOnly startDate,
         DateOnly? endDate,
         Guid createdByUserId)
@@ -24,6 +28,8 @@ public sealed class Company : Entity
         Id = id;
         Name = name;
         Description = description;
+        Phone = phone;
+        Email = email;
         StartDate = startDate;
         EndDate = endDate;
         CreatedByUserId = createdByUserId;
@@ -36,17 +42,21 @@ public sealed class Company : Entity
         DateOnly startDate,
         DateOnly? endDate,
         Guid createdByUserId,
-        Guid? id = null)
+        Guid? id = null,
+        string? phone = null,
+        string? email = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Company name cannot be empty.");
 
-        return new Company(id ?? Guid.NewGuid(), name, description, startDate, endDate, createdByUserId);
+        return new Company(id ?? Guid.NewGuid(), name, description, phone, email, startDate, endDate, createdByUserId);
     }
 
     public void Update(
         string name,
         string? description,
+        string? phone,
+        string? email,
         DateOnly? endDate,
         Guid updatedByUserId)
     {
@@ -55,6 +65,8 @@ public sealed class Company : Entity
 
         Name = name;
         Description = description;
+        Phone = phone;
+        Email = email;
         EndDate = endDate;
         UpdatedAt = DateTime.UtcNow;
         UpdatedByUserId = updatedByUserId;

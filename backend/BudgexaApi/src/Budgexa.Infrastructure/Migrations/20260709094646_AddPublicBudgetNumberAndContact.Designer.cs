@@ -4,6 +4,7 @@ using Budgexa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Budgexa.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260709094646_AddPublicBudgetNumberAndContact")]
+    partial class AddPublicBudgetNumberAndContact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,14 +203,9 @@ namespace Budgexa.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnOrder(6);
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnOrder(8);
-
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(8);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -215,14 +213,9 @@ namespace Budgexa.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnOrder(5);
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnOrder(7);
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(7);
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2")

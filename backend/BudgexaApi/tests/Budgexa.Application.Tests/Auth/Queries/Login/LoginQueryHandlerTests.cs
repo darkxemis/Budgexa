@@ -110,6 +110,8 @@ public class LoginQueryHandlerTests
         company.Update(
             company.Name,
             company.Description,
+            company.Phone,
+            company.Email,
             DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1)),
             Guid.NewGuid());
         await db.SaveChangesAsync();

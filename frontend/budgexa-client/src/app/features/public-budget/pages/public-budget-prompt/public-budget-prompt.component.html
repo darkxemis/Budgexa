@@ -1,0 +1,88 @@
+<div class="public-budget-page">
+  <div class="page-container">
+    <!-- Language Selector -->
+    <div class="lang-bar">
+      <app-language-selector />
+    </div>
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="brand">
+        <div class="brand-icon">✨</div>
+        <h1>{{ 'publicBudget.prompt.title' | translate }}</h1>
+      </div>
+      <p class="subtitle">{{ 'publicBudget.prompt.subtitle' | translate }}</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="prompt-content">
+      @if (!loading()) {
+        <div class="prompt-card">
+          <label class="prompt-label" for="userRequest">
+            {{ 'publicBudget.prompt.label' | translate }}
+          </label>
+
+          <textarea
+            id="userRequest"
+            class="prompt-textarea"
+            [ngModel]="userRequest()"
+            (ngModelChange)="userRequest.set($event)"
+            [placeholder]="'publicBudget.prompt.placeholder' | translate"
+            rows="5"
+            maxlength="2000"
+            [disabled]="loading()">
+          </textarea>
+
+          <div class="char-count">
+            {{ userRequest().length }} / 2000
+          </div>
+
+          <!-- Examples -->
+          <div class="examples-section">
+            <p class="examples-title">{{ 'publicBudget.prompt.examplesTitle' | translate }}</p>
+            <ul class="examples-list">
+              <li>{{ 'publicBudget.prompt.example1' | translate }}</li>
+              <li>{{ 'publicBudget.prompt.example2' | translate }}</li>
+              <li>{{ 'publicBudget.prompt.example3' | translate }}</li>
+            </ul>
+          </div>
+
+          <!-- Error -->
+          @if (error(); as errorKey) {
+            <div class="error-message">
+              <span class="error-icon">⚠️</span>
+              {{ errorKey | translate }}
+            </div>
+          }
+
+          <!-- Submit Button -->
+          <button
+            class="submit-btn"
+            [disabled]="!isValid || loading()"
+            (click)="onSubmit()">
+            {{ 'publicBudget.prompt.submit' | translate }}
+          </button>
+        </div>
+      } @else {
+        <!-- Loading State -->
+        <div class="loading-card">
+          <div class="loading-visual">
+            <app-spinner [size]="48" color="#6366f1" />
+          </div>
+          <h2 class="loading-title">{{ 'publicBudget.prompt.loadingTitle' | translate }}</h2>
+          <p class="loading-message">{{ 'publicBudget.prompt.loadingMessage' | translate }}</p>
+          <div class="loading-progress">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      }
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <p>{{ 'publicBudget.footer' | translate }}</p>
+    </footer>
+  </div>
+</div>

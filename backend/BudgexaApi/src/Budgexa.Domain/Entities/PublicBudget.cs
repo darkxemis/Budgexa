@@ -6,8 +6,11 @@ public sealed class PublicBudget : Entity
 {
     public Guid CompanyId { get; private set; }
     public Guid LanguageId { get; private set; }
+    public string BudgetNumber { get; private set; } = default!;
     public string CustomerFirstName { get; private set; } = default!;
     public string CustomerLastName { get; private set; } = default!;
+    public string? CustomerPhone { get; private set; }
+    public string? CustomerEmail { get; private set; }
     public decimal SubTotal { get; private set; }
     public decimal TaxTotal { get; private set; }
     public decimal GrandTotal { get; private set; }
@@ -24,14 +27,20 @@ public sealed class PublicBudget : Entity
         Guid id,
         Guid companyId,
         Guid languageId,
+        string budgetNumber,
         string customerFirstName,
-        string customerLastName)
+        string customerLastName,
+        string? customerPhone,
+        string? customerEmail)
     {
         Id = id;
         CompanyId = companyId;
         LanguageId = languageId;
+        BudgetNumber = budgetNumber;
         CustomerFirstName = customerFirstName;
         CustomerLastName = customerLastName;
+        CustomerPhone = customerPhone;
+        CustomerEmail = customerEmail;
         CreatedAt = DateTime.UtcNow;
     }
 
@@ -40,16 +49,23 @@ public sealed class PublicBudget : Entity
         Guid languageId,
         string customerFirstName,
         string customerLastName,
+        string? customerPhone = null,
+        string? customerEmail = null,
         Guid? id = null)
     {
         Validate(customerFirstName, customerLastName);
+
+        var budgetNumber = GenerateBudgetNumber();
 
         return new PublicBudget(
             id ?? Guid.NewGuid(),
             companyId,
             languageId,
+            budgetNumber,
             customerFirstName.Trim(),
-            customerLastName.Trim());
+            customerLastName.Trim(),
+            customerPhone?.Trim(),
+            customerEmail?.Trim());
     }
 
     public void AddLines(IEnumerable<PublicBudgetLine> lines)
@@ -68,6 +84,13 @@ public sealed class PublicBudget : Entity
         SubTotal = _lines.Sum(l => l.SubTotal);
         TaxTotal = _lines.Sum(l => l.TaxAmount);
         GrandTotal = SubTotal + TaxTotal;
+    }
+
+    private static string GenerateBudgetNumber()
+    {
+        var now = DateTime.UtcNow;
+        var suffix = Random.Shared.Next(0, 0xFFFF).ToString("X4");
+        return $"PRE-{now:yyyyMMdd}-{now:HHmmss}-{suffix}";
     }
 
     private static void Validate(string firstName, string lastName)

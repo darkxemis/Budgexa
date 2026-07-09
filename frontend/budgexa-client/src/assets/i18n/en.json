@@ -70,33 +70,6 @@
   "confirm": "Confirm",
   "settingsUpdated": "Settings updated successfully",
 
-  "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Select an option to get started",
-    "cards": {
-      "customers": {
-        "title": "Customers",
-        "description": "Manage your customer portfolio"
-      },
-      "items": {
-        "title": "Items",
-        "description": "Manage your product and service catalog"
-      },
-      "budgets": {
-        "title": "Budgets",
-        "description": "Create and track your budgets"
-      },
-      "invoices": {
-        "title": "Invoices",
-        "description": "Manage and track your invoices"
-      },
-      "users": {
-        "title": "Users",
-        "description": "Manage users and permissions"
-      }
-    }
-  },
-
   "customers": {
     "title": "Customers",
     "create": "Create Customer",
@@ -406,6 +379,93 @@
       "lessThan": "Less Than",
       "greaterThanOrEqual": "Greater or Equal",
       "lessThanOrEqual": "Less or Equal"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "AI Budget Generator",
+      "subtitle": "Describe what you need and our AI will create a detailed budget for you.",
+      "label": "What do you need a budget for?",
+      "placeholder": "Describe the products or services you need. For example: 4 aluminum windows, 2 exterior doors, and installation service...",
+      "examplesTitle": "💡 Example requests:",
+      "example1": "I need 4 aluminum windows (120x150cm), 2 exterior PVC doors, and installation.",
+      "example2": "Quote for painting 3 rooms, ceiling repair, and exterior facade treatment.",
+      "example3": "Budget for complete bathroom renovation including plumbing and tiling.",
+      "submit": "Generate Budget with AI",
+      "loadingTitle": "Generating your budget...",
+      "loadingMessage": "Our AI is analyzing your request and matching it with available products and services. This may take a few seconds."
+    },
+    "review": {
+      "title": "Your Budget",
+      "subtitle": "Review the items, adjust quantities, and download your PDF budget.",
+      "itemsTitle": "Budget Items",
+      "noItems": "No items available. Go back and describe your needs.",
+      "unitPrice": "Unit Price",
+      "tax": "Tax",
+      "quantity": "Qty",
+      "lineTotal": "Line Total",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "total": "Total",
+      "customerTitle": "Your Information",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNamePlaceholder": "Enter your last name",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone number",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email address",
+      "contactHint": "Please provide at least a phone number or email.",
+      "goBack": "← Back",
+      "download": "Confirm & Download PDF",
+      "downloading": "Generating PDF...",
+      "successTitle": "Budget Downloaded!",
+      "successMessage": "Your budget has been generated and downloaded successfully. You can generate a new one if needed.",
+      "newBudget": "Generate New Budget",
+      "addItem": "Add Item from Catalog",
+      "closeSearch": "Close",
+      "searchItemPlaceholder": "Search products or services...",
+      "noSearchResults": "No items found. Try a different search term."
+    },
+    "errors": {
+      "rateLimit": "Too many requests. Please wait a moment and try again.",
+      "companyNotFound": "Company not found. Please check the link is correct.",
+      "itemsNotFound": "Some items are no longer available. Please go back and try again.",
+      "generic": "Something went wrong. Please try again later."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Select an option to get started",
+    "aiShare": {
+      "title": "AI Budget Link for Clients",
+      "description": "Share this link with your clients so they can generate budgets powered by AI using your product catalog.",
+      "copyLink": "📋 Copy Link",
+      "copied": "Copied!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Customers",
+        "description": "Manage your customer portfolio"
+      },
+      "items": {
+        "title": "Items",
+        "description": "Manage your product and service catalog"
+      },
+      "budgets": {
+        "title": "Budgets",
+        "description": "Create and track your budgets"
+      },
+      "invoices": {
+        "title": "Invoices",
+        "description": "Manage and track your invoices"
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage users and permissions"
+      }
     }
   }
 }

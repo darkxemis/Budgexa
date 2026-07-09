@@ -13,6 +13,31 @@
       </div>
     }
 
+    <!-- AI Budget Share Section -->
+    <section class="ai-share-section">
+      <div class="ai-share-card">
+        <div class="ai-share-content">
+          <div class="ai-share-icon">🤖</div>
+          <div class="ai-share-text">
+            <h3>{{ 'dashboard.aiShare.title' | translate }}</h3>
+            <p>{{ 'dashboard.aiShare.description' | translate }}</p>
+          </div>
+        </div>
+        <div class="ai-share-actions">
+          <div class="ai-share-link-preview">
+            <span class="link-text">{{ publicBudgetLink() }}</span>
+          </div>
+          <button class="ai-share-btn" [class.copied]="linkCopied()" (click)="copyPublicLink()">
+            @if (linkCopied()) {
+              ✓ {{ 'dashboard.aiShare.copied' | translate }}
+            } @else {
+              {{ 'dashboard.aiShare.copyLink' | translate }}
+            }
+          </button>
+        </div>
+      </div>
+    </section>
+
     <section class="dashboard-grid">
       <!-- Tarjeta de Clientes (freelance y administradores) -->
       @if (canManageCustomers()) {

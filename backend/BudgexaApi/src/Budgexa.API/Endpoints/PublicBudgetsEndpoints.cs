@@ -4,6 +4,7 @@ using Budgexa.API.Middleware;
 using Budgexa.Application.PublicBudgets.Commands.ConfirmAndDownload;
 using Budgexa.Application.PublicBudgets.DTOs;
 using Budgexa.Application.PublicBudgets.Queries.GeneratePublicBudgetWithAi;
+using Budgexa.Application.PublicBudgets.Queries.GetPublicItems;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +57,25 @@ public static class PublicBudgetsEndpoints
             .WithName("ConfirmAndDownloadPublicBudget")
             .WithSummary("POST /api/v1/public-budgets/confirm-and-download")
             .WithDescription("Validates items server-side, calculates totals from authoritative prices, saves the budget, generates a PDF, and returns it for download.");
+
+        group.MapGet("{companyId:guid}/items",
+            async (
+                Guid companyId,
+                string? searchQuery,
+                ISender sender,
+                CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(
+                    new GetPublicItemsQuery(companyId, searchQuery), cancellationToken);
+                return Results.Ok(result);
+            })
+            .AllowAnonymous()
+            .RequireRateLimiting("PublicItemSearchLimit")
+            .Produces<List<PublicItemDto>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status429TooManyRequests)
+            .WithName("GetPublicItems")
+            .WithSummary("GET /api/v1/public-budgets/{companyId}/items")
+            .WithDescription("Returns available items from the company's catalog for public budget creation. Supports optional search filtering.");
 
         return endpoints;
     }

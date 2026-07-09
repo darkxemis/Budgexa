@@ -12,6 +12,20 @@ export const routes: Routes = [
     loadComponent: () => import('./features/login/pages/login.component').then((m) => m.LoginComponent),
   },
   {
+    path: 'public-budget/:companyId/prompt',
+    loadComponent: () =>
+      import('./features/public-budget/pages/public-budget-prompt/public-budget-prompt.component').then(
+        (m) => m.PublicBudgetPromptComponent
+      ),
+  },
+  {
+    path: 'public-budget/:companyId/review',
+    loadComponent: () =>
+      import('./features/public-budget/pages/public-budget-review/public-budget-review.component').then(
+        (m) => m.PublicBudgetReviewComponent
+      ),
+  },
+  {
     path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/pages/dashboard.component').then((m) => m.DashboardComponent),

@@ -47,12 +47,27 @@ internal sealed class PublicBudgetPdfService : IPublicBudgetPdfService
                         left.Item().Text(company.Description)
                             .FontSize(9).FontColor(Colors.Grey.Darken1);
                     }
+
+                    if (!string.IsNullOrWhiteSpace(company.Phone))
+                    {
+                        left.Item().Text($"{labels.PhoneLabel}: {company.Phone}")
+                            .FontSize(9).FontColor(Colors.Grey.Darken1);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(company.Email))
+                    {
+                        left.Item().Text($"{labels.EmailLabel}: {company.Email}")
+                            .FontSize(9).FontColor(Colors.Grey.Darken1);
+                    }
                 });
 
                 row.ConstantItem(180).AlignRight().Column(right =>
                 {
                     right.Item().Text(labels.Title)
                         .FontSize(22).Bold().FontColor(Colors.Blue.Darken3);
+
+                    right.Item().Text($"# {budget.BudgetNumber}")
+                        .FontSize(10).SemiBold();
 
                     right.Item().Text($"{labels.DateLabel}: {budget.CreatedAt:dd/MM/yyyy}")
                         .FontSize(9);
@@ -70,6 +85,18 @@ internal sealed class PublicBudgetPdfService : IPublicBudgetPdfService
 
                     customerCol.Item().Text($"{budget.CustomerFirstName} {budget.CustomerLastName}")
                         .FontSize(10);
+
+                    if (!string.IsNullOrWhiteSpace(budget.CustomerPhone))
+                    {
+                        customerCol.Item().Text($"{labels.PhoneLabel}: {budget.CustomerPhone}")
+                            .FontSize(9).FontColor(Colors.Grey.Darken1);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(budget.CustomerEmail))
+                    {
+                        customerCol.Item().Text($"{labels.EmailLabel}: {budget.CustomerEmail}")
+                            .FontSize(9).FontColor(Colors.Grey.Darken1);
+                    }
                 });
             });
 

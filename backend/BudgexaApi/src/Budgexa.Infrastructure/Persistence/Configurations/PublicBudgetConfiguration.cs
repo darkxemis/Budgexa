@@ -24,27 +24,40 @@ internal sealed class PublicBudgetConfiguration : IEntityTypeConfiguration<Publi
             .IsRequired()
             .HasColumnOrder(6);
 
-        builder.Property(pb => pb.CustomerFirstName)
+        builder.Property(pb => pb.BudgetNumber)
             .IsRequired()
-            .HasMaxLength(100)
+            .HasMaxLength(30)
             .HasColumnOrder(7);
 
-        builder.Property(pb => pb.CustomerLastName)
+        builder.Property(pb => pb.CustomerFirstName)
             .IsRequired()
             .HasMaxLength(100)
             .HasColumnOrder(8);
 
+        builder.Property(pb => pb.CustomerLastName)
+            .IsRequired()
+            .HasMaxLength(100)
+            .HasColumnOrder(9);
+
+        builder.Property(pb => pb.CustomerPhone)
+            .HasMaxLength(30)
+            .HasColumnOrder(10);
+
+        builder.Property(pb => pb.CustomerEmail)
+            .HasMaxLength(200)
+            .HasColumnOrder(11);
+
         builder.Property(pb => pb.SubTotal)
             .HasPrecision(18, 2)
-            .HasColumnOrder(9);
+            .HasColumnOrder(12);
 
         builder.Property(pb => pb.TaxTotal)
             .HasPrecision(18, 2)
-            .HasColumnOrder(10);
+            .HasColumnOrder(13);
 
         builder.Property(pb => pb.GrandTotal)
             .HasPrecision(18, 2)
-            .HasColumnOrder(11);
+            .HasColumnOrder(14);
 
         builder.HasOne(pb => pb.Company)
             .WithMany()

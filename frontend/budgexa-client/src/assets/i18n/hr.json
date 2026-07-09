@@ -70,33 +70,6 @@
   "confirm": "Potvrdi",
   "settingsUpdated": "Postavke uspješno ažurirane",
 
-  "dashboard": {
-    "title": "Nadzorna ploča",
-    "subtitle": "Odaberite opciju za početak",
-    "cards": {
-      "customers": {
-        "title": "Klijenti",
-        "description": "Upravljajte svojim portfeljem klijenata"
-      },
-      "items": {
-        "title": "Stavke",
-        "description": "Upravljajte katalogom proizvoda i usluga"
-      },
-      "budgets": {
-        "title": "Ponude",
-        "description": "Kreirajte i pratite svoje ponude"
-      },
-      "invoices": {
-        "title": "Računi",
-        "description": "Upravljajte i pratite svoje račune"
-      },
-      "users": {
-        "title": "Korisnici",
-        "description": "Upravljajte korisnicima i dozvolama"
-      }
-    }
-  },
-
   "customers": {
     "title": "Klijenti",
     "create": "Kreiraj klijenta",
@@ -408,6 +381,93 @@
       "lessThan": "Manje od",
       "greaterThanOrEqual": "Veće ili jednako",
       "lessThanOrEqual": "Manje ili jednako"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "AI Generator Ponuda",
+      "subtitle": "Opišite što vam treba i naša AI će izraditi detaljnu ponudu za vas.",
+      "label": "Za što vam treba ponuda?",
+      "placeholder": "Opišite proizvode ili usluge koje trebate. Na primjer: 4 aluminijska prozora, 2 vanjska vrata i ugradnja...",
+      "examplesTitle": "💡 Primjeri zahtjeva:",
+      "example1": "Trebam 4 aluminijska prozora (120x150cm), 2 vanjska PVC vrata i ugradnju.",
+      "example2": "Ponuda za bojanje 3 sobe, popravak stropa i obradu vanjske fasade.",
+      "example3": "Ponuda za kompletnu renovaciju kupaonice uključujući vodoinstalaciju i pločice.",
+      "submit": "Generiraj Ponudu s AI",
+      "loadingTitle": "Generiranje vaše ponude...",
+      "loadingMessage": "Naša AI analizira vaš zahtjev i usklađuje ga s dostupnim proizvodima i uslugama. Ovo može potrajati nekoliko sekundi."
+    },
+    "review": {
+      "title": "Vaša Ponuda",
+      "subtitle": "Pregledajte stavke, prilagodite količine i preuzmite PDF ponudu.",
+      "itemsTitle": "Stavke Ponude",
+      "noItems": "Nema dostupnih stavki. Vratite se i opišite svoje potrebe.",
+      "unitPrice": "Jed. Cijena",
+      "tax": "PDV",
+      "quantity": "Kol.",
+      "lineTotal": "Ukupno",
+      "subtotal": "Međuzbroj",
+      "taxAmount": "Iznos Poreza",
+      "total": "Ukupno",
+      "customerTitle": "Vaši Podaci",
+      "firstNamePlaceholder": "Unesite ime",
+      "lastNamePlaceholder": "Unesite prezime",
+      "phone": "Telefon",
+      "phonePlaceholder": "Unesite broj telefona",
+      "email": "Email",
+      "emailPlaceholder": "Unesite email adresu",
+      "contactHint": "Molimo unesite barem telefon ili email.",
+      "goBack": "← Natrag",
+      "download": "Potvrdi i Preuzmi PDF",
+      "downloading": "Generiranje PDF-a...",
+      "successTitle": "Ponuda Preuzeta!",
+      "successMessage": "Vaša ponuda je uspješno generirana i preuzeta. Možete generirati novu ako je potrebno.",
+      "newBudget": "Generiraj Novu Ponudu",
+      "addItem": "Dodaj Stavku iz Kataloga",
+      "closeSearch": "Zatvori",
+      "searchItemPlaceholder": "Pretraži proizvode ili usluge...",
+      "noSearchResults": "Nisu pronađene stavke. Pokušajte s drugim pojmom."
+    },
+    "errors": {
+      "rateLimit": "Previše zahtjeva. Pričekajte trenutak i pokušajte ponovno.",
+      "companyNotFound": "Tvrtka nije pronađena. Provjerite je li poveznica ispravna.",
+      "itemsNotFound": "Neke stavke više nisu dostupne. Vratite se i pokušajte ponovno.",
+      "generic": "Nešto je pošlo po krivu. Pokušajte ponovno kasnije."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Nadzorna Ploča",
+    "subtitle": "Odaberite opciju za početak",
+    "aiShare": {
+      "title": "AI Link za Klijente",
+      "description": "Podijelite ovu poveznicu s klijentima kako bi mogli generirati ponude pomoću AI koristeći vaš katalog proizvoda.",
+      "copyLink": "📋 Kopiraj Poveznicu",
+      "copied": "Kopirano!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Klijenti",
+        "description": "Upravljajte svojim portfeljem klijenata"
+      },
+      "items": {
+        "title": "Stavke",
+        "description": "Upravljajte katalogom proizvoda i usluga"
+      },
+      "budgets": {
+        "title": "Ponude",
+        "description": "Kreirajte i pratite svoje ponude"
+      },
+      "invoices": {
+        "title": "Računi",
+        "description": "Upravljajte i pratite svoje račune"
+      },
+      "users": {
+        "title": "Korisnici",
+        "description": "Upravljajte korisnicima i dozvolama"
+      }
     }
   }
 }

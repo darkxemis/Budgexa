@@ -78,7 +78,9 @@ public sealed class ConfirmAndDownloadCommandHandler(
             dto.CompanyId,
             languageId,
             dto.CustomerFirstName,
-            dto.CustomerLastName);
+            dto.CustomerLastName,
+            dto.CustomerPhone,
+            dto.CustomerEmail);
 
         var lines = dto.Lines.Select(lineDto =>
         {
