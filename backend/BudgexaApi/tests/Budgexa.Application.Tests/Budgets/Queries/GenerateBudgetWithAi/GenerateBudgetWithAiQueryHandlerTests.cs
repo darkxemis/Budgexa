@@ -40,7 +40,7 @@ public class GenerateBudgetWithAiQueryHandlerTests
             Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
         };
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), CompanyId);
+        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
 
         var db = CreateMockDbContext(company, items);
 
@@ -78,7 +78,7 @@ public class GenerateBudgetWithAiQueryHandlerTests
             Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Madera", null, ItemType.Product, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
         };
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), CompanyId);
+        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
         var db = CreateMockDbContext(company, items);
 
         var sut = new GeneratePublicBudgetWithAiQueryHandler(aiService, db);
@@ -108,7 +108,7 @@ public class GenerateBudgetWithAiQueryHandlerTests
             Item.Create(CompanyId, ActiveStatusId, null, "Sofá Amarillo", null, ItemType.Product, "ud", 450m, 21m, "EUR", Guid.NewGuid()),
         };
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), CompanyId);
+        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
         var db = CreateMockDbContext(company, items);
 
         var sut = new GeneratePublicBudgetWithAiQueryHandler(aiService, db);

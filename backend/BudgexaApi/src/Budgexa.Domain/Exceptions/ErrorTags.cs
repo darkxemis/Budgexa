@@ -1,5 +1,5 @@
 namespace Budgexa.Domain.Exceptions;
-
+ 
 public static class ErrorTags
 {
     public static class Auth
@@ -62,6 +62,11 @@ public static class ErrorTags
         public const string CompanyContractExpired = "publicBudget.companyContractExpired";
         public const string ItemNotFound = "publicBudget.itemNotFound";
         public const string ItemNotBelongToCompany = "publicBudget.itemNotBelongToCompany";
+    }
+
+    public static class Company
+    {
+        public const string NotFound = "company.notFound";
     }
 
     public static class Server

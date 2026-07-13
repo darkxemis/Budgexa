@@ -249,4 +249,19 @@ internal static class TestDataSeeder
         db.SaveChanges();
         return invoice;
     }
+
+    public static Company SeedCompany(
+        ApplicationDbContext db,
+        string name,
+        string? description,
+        string? phone,
+        string? email,
+        DateOnly startDate,
+        DateOnly? endDate)
+    {
+        var company = Company.Create(name, description, startDate, endDate, Guid.NewGuid(), phone, email, null);
+        db.Companies.Add(company);
+        db.SaveChanges();
+        return company;
+    }
 }

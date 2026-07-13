@@ -23,7 +23,7 @@ public sealed class Company : Entity
         string? email,
         DateOnly startDate,
         DateOnly? endDate,
-        Guid createdByUserId)
+        Guid? createdByUserId)
     {
         Id = id;
         Name = name;
@@ -41,10 +41,10 @@ public sealed class Company : Entity
         string? description,
         DateOnly startDate,
         DateOnly? endDate,
-        Guid createdByUserId,
-        Guid? id = null,
+        Guid? createdByUserId,
         string? phone = null,
-        string? email = null)
+        string? email = null,
+        Guid? id = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Company name cannot be empty.");
@@ -58,7 +58,7 @@ public sealed class Company : Entity
         string? phone,
         string? email,
         DateOnly? endDate,
-        Guid updatedByUserId)
+        Guid? updatedByUserId)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Company name cannot be empty.");

@@ -87,6 +87,7 @@ app.MapInvoicesEndpoints();
 app.MapLanguagesEndpoints();
 app.MapStatusEndpoints();
 app.MapPublicBudgetsEndpoints();
+app.MapCompanyEndpoints();
 
 // Automatically apply pending EF Core migrations at startup.
 // This ensures the database schema is always up to date with the latest model changes.

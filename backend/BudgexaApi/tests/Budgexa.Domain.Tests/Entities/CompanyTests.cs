@@ -29,7 +29,7 @@ public class CompanyTests
     {
         var id = Guid.NewGuid();
 
-        var company = Company.Create("Acme", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), id);
+        var company = Company.Create("Acme", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, id);
 
         company.Id.Should().Be(id);
     }
