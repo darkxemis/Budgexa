@@ -1,0 +1,24 @@
+<div class="lang-selector" (click)="toggleDropdown()">
+  <button class="lang-trigger" [attr.aria-expanded]="isOpen()" aria-label="Select language">
+    <span class="lang-flag">{{ currentLanguage.flag }}</span>
+    <span class="lang-code">{{ currentLanguage.code | uppercase }}</span>
+    <span class="lang-chevron" [class.open]="isOpen()">▾</span>
+  </button>
+
+  @if (isOpen()) {
+    <div class="lang-dropdown">
+      @for (lang of languages; track lang.code) {
+        <button
+          class="lang-option"
+          [class.active]="lang.code === currentLang()"
+          (click)="selectLanguage(lang); $event.stopPropagation()">
+          <span class="lang-flag">{{ lang.flag }}</span>
+          <span class="lang-label">{{ lang.label }}</span>
+          @if (lang.code === currentLang()) {
+            <span class="lang-check">✓</span>
+          }
+        </button>
+      }
+    </div>
+  }
+</div>

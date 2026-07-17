@@ -2,7 +2,7 @@ namespace Budgexa.Application.Common.Helpers;
 
 using Budgexa.Application.Common.DTOs;
 
-public static class GridifyHelper
+internal static class GridifyHelper
 {
     public static string? BuildFilterExpression(List<GridFilterDto>? filters)
     {

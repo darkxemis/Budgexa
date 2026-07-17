@@ -15,7 +15,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import {
   UserFormModalComponent,
   UserFormMode,
-} from '../../../shared/components/user-form-modal/user-form-modal.component';
+} from '../components/user-form-modal/user-form-modal.component';
 import { ToastService } from '../../../shared/components/toast/toast.service';
 import { ToastType } from '../../../shared/components/toast/toast.type';
 import { firstValueFrom } from 'rxjs';

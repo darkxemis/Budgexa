@@ -3,7 +3,7 @@ namespace Budgexa.Application.Common.Helpers;
 using Budgexa.Application.Common.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-public static class GridQueryExtensions
+internal static class GridQueryExtensions
 {
     /// <summary>
     /// Applies pagination to a projected query and materializes it into a <see cref="GridResponseDto{TDto}"/>.

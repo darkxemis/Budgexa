@@ -1,0 +1,160 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container invoice-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'invoice-form-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <div class="header-title">
+        <h2 id="invoice-form-title">{{ titleKey() | translate }}</h2>
+        @if (isEdit() && currentStatusName()) {
+          <span class="status-badge">{{ currentStatusName() }}</span>
+        }
+      </div>
+      <div class="header-actions">
+        @if (isEdit()) {
+          <app-status-change-menu
+            group="Invoice"
+            [currentStatusId]="currentStatusId()"
+            [disabled]="loading() || loadingData() || changingStatus()"
+            buttonLabel="invoices.status.change"
+            (statusSelected)="onStatusSelected($event)"
+          />
+        }
+        <button
+          type="button"
+          class="close-btn"
+          (click)="onClose()"
+          [attr.aria-label]="'cancel' | translate"
+          [disabled]="loading()"
+        >
+          &times;
+        </button>
+      </div>
+    </div>
+
+    @if (loadingData()) {
+      <div class="modal-loading">
+        <app-spinner [size]="28" />
+        <span>{{ 'loading' | translate }}...</span>
+      </div>
+    } @else {
+      <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="invoice-series">{{ 'invoices.form.series' | translate }}</label>
+            <input
+              id="invoice-series"
+              type="text"
+              formControlName="series"
+              [placeholder]="'invoices.form.series' | translate"
+              maxlength="10"
+            />
+            <app-form-error [control]="form.controls.series" />
+          </div>
+
+          <div class="input-group">
+            <label for="invoice-number">{{ 'invoices.form.number' | translate }}</label>
+            <input
+              id="invoice-number"
+              type="text"
+              formControlName="number"
+              [placeholder]="'invoices.form.number' | translate"
+            />
+            <app-form-error [control]="form.controls.number" />
+          </div>
+
+          <div class="input-group">
+            <label for="invoice-issueDate">{{ 'invoices.form.issueDate' | translate }}</label>
+            <input id="invoice-issueDate" type="date" formControlName="issueDate" />
+            <app-form-error [control]="form.controls.issueDate" />
+          </div>
+
+          <div class="input-group">
+            <label for="invoice-dueDate">{{ 'invoices.form.dueDate' | translate }}</label>
+            <input id="invoice-dueDate" type="date" formControlName="dueDate" />
+            <app-form-error [control]="form.controls.dueDate" />
+          </div>
+
+          <div class="input-group">
+            <label for="invoice-currency">{{ 'invoices.form.currency' | translate }}</label>
+            <input
+              id="invoice-currency"
+              type="text"
+              formControlName="currency"
+              maxlength="3"
+              [placeholder]="'invoices.form.currency' | translate"
+            />
+            <app-form-error [control]="form.controls.currency" />
+          </div>
+
+          <div class="input-group full-width">
+            <label>{{ 'invoices.form.customer' | translate }}</label>
+            <app-autocomplete-selector
+              [options]="loadCustomerOptions"
+              [initialValue]="initialCustomerId()"
+              [placeholder]="'invoices.form.customer'"
+              (valueChange)="onCustomerSelected($event)"
+            />
+            <app-form-error [control]="form.controls.customerId" />
+          </div>
+
+          @if (!isEdit()) {
+            <div class="input-group full-width">
+              <label>{{ 'invoices.form.budget' | translate }}</label>
+              <app-autocomplete-selector
+                [options]="loadBudgetOptions"
+                [initialValue]="initialBudgetId()"
+                [placeholder]="'invoices.form.budget'"
+                (valueChange)="onBudgetSelected($event)"
+              />
+              <app-form-error [control]="form.controls.budgetId" />
+            </div>
+          }
+
+          <div class="input-group full-width">
+            <label for="invoice-notes">{{ 'invoices.form.notes' | translate }}</label>
+            <textarea
+              id="invoice-notes"
+              formControlName="notes"
+              rows="2"
+              [placeholder]="'invoices.form.notes' | translate"
+            ></textarea>
+            <app-form-error [control]="form.controls.notes" />
+          </div>
+        </div>
+
+        <div class="lines-section">
+          <app-invoice-lines-editor
+            [lines]="linesArray"
+            [currency]="form.controls.currency.value || 'EUR'"
+            (totalsChange)="onTotalsChange($event)"
+          />
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            {{ 'cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || form.disabled"
+          >
+            {{ submitKey() | translate }}
+            @if (loading()) {
+              <app-spinner [size]="14" color="#fff" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

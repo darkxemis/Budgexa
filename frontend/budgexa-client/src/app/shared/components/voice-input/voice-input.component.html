@@ -1,0 +1,24 @@
+@if (speechSupported()) {
+  <div class="voice-input">
+    <button
+      type="button"
+      class="voice-btn"
+      [class.active]="isListening()"
+      [disabled]="disabled()"
+      [title]="(isListening() ? 'shared.voice.stop' : 'shared.voice.start') | translate"
+      (click)="toggle()">
+      @if (isListening()) {
+        <span class="voice-icon pulse">⏹️</span>
+      } @else {
+        <span class="voice-icon">🎤</span>
+      }
+    </button>
+
+    @if (isListening()) {
+      <div class="listening-indicator">
+        <span class="listening-dot"></span>
+        {{ 'shared.voice.listening' | translate }}
+      </div>
+    }
+  </div>
+}

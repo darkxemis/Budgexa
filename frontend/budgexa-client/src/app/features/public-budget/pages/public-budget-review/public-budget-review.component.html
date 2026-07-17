@@ -1,0 +1,261 @@
+<div class="public-budget-page">
+  <div class="page-container">
+    <!-- Language Selector -->
+    <div class="lang-bar">
+      <app-language-selector />
+    </div>
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="brand">
+        <div class="brand-icon">📋</div>
+        <h1>{{ 'publicBudget.review.title' | translate }}</h1>
+      </div>
+      <p class="subtitle">{{ 'publicBudget.review.subtitle' | translate }}</p>
+    </header>
+
+    @if (!downloadSuccess()) {
+      <!-- Items Section -->
+      <section class="items-section">
+        <div class="section-header">
+          <h2>{{ 'publicBudget.review.itemsTitle' | translate }}</h2>
+          <span class="item-count">{{ selectedItems().length }} / {{ items().length }}</span>
+        </div>
+
+        @if (items().length === 0) {
+          <div class="empty-state">
+            <p>{{ 'publicBudget.review.noItems' | translate }}</p>
+            <button class="btn-secondary" (click)="goBack()">
+              {{ 'publicBudget.review.goBack' | translate }}
+            </button>
+          </div>
+        } @else {
+          <div class="items-grid">
+            @for (item of items(); track item.itemId; let i = $index) {
+              <div class="item-card" [class.deselected]="!item.selected">
+                <div class="item-card-header">
+                  <label class="item-toggle">
+                    <input
+                      type="checkbox"
+                      [checked]="item.selected"
+                      (change)="toggleItem(i)" />
+                    <span class="checkmark"></span>
+                  </label>
+                  <div class="item-info">
+                    <h3 class="item-name">{{ item.productName }}</h3>
+                    <span class="item-unit">{{ item.unit }}</span>
+                  </div>
+                  <button
+                    class="remove-btn"
+                    (click)="removeItem(i)"
+                    [attr.aria-label]="'delete' | translate">
+                    ✕
+                  </button>
+                </div>
+
+                <div class="item-card-body">
+                  <div class="item-detail">
+                    <span class="detail-label">{{ 'publicBudget.review.unitPrice' | translate }}</span>
+                    <span class="detail-value price">{{ item.unitPrice | number:'1.2-2' }} €</span>
+                  </div>
+                  <div class="item-detail">
+                    <span class="detail-label">{{ 'publicBudget.review.tax' | translate }}</span>
+                    <span class="detail-value">{{ item.taxRate }}%</span>
+                  </div>
+                  <div class="item-detail quantity-control">
+                    <span class="detail-label">{{ 'publicBudget.review.quantity' | translate }}</span>
+                    <div class="quantity-input-group">
+                      <button
+                        class="qty-btn"
+                        (click)="updateQuantity(i, item.quantity - 1)"
+                        [disabled]="item.quantity <= 1">
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        class="qty-input"
+                        [ngModel]="item.quantity"
+                        (ngModelChange)="updateQuantity(i, $event)"
+                        min="1"
+                        max="9999" />
+                      <button
+                        class="qty-btn"
+                        (click)="updateQuantity(i, item.quantity + 1)">
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div class="item-detail item-subtotal">
+                    <span class="detail-label">{{ 'publicBudget.review.lineTotal' | translate }}</span>
+                    <span class="detail-value price">
+                      {{ (item.unitPrice * item.quantity) | number:'1.2-2' }} €
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Add Item Section -->
+        <div class="add-item-section">
+          <button class="add-item-btn" (click)="toggleAddItem()">
+            @if (showAddItem()) {
+              ✕ {{ 'publicBudget.review.closeSearch' | translate }}
+            } @else {
+              + {{ 'publicBudget.review.addItem' | translate }}
+            }
+          </button>
+
+          @if (showAddItem()) {
+            <div class="add-item-panel">
+              <input
+                type="text"
+                class="item-search-input"
+                [ngModel]="itemSearchQuery()"
+                (ngModelChange)="onSearchInput($event)"
+                [placeholder]="'publicBudget.review.searchItemPlaceholder' | translate"
+                autofocus />
+
+              @if (searching()) {
+                <div class="search-loading">
+                  <app-spinner [size]="20" color="#6366f1" />
+                  <span>{{ 'loading' | translate }}...</span>
+                </div>
+              }
+
+              @if (searchResults().length > 0) {
+                <div class="search-results">
+                  @for (result of searchResults(); track result.itemId) {
+                    <button class="search-result-item" (click)="addItem(result)">
+                      <div class="result-info">
+                        <span class="result-name">{{ result.productName }}</span>
+                        <span class="result-detail">{{ result.unit }} · {{ result.unitPrice | number:'1.2-2' }} €</span>
+                      </div>
+                      <span class="result-add">+</span>
+                    </button>
+                  }
+                </div>
+              } @else if (itemSearchQuery().length >= 2 && !searching()) {
+                <div class="search-empty">
+                  {{ 'publicBudget.review.noSearchResults' | translate }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Totals Card -->
+      @if (selectedItems().length > 0) {
+        <section class="totals-card">
+          <div class="total-row">
+            <span>{{ 'publicBudget.review.subtotal' | translate }}</span>
+            <span class="total-value">{{ totals().subtotal | number:'1.2-2' }} €</span>
+          </div>
+          <div class="total-row">
+            <span>{{ 'publicBudget.review.taxAmount' | translate }}</span>
+            <span class="total-value">{{ totals().taxAmount | number:'1.2-2' }} €</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>{{ 'publicBudget.review.total' | translate }}</span>
+            <span class="total-value">{{ totals().total | number:'1.2-2' }} €</span>
+          </div>
+        </section>
+
+        <!-- Customer Info -->
+        <section class="customer-section">
+          <h2>{{ 'publicBudget.review.customerTitle' | translate }}</h2>
+          <div class="customer-form">
+            <div class="form-field">
+              <label for="firstName">{{ 'firstName' | translate }}</label>
+              <input
+                id="firstName"
+                type="text"
+                class="form-input"
+                [ngModel]="firstName()"
+                (ngModelChange)="firstName.set($event)"
+                [placeholder]="'publicBudget.review.firstNamePlaceholder' | translate"
+                maxlength="100" />
+            </div>
+            <div class="form-field">
+              <label for="lastName">{{ 'lastName' | translate }}</label>
+              <input
+                id="lastName"
+                type="text"
+                class="form-input"
+                [ngModel]="lastName()"
+                (ngModelChange)="lastName.set($event)"
+                [placeholder]="'publicBudget.review.lastNamePlaceholder' | translate"
+                maxlength="100" />
+            </div>
+            <div class="form-field">
+              <label for="phone">{{ 'publicBudget.review.phone' | translate }}</label>
+              <input
+                id="phone"
+                type="tel"
+                class="form-input"
+                [ngModel]="phone()"
+                (ngModelChange)="phone.set($event)"
+                [placeholder]="'publicBudget.review.phonePlaceholder' | translate"
+                maxlength="30" />
+            </div>
+            <div class="form-field">
+              <label for="email">{{ 'publicBudget.review.email' | translate }}</label>
+              <input
+                id="email"
+                type="email"
+                class="form-input"
+                [ngModel]="email()"
+                (ngModelChange)="email.set($event)"
+                [placeholder]="'publicBudget.review.emailPlaceholder' | translate"
+                maxlength="200" />
+            </div>
+            <p class="contact-hint">{{ 'publicBudget.review.contactHint' | translate }}</p>
+          </div>
+        </section>
+
+        <!-- Error -->
+        @if (error(); as errorKey) {
+          <div class="error-message">
+            <span class="error-icon">⚠️</span>
+            {{ errorKey | translate }}
+          </div>
+        }
+
+        <!-- Actions -->
+        <section class="actions-section">
+          <button class="btn-secondary" (click)="goBack()">
+            {{ 'publicBudget.review.goBack' | translate }}
+          </button>
+          <button
+            class="btn-primary"
+            [disabled]="!isFormValid() || downloading()"
+            (click)="onConfirmAndDownload()">
+            @if (downloading()) {
+              <app-spinner [size]="18" color="#ffffff" />
+              {{ 'publicBudget.review.downloading' | translate }}
+            } @else {
+              {{ 'publicBudget.review.download' | translate }}
+            }
+          </button>
+        </section>
+      }
+    } @else {
+      <!-- Success State -->
+      <div class="success-card">
+        <div class="success-icon">🎉</div>
+        <h2>{{ 'publicBudget.review.successTitle' | translate }}</h2>
+        <p>{{ 'publicBudget.review.successMessage' | translate }}</p>
+        <button class="btn-primary" (click)="goBack()">
+          {{ 'publicBudget.review.newBudget' | translate }}
+        </button>
+      </div>
+    }
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <p>{{ 'publicBudget.footer' | translate }}</p>
+    </footer>
+  </div>
+</div>

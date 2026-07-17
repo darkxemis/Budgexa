@@ -14,6 +14,14 @@ public interface IApplicationDbContext
     DbSet<Language> Languages { get; }
     DbSet<LanguageTranslation> LanguageTranslations { get; }
     DbSet<Company> Companies { get; }
+    DbSet<Customer> Customers { get; }
+    DbSet<Item> Items { get; }
+    DbSet<Budget> Budgets { get; }
+    DbSet<BudgetLine> BudgetLines { get; }
+    DbSet<Invoice> Invoices { get; }
+    DbSet<InvoiceLine> InvoiceLines { get; }
+    DbSet<PublicBudget> PublicBudgets { get; }
+    DbSet<PublicBudgetLine> PublicBudgetLines { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

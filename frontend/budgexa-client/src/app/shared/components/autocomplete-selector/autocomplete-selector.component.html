@@ -6,6 +6,7 @@
       [value]="searchText()"
       (input)="onInput($any($event.target).value)"
       (focus)="onFocus()"
+      (blur)="onBlur()"
       (keydown)="onKeyDown($event)"
       [placeholder]="placeholder() | translate"
       [disabled]="disabled()"
@@ -18,10 +19,11 @@
       <button
         type="button"
         class="clear-button"
+        (mousedown)="cancelBlur()"
         (click)="clearSelection()"
         [title]="'grid.clear' | translate"
       >
-        ✕
+        &#x2715;
       </button>
     }
     
@@ -39,9 +41,9 @@
     </div>
   }
   
-  <!-- Dropdown menu -->
+  <!-- Dropdown menu: mousedown cancels the blur timer before click fires -->
   @if (showDropdown() && !loading()) {
-    <div class="autocomplete-dropdown">
+    <div class="autocomplete-dropdown" (mousedown)="cancelBlur()">
       @if (filteredOptions().length > 0) {
         <div class="autocomplete-options">
           @for (option of filteredOptions(); track option.id; let i = $index) {

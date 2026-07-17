@@ -28,13 +28,21 @@ internal sealed class CompanyConfiguration : IEntityTypeConfiguration<Company>
             .HasMaxLength(500)
             .HasColumnOrder(6);
 
+        builder.Property(c => c.Phone)
+            .HasMaxLength(30)
+            .HasColumnOrder(7);
+
+        builder.Property(c => c.Email)
+            .HasMaxLength(200)
+            .HasColumnOrder(8);
+
         builder.Property(c => c.StartDate)
             .IsRequired()
-            .HasColumnOrder(7)
+            .HasColumnOrder(9)
             .HasColumnType("date");
 
         builder.Property(c => c.EndDate)
-            .HasColumnOrder(8)
+            .HasColumnOrder(10)
             .HasColumnType("date");
 
         // One-to-many relationship with User

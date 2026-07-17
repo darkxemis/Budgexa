@@ -1,5 +1,5 @@
 namespace Budgexa.Domain.Exceptions;
-
+ 
 public static class ErrorTags
 {
     public static class Auth
@@ -25,6 +25,48 @@ public static class ErrorTags
     public static class Status
     {
         public const string NotFound = "status.notFound";
+    }
+
+    public static class Customer
+    {
+        public const string NotFound = "customer.notFound";
+        public const string TaxIdAlreadyExists = "customer.taxIdAlreadyExists";
+    }
+
+    public static class Item
+    {
+        public const string NotFound = "item.notFound";
+        public const string SkuAlreadyExists = "item.skuAlreadyExists";
+    }
+
+    public static class Budget
+    {
+        public const string NotFound = "budget.notFound";
+        public const string NumberAlreadyExists = "budget.numberAlreadyExists";
+        public const string InvalidStatusTransition = "budget.invalidStatusTransition";
+        public const string LineNotFound = "budget.lineNotFound";
+    }
+
+    public static class Invoice
+    {
+        public const string NotFound = "invoice.notFound";
+        public const string NumberAlreadyExists = "invoice.numberAlreadyExists";
+        public const string InvalidStatusTransition = "invoice.invalidStatusTransition";
+        public const string LineNotFound = "invoice.lineNotFound";
+        public const string AlreadyPaid = "invoice.alreadyPaid";
+    }
+
+    public static class PublicBudget
+    {
+        public const string CompanyNotFound = "publicBudget.companyNotFound";
+        public const string CompanyContractExpired = "publicBudget.companyContractExpired";
+        public const string ItemNotFound = "publicBudget.itemNotFound";
+        public const string ItemNotBelongToCompany = "publicBudget.itemNotBelongToCompany";
+    }
+
+    public static class Company
+    {
+        public const string NotFound = "company.notFound";
     }
 
     public static class Server

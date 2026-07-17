@@ -1,51 +1,69 @@
 ﻿namespace Budgexa.Infrastructure.AI;
 
 using Budgexa.Application.Budgets.DTOs;
-using Budgexa.Application.Budgets.Services;
+using Budgexa.Application.PublicBudgets.Services;
 using Microsoft.Extensions.Configuration;
 using OllamaSharp;
-using OllamaSharp.Models;
+using OllamaSharp.Models.Chat;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 public sealed class OllamaSharpAiService(
     IConfiguration configuration
 ) : IAiService
 {
     private readonly string _baseUrl = configuration["Ollama:BaseUrl"] ?? "http://localhost:11434";
-    private readonly string _defaultModel = configuration["Ollama:DefaultModel"] ?? "llama3.2";
+    private readonly string _defaultModel = configuration["Ollama:DefaultModel"] ?? "qwen2.5:7b";
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
+    private const string SystemMessage = """
+        You extract products/services from text into JSON.
+        Return ONLY a JSON array, nothing else.
+        Each item: {"productName": "Full Name", "quantity": N}
+        CRITICAL RULES:
+        - productName must contain ONLY the product name, NEVER include quantities or numbers.
+          Example: "4 ventanas de aluminio" -> {"productName": "Ventana De Aluminio", "quantity": 4}
+          Example: "3 puertas de madera" -> {"productName": "Puerta De Madera", "quantity": 3}
+        - Keep product names in the SAME language the user wrote. NEVER translate or mix languages.
+        - Use the FULL product name (e.g. "Ventana De Aluminio Reforzado" not just "Aluminio").
+        - If quantity is not stated, use 1.
+        """;
+
     public async Task<BudgetItemsAiResult> GenerateBudgetJsonAsync(
         string userRequest,
         CancellationToken cancellationToken = default)
     {
-        var prompt = BuildPrompt(userRequest);
-
         var ollama = new OllamaApiClient(_baseUrl);
 
-        var request = new GenerateRequest
+        var messages = new List<Message>
+        {
+            new(ChatRole.System, SystemMessage),
+            new(ChatRole.User, userRequest)
+        };
+
+        var request = new ChatRequest
         {
             Model = _defaultModel,
-            Prompt = prompt,
+            Messages = messages,
             Stream = false,
-            Format = "json",
-            Options = new RequestOptions
+            Options = new OllamaSharp.Models.RequestOptions
             {
-                Temperature = 0
+                Temperature = 0,
+                NumPredict = 2048
             }
         };
 
         var fullResponse = string.Empty;
-        
-        await foreach (var stream in ollama.GenerateAsync(request, cancellationToken))
+
+        await foreach (var chunk in ollama.ChatAsync(request, cancellationToken))
         {
-            if (stream is { Done: true })
+            if (chunk?.Done == true)
             {
-                fullResponse = stream.Response;
+                fullResponse = chunk.Message?.Content ?? string.Empty;
             }
         }
 
@@ -53,6 +71,7 @@ public sealed class OllamaSharpAiService(
             return new BudgetItemsAiResult(userRequest, [], _defaultModel);
 
         var jsonContent = ExtractJson(fullResponse);
+        jsonContent = FixDuplicateKeysJson(jsonContent);
 
         var items = JsonSerializer.Deserialize<List<BudgetItem>>(jsonContent, JsonOptions) ?? [];
 
@@ -62,39 +81,62 @@ public sealed class OllamaSharpAiService(
             _defaultModel);
     }
 
-    private static string BuildPrompt(string userRequest)
+    private static string FixDuplicateKeysJson(string json)
     {
-        return $@"
-            Extract products and quantities from the following text.
+        var productNameCount = Regex.Matches(json, @"""productName""", RegexOptions.IgnoreCase).Count;
 
-            Text:
-            ""{userRequest}""
+        if (productNameCount <= 1)
+            return json;
 
-            Return ONLY valid JSON.
-            Exact format:
-            [
-              {{
-                ""productName"": ""string"",
-                ""quantity"": number
-              }}
-            ]
-            ";
+        var objectCount = Regex.Matches(json, @"\{").Count;
+        if (objectCount >= productNameCount)
+            return json;
+
+        var pairs = Regex.Matches(json,
+            @"""productName""\s*:\s*""([^""]+)""\s*(?:,\s*""quantity""\s*:\s*(\d+))?",
+            RegexOptions.IgnoreCase);
+
+        if (pairs.Count == 0)
+            return json;
+
+        var items = new List<string>();
+        foreach (Match match in pairs)
+        {
+            var name = match.Groups[1].Value;
+            var qty = match.Groups[2].Success ? match.Groups[2].Value : "1";
+            items.Add($@"{{""productName"":""{name}"",""quantity"":{qty}}}");
+        }
+
+        return $"[{string.Join(",", items)}]";
     }
 
     private static string ExtractJson(string response)
     {
-        // Si ya es JSON válido, devolverlo
-        if (response.TrimStart().StartsWith('['))
-            return response;
+        var trimmed = response.Trim();
 
-        // Buscar JSON en la respuesta
-        int start = response.IndexOf('[');
-        int end = response.LastIndexOf(']');
+        // Already a valid JSON array
+        if (trimmed.StartsWith('[') && trimmed.EndsWith(']'))
+            return trimmed;
 
-        if (start >= 0 && end > start)
-            return response.Substring(start, end - start + 1);
+        // Single JSON object — wrap in array
+        if (trimmed.StartsWith('{') && trimmed.EndsWith('}'))
+            return $"[{trimmed}]";
 
-        return response;
+        // Try to find an array in the response (may have markdown or extra text)
+        int arrayStart = response.IndexOf('[');
+        int arrayEnd = response.LastIndexOf(']');
+
+        if (arrayStart >= 0 && arrayEnd > arrayStart)
+            return response.Substring(arrayStart, arrayEnd - arrayStart + 1);
+
+        // Try to find a single object in the response
+        int objStart = response.IndexOf('{');
+        int objEnd = response.LastIndexOf('}');
+
+        if (objStart >= 0 && objEnd > objStart)
+            return $"[{response.Substring(objStart, objEnd - objStart + 1)}]";
+
+        return "[]";
     }
 }
 

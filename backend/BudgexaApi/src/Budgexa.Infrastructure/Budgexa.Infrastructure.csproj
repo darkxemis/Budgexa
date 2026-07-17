@@ -14,11 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="OllamaSharp" Version="5.4.25" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-    <Folder Include="Repositories\" />
+    <PackageReference Include="QuestPDF" Version="2026.6.1" />
   </ItemGroup>
 
   <PropertyGroup>

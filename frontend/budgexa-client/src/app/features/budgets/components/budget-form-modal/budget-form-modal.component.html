@@ -1,0 +1,146 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container budget-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'budget-form-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <div class="header-title">
+        <h2 id="budget-form-title">{{ titleKey() | translate }}</h2>
+        @if (isEdit() && currentStatusName()) {
+          <span class="status-badge">{{ currentStatusName() }}</span>
+        }
+      </div>
+      <div class="header-actions">
+        @if (isEdit()) {
+          <app-status-change-menu
+            group="Budget"
+            [currentStatusId]="currentStatusId()"
+            [disabled]="loading() || loadingData() || changingStatus()"
+            buttonLabel="budgets.status.change"
+            (statusSelected)="onStatusSelected($event)"
+          />
+        }
+        <button
+          type="button"
+          class="close-btn"
+          (click)="onClose()"
+          [attr.aria-label]="'cancel' | translate"
+          [disabled]="loading()"
+        >
+          &times;
+        </button>
+      </div>
+    </div>
+
+    @if (loadingData()) {
+      <div class="modal-loading">
+        <app-spinner [size]="28" />
+        <span>{{ 'loading' | translate }}...</span>
+      </div>
+    } @else {
+      <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="budget-number">{{ 'budgets.form.number' | translate }}</label>
+            <input
+              id="budget-number"
+              type="text"
+              formControlName="number"
+              [placeholder]="'budgets.form.number' | translate"
+            />
+            <app-form-error [control]="form.controls.number" />
+          </div>
+
+          <div class="input-group">
+            <label for="budget-issueDate">{{ 'budgets.form.issueDate' | translate }}</label>
+            <input id="budget-issueDate" type="date" formControlName="issueDate" />
+            <app-form-error [control]="form.controls.issueDate" />
+          </div>
+
+          <div class="input-group">
+            <label for="budget-validUntil">{{ 'budgets.form.validUntil' | translate }}</label>
+            <input id="budget-validUntil" type="date" formControlName="validUntil" />
+            <app-form-error [control]="form.controls.validUntil" />
+          </div>
+
+          <div class="input-group">
+            <label for="budget-currency">{{ 'budgets.form.currency' | translate }}</label>
+            <input
+              id="budget-currency"
+              type="text"
+              formControlName="currency"
+              maxlength="3"
+              [placeholder]="'budgets.form.currency' | translate"
+            />
+            <app-form-error [control]="form.controls.currency" />
+          </div>
+
+          <div class="input-group full-width">
+            <label>{{ 'budgets.form.customer' | translate }}</label>
+            <app-autocomplete-selector
+              [options]="loadCustomerOptions"
+              [initialValue]="initialCustomerId()"
+              [placeholder]="'budgets.form.customer'"
+              (valueChange)="onCustomerSelected($event)"
+            />
+            <app-form-error [control]="form.controls.customerId" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="budget-notes">{{ 'budgets.form.notes' | translate }}</label>
+            <textarea
+              id="budget-notes"
+              formControlName="notes"
+              rows="2"
+              [placeholder]="'budgets.form.notes' | translate"
+            ></textarea>
+            <app-form-error [control]="form.controls.notes" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="budget-terms">{{ 'budgets.form.termsAndConditions' | translate }}</label>
+            <textarea
+              id="budget-terms"
+              formControlName="termsAndConditions"
+              rows="2"
+              [placeholder]="'budgets.form.termsAndConditions' | translate"
+            ></textarea>
+            <app-form-error [control]="form.controls.termsAndConditions" />
+          </div>
+        </div>
+
+        <div class="lines-section">
+          <app-budget-lines-editor
+            [lines]="linesArray"
+            [currency]="form.controls.currency.value || 'EUR'"
+            (totalsChange)="onTotalsChange($event)"
+          />
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            {{ 'cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || form.disabled"
+          >
+            {{ submitKey() | translate }}
+            @if (loading()) {
+              <app-spinner [size]="14" color="#fff" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

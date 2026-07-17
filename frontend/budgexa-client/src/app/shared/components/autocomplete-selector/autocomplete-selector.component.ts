@@ -22,9 +22,6 @@ import { Guid } from '../../../core/models/guid.model';
   templateUrl: './autocomplete-selector.component.html',
   styleUrl: './autocomplete-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(document:click)': 'onDocumentClick($event)',
-  },
 })
 export class AutocompleteSelectorComponent implements AfterViewInit {
   options = input<SelectorOption[] | ((searchQuery?: string) => Promise<SelectorOption[]>)>([]);
@@ -43,82 +40,90 @@ export class AutocompleteSelectorComponent implements AfterViewInit {
   protected readonly selectedOption = signal<SelectorOption | null>(null);
   protected readonly highlightedIndex = signal(-1);
 
-  private debounceTimer?: ReturnType<typeof setTimeout>;
+  private _blurTimer?: ReturnType<typeof setTimeout>;
+  private _debounceTimer?: ReturnType<typeof setTimeout>;
   private readonly debounceMs = 300;
+  // Tracks whether initialValue has been hydrated to avoid re-clearing on every render
+  private _initialised = false;
 
-  // Computed filtered options based on search text
   protected readonly filteredOptions = computed(() => {
-    const search = this.searchText().toLowerCase();
     const options = this.availableOptions();
-    
-    if (!search) return options;
-    
-    return options.filter(opt => 
-      opt.name.toLowerCase().includes(search)
-    );
+    const search = this.searchText().toLowerCase();
+    // When an option is selected, show the full list (not filtered by the selected name)
+    if (!search || this.selectedOption()) return options;
+    return options.filter(opt => opt.name.toLowerCase().includes(search));
   });
 
   constructor() {
-    // Watch for changes in initialValue
+    // Hydrate the display text from initialValue only once per distinct non-null value.
+    // We must NOT clear searchText when initialValue goes null — that would erase
+    // text the user is actively typing.
     effect(async () => {
-      const initValue = this.initialValue();
-      if (initValue) {
-        await this.setDisplayValueFromId(initValue);
-      } else {
+      const initVal = this.initialValue();
+      if (initVal && !this._initialised) {
+        this._initialised = true;
+        await this.setDisplayValueFromId(initVal);
+      } else if (!initVal && this._initialised) {
+        // Value was explicitly cleared externally (e.g. parent reset)
+        this._initialised = false;
         this.searchText.set('');
         this.selectedOption.set(null);
       }
     });
   }
 
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.autocomplete-selector')) {
-      this.showDropdown.set(false);
-    }
-  }
-
-  async ngAfterViewInit() {
-    // Load initial options
+  async ngAfterViewInit(): Promise<void> {
     await this.loadOptions();
   }
 
-  protected onInput(value: string) {
+  // ----------------------------------------------------------------
+  // Input events
+  // ----------------------------------------------------------------
+
+  protected onInput(value: string): void {
     this.searchText.set(value);
-    this.showDropdown.set(true);
     this.highlightedIndex.set(-1);
 
-    // Clear selection if text changes
-    if (this.selectedOption() && this.selectedOption()!.name !== value) {
+    // If user types over a selection, discard the internal selection
+    // but do NOT emit valueChange — we only emit on explicit actions
+    // (selectOption or clearSelection) to avoid parent state churn.
+    if (this.selectedOption()) {
       this.selectedOption.set(null);
-      this.valueChange.emit(null);
     }
 
-    // Clear previous timer
-    if (this.debounceTimer) {
-      clearTimeout(this.debounceTimer);
+    if (!this.showDropdown()) {
+      this.showDropdown.set(true);
     }
 
-    // Set new timer to search after debounce delay
-    this.debounceTimer = setTimeout(async () => {
+    clearTimeout(this._debounceTimer);
+    this._debounceTimer = setTimeout(async () => {
       await this.loadOptions(value || undefined);
     }, this.debounceMs);
   }
 
-  protected onFocus() {
+  protected onFocus(): void {
     this.showDropdown.set(true);
   }
 
-  protected selectOption(option: SelectorOption) {
-    this.selectedOption.set(option);
-    this.searchText.set(option.name);
-    this.showDropdown.set(false);
-    this.valueChange.emit(option.id);
+  // onBlur fires when the input loses focus.
+  // We delay closing so that a mousedown on an option can cancel the timer
+  // and register the click before the dropdown disappears.
+  protected onBlur(): void {
+    this._blurTimer = setTimeout(() => {
+      this.showDropdown.set(false);
+      this.highlightedIndex.set(-1);
+    }, 150);
   }
 
-  protected onKeyDown(event: KeyboardEvent) {
+  // Called via (mousedown) on the dropdown panel — prevents the blur from
+  // closing the dropdown before the (click) on an option fires.
+  protected cancelBlur(): void {
+    clearTimeout(this._blurTimer);
+  }
+
+  protected onKeyDown(event: KeyboardEvent): void {
     const options = this.filteredOptions();
-    const currentIndex = this.highlightedIndex();
+    const idx = this.highlightedIndex();
 
     switch (event.key) {
       case 'ArrowDown':
@@ -126,25 +131,21 @@ export class AutocompleteSelectorComponent implements AfterViewInit {
         if (!this.showDropdown()) {
           this.showDropdown.set(true);
         } else {
-          const newIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;
-          this.highlightedIndex.set(newIndex);
-          this.scrollToHighlighted();
+          this.highlightedIndex.set(idx < options.length - 1 ? idx + 1 : 0);
         }
         break;
 
       case 'ArrowUp':
         event.preventDefault();
         if (this.showDropdown()) {
-          const newIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1;
-          this.highlightedIndex.set(newIndex);
-          this.scrollToHighlighted();
+          this.highlightedIndex.set(idx > 0 ? idx - 1 : options.length - 1);
         }
         break;
 
       case 'Enter':
         event.preventDefault();
-        if (this.showDropdown() && currentIndex >= 0 && options[currentIndex]) {
-          this.selectOption(options[currentIndex]);
+        if (this.showDropdown() && idx >= 0 && options[idx]) {
+          this.selectOption(options[idx]);
         }
         break;
 
@@ -156,49 +157,54 @@ export class AutocompleteSelectorComponent implements AfterViewInit {
     }
   }
 
-  protected clearSelection() {
+  // ----------------------------------------------------------------
+  // Selection actions
+  // ----------------------------------------------------------------
+
+  protected selectOption(option: SelectorOption): void {
+    clearTimeout(this._blurTimer);
+    this.selectedOption.set(option);
+    this.searchText.set(option.name);
+    this.showDropdown.set(false);
+    this.highlightedIndex.set(-1);
+    this.valueChange.emit(option.id);
+  }
+
+  protected clearSelection(): void {
+    clearTimeout(this._blurTimer);
+    this._initialised = false;
     this.searchText.set('');
     this.selectedOption.set(null);
     this.showDropdown.set(false);
     this.valueChange.emit(null);
-    this.searchInput().nativeElement.focus();
+    // Reload full list so user can pick again immediately
+    void this.loadOptions();
   }
 
-  private scrollToHighlighted() {
-    setTimeout(() => {
-      const highlighted = document.querySelector('.autocomplete-option.highlighted');
-      if (highlighted) {
-        highlighted.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      }
-    }, 0);
-  }
+  // ----------------------------------------------------------------
+  // Private helpers
+  // ----------------------------------------------------------------
 
-  private async loadOptions(searchQuery?: string) {
+  private async loadOptions(searchQuery?: string): Promise<void> {
     this.loading.set(true);
     try {
       const opts = this.options();
       if (typeof opts === 'function') {
-        const result = await opts(searchQuery);
-        this.availableOptions.set(result);
+        this.availableOptions.set(await opts(searchQuery));
       } else {
-        // Static options, no server-side filtering needed
         this.availableOptions.set(opts);
       }
-    } catch (error) {
-      console.error('Error loading autocomplete options:', error);
+    } catch {
       this.availableOptions.set([]);
     } finally {
       this.loading.set(false);
     }
   }
 
-  private async setDisplayValueFromId(id: Guid) {
-    // First ensure options are loaded
+  private async setDisplayValueFromId(id: Guid): Promise<void> {
     if (this.availableOptions().length === 0) {
       await this.loadOptions();
     }
-
-    // Find the option with the given ID
     const option = this.availableOptions().find(opt => opt.id === id);
     if (option) {
       this.selectedOption.set(option);

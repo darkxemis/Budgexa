@@ -24,6 +24,19 @@
   "role.notFound": "Rol no encontrado.",
   "role.nameExists": "El nombre del rol ya existe.",
   "status.notFound": "Estado no encontrado.",
+  "customer.notFound": "Cliente no encontrado.",
+  "customer.taxIdAlreadyExists": "Ya existe un cliente con este NIF/CIF.",
+  "item.notFound": "Artículo no encontrado.",
+  "item.skuAlreadyExists": "Ya existe un artículo con este SKU.",
+  "budget.notFound": "Presupuesto no encontrado.",
+  "budget.numberAlreadyExists": "Ya existe un presupuesto con este número.",
+  "budget.invalidStatusTransition": "Transición de estado no válida para este presupuesto.",
+  "budget.lineNotFound": "Línea de presupuesto no encontrada.",
+  "invoice.notFound": "Factura no encontrada.",
+  "invoice.numberAlreadyExists": "Ya existe una factura con este número.",
+  "invoice.invalidStatusTransition": "Transición de estado no válida para esta factura.",
+  "invoice.lineNotFound": "Línea de factura no encontrada.",
+  "invoice.alreadyPaid": "La factura ya está completamente pagada.",
   "server.internalError": "Error interno del servidor. Intenta más tarde.",
   "validation.failed": "Validación fallida. Revisa los datos.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Panel de Control",
+    "customers": "Clientes",
+    "items": "Artículos",
+    "budgets": "Presupuestos",
     "invoices": "Facturas",
     "users": "Usuarios",
     "toggleSidebar": "Alternar barra lateral",
@@ -54,28 +70,236 @@
   "confirm": "Confirmar",
   "settingsUpdated": "Configuración actualizada correctamente",
 
-  "dashboard": {
-    "title": "Panel de Control",
-    "subtitle": "Selecciona una opción para comenzar",
-    "cards": {
-      "invoices": {
-        "title": "Facturas",
-        "description": "Gestiona y rastrea tus facturas"
-      },
-      "users": {
-        "title": "Usuarios",
-        "description": "Gestiona usuarios y permisos"
-      }
+  "customers": {
+    "title": "Clientes",
+    "create": "Crear Cliente",
+    "created": "Cliente creado correctamente",
+    "updated": "Cliente actualizado correctamente",
+    "deleted": "Cliente eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Cliente",
+      "message": "¿Seguro que deseas eliminar al cliente {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Cliente",
+      "editTitle": "Editar Cliente",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Cliente creado correctamente",
+      "updated": "Cliente actualizado correctamente",
+      "legalName": "Razón Social",
+      "tradeName": "Nombre Comercial",
+      "taxId": "NIF/CIF",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "addressLine": "Dirección",
+      "postalCode": "Código Postal",
+      "city": "Ciudad",
+      "province": "Provincia",
+      "country": "País",
+      "notes": "Notas"
+    },
+    "grid": {
+      "legalName": "Razón Social",
+      "tradeName": "Nombre Comercial",
+      "taxId": "NIF/CIF",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "city": "Ciudad",
+      "country": "País",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    }
+  },
+
+  "items": {
+    "title": "Artículos",
+    "create": "Crear Artículo",
+    "created": "Artículo creado correctamente",
+    "updated": "Artículo actualizado correctamente",
+    "deleted": "Artículo eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Artículo",
+      "message": "¿Seguro que deseas eliminar el artículo {{ name }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Artículo",
+      "editTitle": "Editar Artículo",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Artículo creado correctamente",
+      "updated": "Artículo actualizado correctamente",
+      "sku": "SKU",
+      "name": "Nombre",
+      "description": "Descripción",
+      "type": "Tipo",
+      "unit": "Unidad",
+      "unitPrice": "Precio Unitario",
+      "taxRate": "IVA (%)",
+      "currency": "Moneda",
+      "totalWithTax": "Total con IVA"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Nombre",
+      "type": "Tipo",
+      "unit": "Unidad",
+      "unitPrice": "Precio Unitario",
+      "taxRate": "IVA (%)",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "types": {
+      "product": "Producto",
+      "service": "Servicio"
+    }
+  },
+
+  "budgets": {
+    "title": "Presupuestos",
+    "create": "Crear Presupuesto",
+    "created": "Presupuesto creado correctamente",
+    "updated": "Presupuesto actualizado correctamente",
+    "deleted": "Presupuesto eliminado correctamente",
+    "delete": {
+      "title": "Eliminar Presupuesto",
+      "message": "¿Seguro que deseas eliminar el presupuesto {{ number }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Presupuesto",
+      "editTitle": "Editar Presupuesto",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Presupuesto creado correctamente",
+      "updated": "Presupuesto actualizado correctamente",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "validUntil": "Válido Hasta",
+      "customer": "Cliente",
+      "currency": "Moneda",
+      "notes": "Notas",
+      "termsAndConditions": "Términos y Condiciones",
+      "lines": "Líneas",
+      "addLine": "Añadir Línea",
+      "removeLine": "Quitar Línea",
+      "selectItem": "Seleccionar Artículo",
+      "selectItemPlaceholder": "Buscar artículo...",
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)",
+      "item": "Artículo",
+      "description": "Descripción",
+      "unit": "Unidad",
+      "quantity": "Cantidad",
+      "unitPrice": "Precio Unitario",
+      "discount": "Descuento (%)",
+      "taxRate": "IVA (%)",
+      "grossSubtotal": "Subtotal bruto",
+      "discountAmount": "Descuento",
+      "netSubtotal": "Subtotal neto",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "total": "Total",
+      "noLines": "No hay líneas. Añade al menos una para calcular los totales."
+    },
+    "grid": {
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "validUntil": "Válido Hasta",
+      "customer": "Cliente",
+      "total": "Total",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "status": {
+      "change": "Cambiar Estado",
+      "changed": "Estado actualizado correctamente"
     }
   },
 
   "invoices": {
     "title": "Facturas",
-    "welcome": "Bienvenido a Facturas",
-    "description": "Gestiona tus facturas de manera eficiente. Crea, visualiza y rastrea todas tus facturas en un solo lugar.",
-    "create": "Crear Nueva Factura",
-    "list": "Tus Facturas",
-    "no-invoices": "Aún no hay facturas. Crea tu primera factura para comenzar."
+    "create": "Crear Factura",
+    "created": "Factura creada correctamente",
+    "updated": "Factura actualizada correctamente",
+    "deleted": "Factura eliminada correctamente",
+    "delete": {
+      "title": "Eliminar Factura",
+      "message": "¿Seguro que deseas eliminar la factura {{ number }}? Esta acción no se puede deshacer."
+    },
+    "form": {
+      "createTitle": "Crear Factura",
+      "editTitle": "Editar Factura",
+      "create": "Crear",
+      "creating": "Creando...",
+      "created": "Factura creada correctamente",
+      "updated": "Factura actualizada correctamente",
+      "series": "Serie",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "dueDate": "Fecha de Vencimiento",
+      "customer": "Cliente",
+      "budget": "Presupuesto de origen",
+      "currency": "Moneda",
+      "notes": "Notas",
+      "lines": "Líneas",
+      "addLine": "Añadir Línea",
+      "removeLine": "Quitar Línea",
+      "item": "Artículo",
+      "description": "Descripción",
+      "unit": "Unidad",
+      "quantity": "Cantidad",
+      "quantityHint": "Ej: 2.5 horas, 1.75 kg, 3 unidades",
+      "unitPrice": "Precio Unitario",
+      "discount": "Descuento (%)",
+      "taxRate": "IVA (%)",
+      "withholdingRate": "Retención IRPF (%)",
+      "grossSubtotal": "Subtotal bruto",
+      "discountAmount": "Descuento",
+      "netSubtotal": "Subtotal neto",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "withholdingAmount": "Retención",
+      "total": "Total",
+      "amountPaid": "Cobrado",
+      "amountDue": "Pendiente",
+      "noLines": "No hay líneas. Añade al menos una para calcular los totales.",
+      "selectItem": "Seleccionar Artículo",
+      "selectItemPlaceholder": "Buscar artículo...",
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)"
+    },
+    "grid": {
+      "series": "Serie",
+      "number": "Número",
+      "issueDate": "Fecha de Emisión",
+      "dueDate": "Fecha de Vencimiento",
+      "customer": "Cliente",
+      "total": "Total",
+      "amountPaid": "Cobrado",
+      "amountDue": "Pendiente",
+      "currency": "Moneda",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación"
+    },
+    "status": {
+      "change": "Cambiar Estado",
+      "changed": "Estado actualizado correctamente"
+    },
+    "payment": {
+      "register": "Registrar Pago",
+      "registered": "Pago registrado correctamente",
+      "amount": "Importe",
+      "method": "Método",
+      "reference": "Referencia",
+      "methods": {
+        "cash": "Efectivo",
+        "bankTransfer": "Transferencia Bancaria",
+        "card": "Tarjeta",
+        "directDebit": "Domiciliación",
+        "bizum": "Bizum",
+        "other": "Otro"
+      }
+    }
   },
 
   "users": {
@@ -156,6 +380,100 @@
       "lessThan": "Menor que",
       "greaterThanOrEqual": "Mayor o Igual",
       "lessThanOrEqual": "Menor o Igual"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "Generador de Presupuestos con IA",
+      "subtitle": "Describe lo que necesitas y nuestra IA creará un presupuesto detallado para ti.",
+      "label": "¿Para qué necesitas un presupuesto?",
+      "placeholder": "Describe los productos o servicios que necesitas. Por ejemplo: 4 ventanas de aluminio, 2 puertas exteriores e instalación...",
+      "examplesTitle": "💡 Ejemplos de solicitudes:",
+      "example1": "Necesito 4 ventanas de aluminio (120x150cm), 2 puertas exteriores de PVC e instalación.",
+      "example2": "Presupuesto para pintar 3 habitaciones, reparación de techo y tratamiento de fachada exterior.",
+      "example3": "Presupuesto para reforma completa de baño incluyendo fontanería y alicatado.",
+      "submit": "Generar Presupuesto con IA",
+      "loadingTitle": "Generando tu presupuesto...",
+      "loadingMessage": "Nuestra IA está analizando tu solicitud y buscando los productos y servicios disponibles. Esto puede tardar unos segundos."
+    },
+    "review": {
+      "title": "Tu Presupuesto",
+      "subtitle": "Revisa los artículos, ajusta cantidades y descarga tu presupuesto en PDF.",
+      "itemsTitle": "Artículos del Presupuesto",
+      "noItems": "No hay artículos disponibles. Vuelve atrás y describe tus necesidades.",
+      "unitPrice": "Precio Unit.",
+      "tax": "IVA",
+      "quantity": "Cant.",
+      "lineTotal": "Total Línea",
+      "subtotal": "Subtotal",
+      "taxAmount": "Impuestos",
+      "total": "Total",
+      "customerTitle": "Tu Información",
+      "firstNamePlaceholder": "Introduce tu nombre",
+      "lastNamePlaceholder": "Introduce tu apellido",
+      "phone": "Teléfono",
+      "phonePlaceholder": "Introduce tu número de teléfono",
+      "email": "Email",
+      "emailPlaceholder": "Introduce tu correo electrónico",
+      "contactHint": "Por favor, indica al menos un teléfono o email.",
+      "goBack": "← Volver",
+      "download": "Confirmar y Descargar PDF",
+      "downloading": "Generando PDF...",
+      "successTitle": "¡Presupuesto Descargado!",
+      "successMessage": "Tu presupuesto ha sido generado y descargado con éxito. Puedes generar uno nuevo si lo necesitas.",
+      "newBudget": "Generar Nuevo Presupuesto",
+      "addItem": "Añadir Artículo del Catálogo",
+      "closeSearch": "Cerrar",
+      "searchItemPlaceholder": "Buscar productos o servicios...",
+      "noSearchResults": "No se encontraron artículos. Prueba con otro término."
+    },
+    "errors": {
+      "rateLimit": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+      "companyNotFound": "Empresa no encontrada. Verifica que el enlace sea correcto.",
+      "itemsNotFound": "Algunos artículos ya no están disponibles. Vuelve atrás e inténtalo de nuevo.",
+      "generic": "Algo salió mal. Inténtalo de nuevo más tarde."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Selecciona una opción para comenzar",
+    "aiShare": {
+      "title": "Enlace IA para Clientes",
+      "description": "Comparte este enlace con tus clientes para que generen presupuestos con IA usando tu catálogo de productos.",
+      "copyLink": "📋 Copiar Enlace",
+      "copied": "¡Copiado!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Clientes",
+        "description": "Gestiona tu cartera de clientes"
+      },
+      "items": {
+        "title": "Artículos",
+        "description": "Gestiona tu catálogo de productos y servicios"
+      },
+      "budgets": {
+        "title": "Presupuestos",
+        "description": "Crea y gestiona tus presupuestos"
+      },
+      "invoices": {
+        "title": "Facturas",
+        "description": "Gestiona y controla tus facturas"
+      },
+      "users": {
+        "title": "Usuarios",
+        "description": "Gestiona usuarios y permisos"
+      }
+    }
+  },
+  "shared": {
+    "voice": {
+      "start": "Pulsa para dictar",
+      "stop": "Pulsa para parar",
+      "listening": "Escuchando... habla ahora"
     }
   }
 }

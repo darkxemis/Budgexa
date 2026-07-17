@@ -24,6 +24,19 @@
   "role.notFound": "Rolle nicht gefunden.",
   "role.nameExists": "Rollenname existiert bereits.",
   "status.notFound": "Status nicht gefunden.",
+  "customer.notFound": "Kunde nicht gefunden.",
+  "customer.taxIdAlreadyExists": "Ein Kunde mit dieser Steuernummer existiert bereits.",
+  "item.notFound": "Artikel nicht gefunden.",
+  "item.skuAlreadyExists": "Ein Artikel mit dieser SKU existiert bereits.",
+  "budget.notFound": "Angebot nicht gefunden.",
+  "budget.numberAlreadyExists": "Ein Angebot mit dieser Nummer existiert bereits.",
+  "budget.invalidStatusTransition": "Ungültiger Statuswechsel für dieses Angebot.",
+  "budget.lineNotFound": "Angebotszeile nicht gefunden.",
+  "invoice.notFound": "Rechnung nicht gefunden.",
+  "invoice.numberAlreadyExists": "Eine Rechnung mit dieser Nummer existiert bereits.",
+  "invoice.invalidStatusTransition": "Ungültiger Statuswechsel für diese Rechnung.",
+  "invoice.lineNotFound": "Rechnungszeile nicht gefunden.",
+  "invoice.alreadyPaid": "Die Rechnung ist bereits vollständig bezahlt.",
   "server.internalError": "Interner Serverfehler. Bitte später erneut versuchen.",
   "validation.failed": "Validierung fehlgeschlagen. Bitte Eingaben prüfen.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Dashboard",
+    "customers": "Kunden",
+    "items": "Artikel",
+    "budgets": "Angebote",
     "invoices": "Rechnungen",
     "users": "Benutzer",
     "toggleSidebar": "Seitenleiste umschalten",
@@ -54,28 +70,237 @@
   "confirm": "Bestätigen",
   "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
 
-  "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Wählen Sie eine Option, um zu beginnen",
-    "cards": {
-      "invoices": {
-        "title": "Rechnungen",
-        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
-      },
-      "users": {
-        "title": "Benutzer",
-        "description": "Benutzer und Berechtigungen verwalten"
-      }
+  "customers": {
+    "title": "Kunden",
+    "create": "Kunde erstellen",
+    "created": "Kunde erfolgreich erstellt",
+    "updated": "Kunde erfolgreich aktualisiert",
+    "deleted": "Kunde erfolgreich gelöscht",
+    "delete": {
+      "title": "Kunde löschen",
+      "message": "Möchten Sie den Kunden {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Kunde erstellen",
+      "editTitle": "Kunde bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Kunde erfolgreich erstellt",
+      "updated": "Kunde erfolgreich aktualisiert",
+      "legalName": "Firmenname",
+      "tradeName": "Handelsname",
+      "taxId": "Steuernummer",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "addressLine": "Adresse",
+      "postalCode": "Postleitzahl",
+      "city": "Stadt",
+      "province": "Bundesland",
+      "country": "Land",
+      "notes": "Notizen"
+    },
+    "grid": {
+      "legalName": "Firmenname",
+      "tradeName": "Handelsname",
+      "taxId": "Steuernummer",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "city": "Stadt",
+      "country": "Land",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    }
+  },
+
+  "items": {
+    "title": "Artikel",
+    "create": "Artikel erstellen",
+    "created": "Artikel erfolgreich erstellt",
+    "updated": "Artikel erfolgreich aktualisiert",
+    "deleted": "Artikel erfolgreich gelöscht",
+    "delete": {
+      "title": "Artikel löschen",
+      "message": "Möchten Sie den Artikel {{ name }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Artikel erstellen",
+      "editTitle": "Artikel bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Artikel erfolgreich erstellt",
+      "updated": "Artikel erfolgreich aktualisiert",
+      "sku": "SKU",
+      "name": "Name",
+      "description": "Beschreibung",
+      "type": "Typ",
+      "unit": "Einheit",
+      "unitPrice": "Einzelpreis",
+      "taxRate": "MwSt. (%)",
+      "currency": "Währung",
+      "totalWithTax": "Gesamt inkl. MwSt."
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Name",
+      "type": "Typ",
+      "unit": "Einheit",
+      "unitPrice": "Einzelpreis",
+      "taxRate": "MwSt. (%)",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "types": {
+      "product": "Produkt",
+      "service": "Dienstleistung"
+    }
+  },
+
+  "budgets": {
+    "title": "Angebote",
+    "create": "Angebot erstellen",
+    "created": "Angebot erfolgreich erstellt",
+    "updated": "Angebot erfolgreich aktualisiert",
+    "deleted": "Angebot erfolgreich gelöscht",
+    "delete": {
+      "title": "Angebot löschen",
+      "message": "Möchten Sie das Angebot {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Angebot erstellen",
+      "editTitle": "Angebot bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Angebot erfolgreich erstellt",
+      "updated": "Angebot erfolgreich aktualisiert",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "validUntil": "Gültig bis",
+      "customer": "Kunde",
+      "currency": "Währung",
+      "notes": "Notizen",
+      "termsAndConditions": "Allgemeine Geschäftsbedingungen",
+      "lines": "Positionen",
+      "addLine": "Position hinzufügen",
+      "removeLine": "Position entfernen",
+      "selectItem": "Artikel auswählen",
+      "selectItemPlaceholder": "Artikel suchen...",
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie ✕ zum Löschen und manuellen Bearbeiten)",
+      "item": "Artikel",
+      "description": "Beschreibung",
+      "unit": "Einheit",
+      "quantity": "Menge",
+      "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
+      "unitPrice": "Einzelpreis",
+      "discount": "Rabatt (%)",
+      "taxRate": "MwSt. (%)",
+      "grossSubtotal": "Zwischensumme brutto",
+      "discountAmount": "Rabatt",
+      "netSubtotal": "Zwischensumme netto",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "MwSt.-Betrag",
+      "total": "Gesamt",
+      "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen."
+    },
+    "grid": {
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "validUntil": "Gültig bis",
+      "customer": "Kunde",
+      "total": "Gesamt",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "status": {
+      "change": "Status ändern",
+      "changed": "Status erfolgreich aktualisiert"
     }
   },
 
   "invoices": {
     "title": "Rechnungen",
-    "welcome": "Willkommen bei Rechnungen",
-    "description": "Verwalten Sie Ihre Rechnungen effizient. Erstellen, anzeigen und verfolgen Sie alle Ihre Rechnungen an einem Ort.",
-    "create": "Neue Rechnung erstellen",
-    "list": "Ihre Rechnungen",
-    "no-invoices": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung, um zu beginnen."
+    "create": "Rechnung erstellen",
+    "created": "Rechnung erfolgreich erstellt",
+    "updated": "Rechnung erfolgreich aktualisiert",
+    "deleted": "Rechnung erfolgreich gelöscht",
+    "delete": {
+      "title": "Rechnung löschen",
+      "message": "Möchten Sie die Rechnung {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Rechnung erstellen",
+      "editTitle": "Rechnung bearbeiten",
+      "create": "Erstellen",
+      "creating": "Erstellen...",
+      "created": "Rechnung erfolgreich erstellt",
+      "updated": "Rechnung erfolgreich aktualisiert",
+      "series": "Serie",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "dueDate": "Fälligkeitsdatum",
+      "customer": "Kunde",
+      "budget": "Ursprungsangebot",
+      "currency": "Währung",
+      "notes": "Notizen",
+      "lines": "Positionen",
+      "addLine": "Position hinzufügen",
+      "removeLine": "Position entfernen",
+      "item": "Artikel",
+      "description": "Beschreibung",
+      "unit": "Einheit",
+      "quantity": "Menge",
+      "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
+      "unitPrice": "Einzelpreis",
+      "discount": "Rabatt (%)",
+      "taxRate": "MwSt. (%)",
+      "withholdingRate": "Einbehalt (%)",
+      "grossSubtotal": "Zwischensumme brutto",
+      "discountAmount": "Rabatt",
+      "netSubtotal": "Zwischensumme netto",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "MwSt.-Betrag",
+      "withholdingAmount": "Einbehalt",
+      "total": "Gesamt",
+      "amountPaid": "Bezahlt",
+      "amountDue": "Offen",
+      "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen.",
+      "selectItem": "Artikel auswählen",
+      "selectItemPlaceholder": "Artikel suchen...",
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)"
+    },
+    "grid": {
+      "series": "Serie",
+      "number": "Nummer",
+      "issueDate": "Ausstellungsdatum",
+      "dueDate": "Fälligkeitsdatum",
+      "customer": "Kunde",
+      "total": "Gesamt",
+      "amountPaid": "Bezahlt",
+      "amountDue": "Offen",
+      "currency": "Währung",
+      "status": "Status",
+      "createdAt": "Erstellt am"
+    },
+    "status": {
+      "change": "Status ändern",
+      "changed": "Status erfolgreich aktualisiert"
+    },
+    "payment": {
+      "register": "Zahlung erfassen",
+      "registered": "Zahlung erfolgreich erfasst",
+      "amount": "Betrag",
+      "method": "Methode",
+      "reference": "Referenz",
+      "methods": {
+        "cash": "Bargeld",
+        "bankTransfer": "Banküberweisung",
+        "card": "Karte",
+        "directDebit": "Lastschrift",
+        "bizum": "Bizum",
+        "other": "Andere"
+      }
+    }
   },
 
   "users": {
@@ -156,6 +381,100 @@
       "lessThan": "Kleiner als",
       "greaterThanOrEqual": "Größer oder gleich",
       "lessThanOrEqual": "Kleiner oder gleich"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "KI-Budgetgenerator",
+      "subtitle": "Beschreiben Sie, was Sie benötigen, und unsere KI erstellt ein detailliertes Angebot für Sie.",
+      "label": "Wofür benötigen Sie ein Angebot?",
+      "placeholder": "Beschreiben Sie die Produkte oder Dienstleistungen, die Sie benötigen. Zum Beispiel: 4 Aluminiumfenster, 2 Außentüren und Montage...",
+      "examplesTitle": "💡 Beispielanfragen:",
+      "example1": "Ich brauche 4 Aluminiumfenster (120x150cm), 2 PVC-Außentüren und Montage.",
+      "example2": "Angebot für das Streichen von 3 Zimmern, Deckenreparatur und Fassadenbehandlung.",
+      "example3": "Angebot für komplette Badsanierung inklusive Sanitär und Fliesen.",
+      "submit": "Angebot mit KI generieren",
+      "loadingTitle": "Ihr Angebot wird erstellt...",
+      "loadingMessage": "Unsere KI analysiert Ihre Anfrage und gleicht sie mit verfügbaren Produkten und Dienstleistungen ab. Dies kann einige Sekunden dauern."
+    },
+    "review": {
+      "title": "Ihr Angebot",
+      "subtitle": "Überprüfen Sie die Positionen, passen Sie Mengen an und laden Sie Ihr PDF-Angebot herunter.",
+      "itemsTitle": "Angebotspositionen",
+      "noItems": "Keine Positionen verfügbar. Gehen Sie zurück und beschreiben Sie Ihre Anforderungen.",
+      "unitPrice": "Einzelpreis",
+      "tax": "MwSt.",
+      "quantity": "Menge",
+      "lineTotal": "Zeilensumme",
+      "subtotal": "Zwischensumme",
+      "taxAmount": "Steuerbetrag",
+      "total": "Gesamt",
+      "customerTitle": "Ihre Daten",
+      "firstNamePlaceholder": "Vorname eingeben",
+      "lastNamePlaceholder": "Nachname eingeben",
+      "phone": "Telefon",
+      "phonePlaceholder": "Telefonnummer eingeben",
+      "email": "E-Mail",
+      "emailPlaceholder": "E-Mail-Adresse eingeben",
+      "contactHint": "Bitte geben Sie mindestens eine Telefonnummer oder E-Mail an.",
+      "goBack": "← Zurück",
+      "download": "Bestätigen & PDF herunterladen",
+      "downloading": "PDF wird erstellt...",
+      "successTitle": "Angebot heruntergeladen!",
+      "successMessage": "Ihr Angebot wurde erfolgreich erstellt und heruntergeladen. Sie können bei Bedarf ein neues erstellen.",
+      "newBudget": "Neues Angebot erstellen",
+      "addItem": "Artikel aus Katalog hinzufügen",
+      "closeSearch": "Schließen",
+      "searchItemPlaceholder": "Produkte oder Dienstleistungen suchen...",
+      "noSearchResults": "Keine Artikel gefunden. Versuchen Sie einen anderen Suchbegriff."
+    },
+    "errors": {
+      "rateLimit": "Zu viele Anfragen. Bitte warten Sie einen Moment und versuchen Sie es erneut.",
+      "companyNotFound": "Unternehmen nicht gefunden. Bitte überprüfen Sie den Link.",
+      "itemsNotFound": "Einige Artikel sind nicht mehr verfügbar. Bitte gehen Sie zurück und versuchen Sie es erneut.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Wählen Sie eine Option zum Starten",
+    "aiShare": {
+      "title": "KI-Budget-Link für Kunden",
+      "description": "Teilen Sie diesen Link mit Ihren Kunden, damit sie KI-gestützte Angebote mit Ihrem Produktkatalog erstellen können.",
+      "copyLink": "📋 Link kopieren",
+      "copied": "Kopiert!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Kunden",
+        "description": "Verwalten Sie Ihr Kundenportfolio"
+      },
+      "items": {
+        "title": "Artikel",
+        "description": "Verwalten Sie Ihren Produkt- und Dienstleistungskatalog"
+      },
+      "budgets": {
+        "title": "Angebote",
+        "description": "Erstellen und verfolgen Sie Ihre Angebote"
+      },
+      "invoices": {
+        "title": "Rechnungen",
+        "description": "Verwalten und verfolgen Sie Ihre Rechnungen"
+      },
+      "users": {
+        "title": "Benutzer",
+        "description": "Verwalten Sie Benutzer und Berechtigungen"
+      }
+    }
+  },
+  "shared": {
+    "voice": {
+      "start": "Tippen zum Diktieren",
+      "stop": "Tippen zum Stoppen",
+      "listening": "Zuhören... sprechen Sie jetzt"
     }
   }
 }

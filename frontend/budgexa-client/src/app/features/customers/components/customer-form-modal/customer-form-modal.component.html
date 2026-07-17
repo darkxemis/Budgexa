@@ -1,0 +1,183 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div
+    class="modal-container"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'customer-form-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <h2 id="customer-form-title">{{ titleKey() | translate }}</h2>
+      <button
+        type="button"
+        class="close-btn"
+        (click)="onClose()"
+        [attr.aria-label]="'cancel' | translate"
+        [disabled]="loading()"
+      >
+        &times;
+      </button>
+    </div>
+
+    @if (loadingData()) {
+      <div class="modal-loading">
+        <app-spinner [size]="28" />
+        <span>{{ 'loading' | translate }}...</span>
+      </div>
+    } @else {
+      <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="input-group full-width">
+            <label for="customer-legalName">{{ 'customers.form.legalName' | translate }}</label>
+            <input
+              id="customer-legalName"
+              type="text"
+              formControlName="legalName"
+              autocomplete="organization"
+              [placeholder]="'customers.form.legalName' | translate"
+            />
+            <app-form-error [control]="form.controls.legalName" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-tradeName">{{ 'customers.form.tradeName' | translate }}</label>
+            <input
+              id="customer-tradeName"
+              type="text"
+              formControlName="tradeName"
+              [placeholder]="'customers.form.tradeName' | translate"
+            />
+            <app-form-error [control]="form.controls.tradeName" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-taxId">{{ 'customers.form.taxId' | translate }}</label>
+            <input
+              id="customer-taxId"
+              type="text"
+              formControlName="taxId"
+              [placeholder]="'customers.form.taxId' | translate"
+            />
+            <app-form-error [control]="form.controls.taxId" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-email">{{ 'customers.form.email' | translate }}</label>
+            <input
+              id="customer-email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              [placeholder]="'customers.form.email' | translate"
+            />
+            <app-form-error [control]="form.controls.email" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-phone">{{ 'customers.form.phone' | translate }}</label>
+            <input
+              id="customer-phone"
+              type="tel"
+              formControlName="phone"
+              autocomplete="tel"
+              [placeholder]="'customers.form.phone' | translate"
+            />
+            <app-form-error [control]="form.controls.phone" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="customer-addressLine">{{ 'customers.form.addressLine' | translate }}</label>
+            <input
+              id="customer-addressLine"
+              type="text"
+              formControlName="addressLine"
+              autocomplete="street-address"
+              [placeholder]="'customers.form.addressLine' | translate"
+            />
+            <app-form-error [control]="form.controls.addressLine" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-postalCode">{{ 'customers.form.postalCode' | translate }}</label>
+            <input
+              id="customer-postalCode"
+              type="text"
+              formControlName="postalCode"
+              autocomplete="postal-code"
+              [placeholder]="'customers.form.postalCode' | translate"
+            />
+            <app-form-error [control]="form.controls.postalCode" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-city">{{ 'customers.form.city' | translate }}</label>
+            <input
+              id="customer-city"
+              type="text"
+              formControlName="city"
+              autocomplete="address-level2"
+              [placeholder]="'customers.form.city' | translate"
+            />
+            <app-form-error [control]="form.controls.city" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-province">{{ 'customers.form.province' | translate }}</label>
+            <input
+              id="customer-province"
+              type="text"
+              formControlName="province"
+              autocomplete="address-level1"
+              [placeholder]="'customers.form.province' | translate"
+            />
+            <app-form-error [control]="form.controls.province" />
+          </div>
+
+          <div class="input-group">
+            <label for="customer-country">{{ 'customers.form.country' | translate }}</label>
+            <input
+              id="customer-country"
+              type="text"
+              formControlName="country"
+              autocomplete="country-name"
+              [placeholder]="'customers.form.country' | translate"
+            />
+            <app-form-error [control]="form.controls.country" />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="customer-notes">{{ 'customers.form.notes' | translate }}</label>
+            <textarea
+              id="customer-notes"
+              formControlName="notes"
+              rows="3"
+              [placeholder]="'customers.form.notes' | translate"
+            ></textarea>
+            <app-form-error [control]="form.controls.notes" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            {{ 'cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || form.disabled"
+          >
+            {{ submitKey() | translate }}
+            @if (loading()) {
+              <app-spinner [size]="14" color="#fff" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

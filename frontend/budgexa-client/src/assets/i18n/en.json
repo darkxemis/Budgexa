@@ -24,6 +24,19 @@
   "role.notFound": "Role not found.",
   "role.nameExists": "Role name already exists.",
   "status.notFound": "Status not found.",
+  "customer.notFound": "Customer not found.",
+  "customer.taxIdAlreadyExists": "A customer with this tax ID already exists.",
+  "item.notFound": "Item not found.",
+  "item.skuAlreadyExists": "An item with this SKU already exists.",
+  "budget.notFound": "Budget not found.",
+  "budget.numberAlreadyExists": "A budget with this number already exists.",
+  "budget.invalidStatusTransition": "Invalid status transition for this budget.",
+  "budget.lineNotFound": "Budget line not found.",
+  "invoice.notFound": "Invoice not found.",
+  "invoice.numberAlreadyExists": "An invoice with this number already exists.",
+  "invoice.invalidStatusTransition": "Invalid status transition for this invoice.",
+  "invoice.lineNotFound": "Invoice line not found.",
+  "invoice.alreadyPaid": "The invoice is already fully paid.",
   "server.internalError": "Internal server error. Please try again later.",
   "validation.failed": "Validation failed. Please check your input.",
 
@@ -33,6 +46,9 @@
 
   "nav": {
     "dashboard": "Dashboard",
+    "customers": "Customers",
+    "items": "Items",
+    "budgets": "Budgets",
     "invoices": "Invoices",
     "users": "Users",
     "toggleSidebar": "Toggle sidebar",
@@ -54,28 +70,235 @@
   "confirm": "Confirm",
   "settingsUpdated": "Settings updated successfully",
 
-  "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Select an option to get started",
-    "cards": {
-      "invoices": {
-        "title": "Invoices",
-        "description": "Manage and track your invoices"
-      },
-      "users": {
-        "title": "Users",
-        "description": "Manage users and permissions"
-      }
+  "customers": {
+    "title": "Customers",
+    "create": "Create Customer",
+    "created": "Customer created successfully",
+    "updated": "Customer updated successfully",
+    "deleted": "Customer deleted successfully",
+    "delete": {
+      "title": "Delete Customer",
+      "message": "Are you sure you want to delete the customer {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Customer",
+      "editTitle": "Edit Customer",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Customer created successfully",
+      "updated": "Customer updated successfully",
+      "legalName": "Legal Name",
+      "tradeName": "Trade Name",
+      "taxId": "Tax ID",
+      "email": "Email",
+      "phone": "Phone",
+      "addressLine": "Address",
+      "postalCode": "Postal Code",
+      "city": "City",
+      "province": "Province",
+      "country": "Country",
+      "notes": "Notes"
+    },
+    "grid": {
+      "legalName": "Legal Name",
+      "tradeName": "Trade Name",
+      "taxId": "Tax ID",
+      "email": "Email",
+      "phone": "Phone",
+      "city": "City",
+      "country": "Country",
+      "status": "Status",
+      "createdAt": "Created At"
+    }
+  },
+
+  "items": {
+    "title": "Items",
+    "create": "Create Item",
+    "created": "Item created successfully",
+    "updated": "Item updated successfully",
+    "deleted": "Item deleted successfully",
+    "delete": {
+      "title": "Delete Item",
+      "message": "Are you sure you want to delete the item {{ name }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Item",
+      "editTitle": "Edit Item",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Item created successfully",
+      "updated": "Item updated successfully",
+      "sku": "SKU",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "unit": "Unit",
+      "unitPrice": "Unit Price",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency",
+      "totalWithTax": "Total with Tax"
+    },
+    "grid": {
+      "sku": "SKU",
+      "name": "Name",
+      "type": "Type",
+      "unit": "Unit",
+      "unitPrice": "Unit Price",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "types": {
+      "product": "Product",
+      "service": "Service"
+    }
+  },
+
+  "budgets": {
+    "title": "Budgets",
+    "create": "Create Budget",
+    "created": "Budget created successfully",
+    "updated": "Budget updated successfully",
+    "deleted": "Budget deleted successfully",
+    "delete": {
+      "title": "Delete Budget",
+      "message": "Are you sure you want to delete budget {{ number }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Budget",
+      "editTitle": "Edit Budget",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Budget created successfully",
+      "updated": "Budget updated successfully",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "validUntil": "Valid Until",
+      "customer": "Customer",
+      "currency": "Currency",
+      "notes": "Notes",
+      "termsAndConditions": "Terms and Conditions",
+      "lines": "Lines",
+      "addLine": "Add Line",
+      "removeLine": "Remove Line",
+      "selectItem": "Select Item",
+      "selectItemPlaceholder": "Search item...",
+      "selectItemHint": "Optional: select an item from the catalog (use ✕ to clear and edit manually)",
+      "item": "Item",
+      "description": "Description",
+      "unit": "Unit",
+      "quantity": "Quantity",
+      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",
+      "unitPrice": "Unit Price",
+      "discount": "Discount (%)",
+      "taxRate": "Tax Rate (%)",
+      "grossSubtotal": "Gross Subtotal",
+      "discountAmount": "Discount",
+      "netSubtotal": "Net Subtotal",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "total": "Total",
+      "noLines": "No lines yet. Add at least one to compute totals."
+    },
+    "grid": {
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "validUntil": "Valid Until",
+      "customer": "Customer",
+      "total": "Total",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "status": {
+      "change": "Change Status",
+      "changed": "Status updated successfully"
     }
   },
 
   "invoices": {
     "title": "Invoices",
-    "welcome": "Welcome to Invoices",
-    "description": "Manage your invoices efficiently. Create, view, and track all your invoices in one place.",
-    "create": "Create New Invoice",
-    "list": "Your Invoices",
-    "no-invoices": "No invoices yet. Create your first invoice to get started."
+    "create": "Create Invoice",
+    "created": "Invoice created successfully",
+    "updated": "Invoice updated successfully",
+    "deleted": "Invoice deleted successfully",
+    "delete": {
+      "title": "Delete Invoice",
+      "message": "Are you sure you want to delete invoice {{ number }}? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create Invoice",
+      "editTitle": "Edit Invoice",
+      "create": "Create",
+      "creating": "Creating...",
+      "created": "Invoice created successfully",
+      "updated": "Invoice updated successfully",
+      "series": "Series",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "customer": "Customer",
+      "budget": "Source budget",
+      "currency": "Currency",
+      "notes": "Notes",
+      "lines": "Lines",
+      "addLine": "Add Line",
+      "removeLine": "Remove Line",
+      "item": "Item",
+      "description": "Description",
+      "unit": "Unit",
+      "quantity": "Quantity",      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",      "unitPrice": "Unit Price",
+      "discount": "Discount (%)",
+      "taxRate": "Tax Rate (%)",
+      "withholdingRate": "Withholding (%)",
+      "grossSubtotal": "Gross Subtotal",
+      "discountAmount": "Discount",
+      "netSubtotal": "Net Subtotal",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "withholdingAmount": "Withholding",
+      "total": "Total",
+      "amountPaid": "Paid",
+      "amountDue": "Due",
+      "noLines": "No lines yet. Add at least one to compute totals.",
+      "selectItem": "Select Item",
+      "selectItemPlaceholder": "Search item...",
+      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)"
+    },
+    "grid": {
+      "series": "Series",
+      "number": "Number",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "customer": "Customer",
+      "total": "Total",
+      "amountPaid": "Paid",
+      "amountDue": "Due",
+      "currency": "Currency",
+      "status": "Status",
+      "createdAt": "Created At"
+    },
+    "status": {
+      "change": "Change Status",
+      "changed": "Status updated successfully"
+    },
+    "payment": {
+      "register": "Register Payment",
+      "registered": "Payment registered successfully",
+      "amount": "Amount",
+      "method": "Method",
+      "reference": "Reference",
+      "methods": {
+        "cash": "Cash",
+        "bankTransfer": "Bank Transfer",
+        "card": "Card",
+        "directDebit": "Direct Debit",
+        "bizum": "Bizum",
+        "other": "Other"
+      }
+    }
   },
 
   "users": {
@@ -156,6 +379,100 @@
       "lessThan": "Less Than",
       "greaterThanOrEqual": "Greater or Equal",
       "lessThanOrEqual": "Less or Equal"
+    }
+  },
+
+  "publicBudget": {
+    "prompt": {
+      "title": "AI Budget Generator",
+      "subtitle": "Describe what you need and our AI will create a detailed budget for you.",
+      "label": "What do you need a budget for?",
+      "placeholder": "Describe the products or services you need. For example: 4 aluminum windows, 2 exterior doors, and installation service...",
+      "examplesTitle": "💡 Example requests:",
+      "example1": "I need 4 aluminum windows (120x150cm), 2 exterior PVC doors, and installation.",
+      "example2": "Quote for painting 3 rooms, ceiling repair, and exterior facade treatment.",
+      "example3": "Budget for complete bathroom renovation including plumbing and tiling.",
+      "submit": "Generate Budget with AI",
+      "loadingTitle": "Generating your budget...",
+      "loadingMessage": "Our AI is analyzing your request and matching it with available products and services. This may take a few seconds."
+    },
+    "review": {
+      "title": "Your Budget",
+      "subtitle": "Review the items, adjust quantities, and download your PDF budget.",
+      "itemsTitle": "Budget Items",
+      "noItems": "No items available. Go back and describe your needs.",
+      "unitPrice": "Unit Price",
+      "tax": "Tax",
+      "quantity": "Qty",
+      "lineTotal": "Line Total",
+      "subtotal": "Subtotal",
+      "taxAmount": "Tax Amount",
+      "total": "Total",
+      "customerTitle": "Your Information",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNamePlaceholder": "Enter your last name",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone number",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email address",
+      "contactHint": "Please provide at least a phone number or email.",
+      "goBack": "← Back",
+      "download": "Confirm & Download PDF",
+      "downloading": "Generating PDF...",
+      "successTitle": "Budget Downloaded!",
+      "successMessage": "Your budget has been generated and downloaded successfully. You can generate a new one if needed.",
+      "newBudget": "Generate New Budget",
+      "addItem": "Add Item from Catalog",
+      "closeSearch": "Close",
+      "searchItemPlaceholder": "Search products or services...",
+      "noSearchResults": "No items found. Try a different search term."
+    },
+    "errors": {
+      "rateLimit": "Too many requests. Please wait a moment and try again.",
+      "companyNotFound": "Company not found. Please check the link is correct.",
+      "itemsNotFound": "Some items are no longer available. Please go back and try again.",
+      "generic": "Something went wrong. Please try again later."
+    },
+    "footer": "Powered by Budgexa AI"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Select an option to get started",
+    "aiShare": {
+      "title": "AI Budget Link for Clients",
+      "description": "Share this link with your clients so they can generate budgets powered by AI using your product catalog.",
+      "copyLink": "📋 Copy Link",
+      "copied": "Copied!"
+    },
+    "cards": {
+      "customers": {
+        "title": "Customers",
+        "description": "Manage your customer portfolio"
+      },
+      "items": {
+        "title": "Items",
+        "description": "Manage your product and service catalog"
+      },
+      "budgets": {
+        "title": "Budgets",
+        "description": "Create and track your budgets"
+      },
+      "invoices": {
+        "title": "Invoices",
+        "description": "Manage and track your invoices"
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage users and permissions"
+      }
+    }
+  },
+  "shared": {
+    "voice": {
+      "start": "Tap to dictate",
+      "stop": "Tap to stop",
+      "listening": "Listening... speak now"
     }
   }
 }
