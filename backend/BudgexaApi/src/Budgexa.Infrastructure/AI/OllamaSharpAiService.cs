@@ -3,13 +3,15 @@
 using Budgexa.Application.Budgets.DTOs;
 using Budgexa.Application.PublicBudgets.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using OllamaSharp;
 using OllamaSharp.Models.Chat;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
 public sealed class OllamaSharpAiService(
-    IConfiguration configuration
+    IConfiguration configuration,
+    ILogger<OllamaSharpAiService> logger
 ) : IAiService
 {
     private readonly string _baseUrl = configuration["Ollama:BaseUrl"] ?? "http://localhost:11434";
@@ -59,16 +61,31 @@ public sealed class OllamaSharpAiService(
 
         var fullResponse = string.Empty;
 
-        await foreach (var chunk in ollama.ChatAsync(request, cancellationToken))
+        logger.LogInformation("Calling Ollama at {BaseUrl} with model {Model}", _baseUrl, _defaultModel);
+
+        try
         {
-            if (chunk?.Done == true)
+            await foreach (var chunk in ollama.ChatAsync(request, cancellationToken))
             {
-                fullResponse = chunk.Message?.Content ?? string.Empty;
+                if (chunk?.Done == true)
+                {
+                    fullResponse = chunk.Message?.Content ?? string.Empty;
+                }
             }
         }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to call Ollama at {BaseUrl}", _baseUrl);
+            return new BudgetItemsAiResult(userRequest, [], _defaultModel);
+        }
+
+        logger.LogInformation("Ollama response: {Response}", fullResponse);
 
         if (string.IsNullOrWhiteSpace(fullResponse))
+        {
+            logger.LogWarning("Ollama returned empty response");
             return new BudgetItemsAiResult(userRequest, [], _defaultModel);
+        }
 
         var jsonContent = ExtractJson(fullResponse);
         jsonContent = FixDuplicateKeysJson(jsonContent);

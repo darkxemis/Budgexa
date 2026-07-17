@@ -16,10 +16,7 @@ services:
     build:
       context: .
       dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
-    dns:
-      - 8.8.8.8
-    extra_hosts:
-      - "ollama-host:192.168.1.69"
+    network_mode: host
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
@@ -29,8 +26,6 @@ services:
       - Cors__AllowedOrigins__0=https://budgexaclient.duckdns.org
     depends_on:
       - sqlserver
-    networks:
-      - budgexa-net
     restart: always
 
   budgexa-client:
