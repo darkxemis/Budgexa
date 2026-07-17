@@ -100,15 +100,19 @@ export class VoiceInputComponent implements OnDestroy {
     this.isListening.set(false);
   }
 
+  private readonly isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+  private finalTranscript = '';
+
   private start(): void {
     const Ctor = getSpeechRecognitionCtor();
     if (!Ctor) return;
 
     const recognition = new Ctor();
     recognition.lang = SPEECH_LOCALE[this.languageService.current] ?? 'en-US';
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    recognition.continuous = !this.isMobile;
+    recognition.interimResults = !this.isMobile;
 
+    this.finalTranscript = '';
     const baseText = this.currentText();
 
     recognition.onresult = (event: SpeechResultEvent) => {
@@ -122,13 +126,27 @@ export class VoiceInputComponent implements OnDestroy {
           interim += transcript;
         }
       }
-      const separator = baseText.length > 0 ? ' ' : '';
-      const combined = (baseText + separator + final + interim).slice(0, this.maxLength());
-      this.textChange.emit(combined);
+
+      if (this.isMobile) {
+        this.finalTranscript += final;
+        const separator = baseText.length > 0 || this.finalTranscript.length > 0 ? ' ' : '';
+        const combined = (baseText + separator + this.finalTranscript).trim().slice(0, this.maxLength());
+        this.textChange.emit(combined);
+      } else {
+        const separator = baseText.length > 0 ? ' ' : '';
+        const combined = (baseText + separator + final + interim).slice(0, this.maxLength());
+        this.textChange.emit(combined);
+      }
     };
 
     recognition.onerror = () => this.isListening.set(false);
-    recognition.onend = () => this.isListening.set(false);
+    recognition.onend = () => {
+      if (this.isMobile && this.isListening()) {
+        recognition.start();
+      } else {
+        this.isListening.set(false);
+      }
+    };
 
     recognition.start();
     this.recognition = recognition;
