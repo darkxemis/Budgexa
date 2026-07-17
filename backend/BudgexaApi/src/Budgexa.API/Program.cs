@@ -62,6 +62,7 @@ if (app.Environment.IsDevelopment())
         options.EnableDarkMode();
         options.WithTheme(ScalarTheme.BluePlanet);
         options.AddPreferredSecuritySchemes("Bearer");
+        options.AddServer("https://budgexaclient.duckdns.org", "Production");
     });
 }
 

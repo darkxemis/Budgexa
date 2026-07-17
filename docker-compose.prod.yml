@@ -9,6 +9,7 @@ services:
       - "1433:1433"
     networks:
       - budgexa-net
+    restart: always
 
   budgexaapi:
     container_name: budgexa-api
@@ -16,15 +17,17 @@ services:
       context: .
       dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - JwtSettings__Secret=${JWT_SECRET}
-    ports:
-      - "5000:80"
+      - Ollama__BaseUrl=http://192.168.1.69:11434
+      - ASPNETCORE_URLS=http://+:80
+      - Cors__AllowedOrigins__0=https://budgexaclient.duckdns.org
     depends_on:
       - sqlserver
     networks:
       - budgexa-net
+    restart: always
 
   budgexa-client:
     container_name: budgexa-client
@@ -32,12 +35,40 @@ services:
       context: ./frontend/budgexa-client
       dockerfile: Dockerfile.prod
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certbot-etc:/etc/letsencrypt:ro
+      - certbot-var:/var/lib/letsencrypt
+      - certbot-www:/var/www/certbot:ro
     networks:
       - budgexa-net
     depends_on:
       - budgexaapi
+    restart: always
+
+  certbot:
+    container_name: budgexa-certbot
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - budgexa-net
 
 networks:
   budgexa-net:
     driver: bridge
+
+volumes:
+  certbot-etc:
+    external: true
+    name: budgexa_certbot-etc
+  certbot-var:
+    external: true
+    name: budgexa_certbot-var
+  certbot-www:
+    external: true
+    name: budgexa_certbot-www

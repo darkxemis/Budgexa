@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.localhost/api/v1/',
+  apiUrl: 'https://budgexaclient.duckdns.org/api/v1',
 };
