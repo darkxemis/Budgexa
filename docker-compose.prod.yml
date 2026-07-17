@@ -16,7 +16,8 @@ services:
     build:
       context: .
       dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
-    network_mode: host
+    networks:
+      - budgexa-net
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
