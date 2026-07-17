@@ -16,6 +16,10 @@ services:
     build:
       context: .
       dockerfile: backend/BudgexaApi/src/Budgexa.API/Dockerfile
+    dns:
+      - 8.8.8.8
+    extra_hosts:
+      - "ollama-host:192.168.1.69"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
