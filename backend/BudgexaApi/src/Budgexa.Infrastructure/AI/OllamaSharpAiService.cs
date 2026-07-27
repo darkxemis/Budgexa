@@ -61,7 +61,7 @@ public sealed class OllamaSharpAiService(
 
         var fullResponse = string.Empty;
 
-        logger.LogInformation("Calling Ollama at {BaseUrl} with model {Model}. User request: {UserRequest}", _baseUrl, _defaultModel, userRequest);
+        logger.LogInformation("Calling Ollama at {BaseUrl} with model {Model}", _baseUrl, _defaultModel);
 
         try
         {
