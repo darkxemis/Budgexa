@@ -104,12 +104,26 @@
           @if (!isEdit()) {
             <div class="input-group full-width">
               <label>{{ 'invoices.form.budget' | translate }}</label>
-              <app-autocomplete-selector
-                [options]="loadBudgetOptions"
-                [initialValue]="initialBudgetId()"
-                [placeholder]="'invoices.form.budget'"
-                (valueChange)="onBudgetSelected($event)"
-              />
+              <div class="budget-selector-row">
+                <app-autocomplete-selector
+                  [options]="loadBudgetOptions"
+                  [initialValue]="initialBudgetId()"
+                  [placeholder]="'invoices.form.budget'"
+                  (valueChange)="onBudgetSelected($event)"
+                />
+                <button
+                  type="button"
+                  class="btn-reset-form"
+                  (click)="resetForm()"
+                  [attr.title]="'invoices.form.reset' | translate"
+                  [disabled]="loading() || loadingBudget()"
+                >
+                  <app-icon name="reset" [size]="16" />
+                </button>
+              </div>
+              @if (loadingBudget()) {
+                <span class="budget-loading-hint">{{ 'loading' | translate }}...</span>
+              }
               <app-form-error [control]="form.controls.budgetId" />
             </div>
           }

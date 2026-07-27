@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   HostListener,
   inject,
   input,
@@ -16,11 +17,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { firstValueFrom } from 'rxjs';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { firstValueFrom, switchMap, of, EMPTY } from 'rxjs';
 import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { AutocompleteSelectorComponent } from '../../../../shared/components/autocomplete-selector/autocomplete-selector.component';
 import { StatusChangeMenuComponent } from '../../../../shared/components/status-change-menu/status-change-menu.component';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Guid } from '../../../../core/models/guid.model';
 import { SelectorOption } from '../../../../core/models/selector.model';
 import { ToastService } from '../../../../shared/components/toast/toast.service';
@@ -28,6 +31,8 @@ import { ToastType } from '../../../../shared/components/toast/toast.type';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { CustomerSelectorService } from '../../services/customer-selector.service';
 import { BudgetSelectorService } from '../../services/budget-selector.service';
+import { BudgetApiService } from '../../../budgets/services/budget-api.service';
+import { BudgetDto } from '../../../budgets/models/budget.model';
 import {
   InvoiceCreateDto,
   InvoiceDto,
@@ -54,6 +59,7 @@ export type InvoiceFormMode = 'create' | 'edit';
     AutocompleteSelectorComponent,
     InvoiceLinesEditorComponent,
     StatusChangeMenuComponent,
+    IconComponent,
   ],
   templateUrl: './invoice-form-modal.component.html',
   styleUrl: './invoice-form-modal.component.scss',
@@ -64,11 +70,14 @@ export class InvoiceFormModalComponent implements OnInit {
   private readonly invoiceApi = inject(InvoiceApiService);
   private readonly customerSelector = inject(CustomerSelectorService);
   private readonly budgetSelector = inject(BudgetSelectorService);
+  private readonly budgetApi = inject(BudgetApiService);
   private readonly toast = inject(ToastService);
 
   readonly mode = input<InvoiceFormMode>('create');
   /** Existing invoice id (required when mode is 'edit'). */
   readonly invoiceId = input<Guid | null>(null);
+  /** Pre-selected budget id (used when navigating from budgets page). */
+  readonly preselectedBudgetId = input<Guid | null>(null);
 
   readonly saved = output<InvoiceDto>();
   readonly close = output<void>();
@@ -88,6 +97,23 @@ export class InvoiceFormModalComponent implements OnInit {
   protected readonly initialBudgetId = signal<Guid | null>(null);
   protected readonly currentStatusId = signal<Guid | null>(null);
   protected readonly currentStatusName = signal<string | null>(null);
+
+  /** Signal that drives the budget fetch. Set to a budgetId to trigger loading. */
+  private readonly activeBudgetId = signal<Guid | undefined>(undefined);
+
+  /**
+   * Reactive pipeline: activeBudgetId signal → Observable → switchMap → API call → signal.
+   * When activeBudgetId is undefined the stream emits nothing (idle).
+   * When it changes, any in-flight request is cancelled automatically by switchMap.
+   */
+  private readonly budgetData = toSignal(
+    toObservable(this.activeBudgetId).pipe(
+      switchMap((id) => (id ? this.budgetApi.getById(id) : EMPTY)),
+    ),
+  );
+
+  /** Derived loading state for the template. */
+  protected readonly loadingBudget = signal(false);
 
   protected readonly isEdit = computed(() => this.mode() === 'edit');
   protected readonly titleKey = computed(() =>
@@ -117,6 +143,52 @@ export class InvoiceFormModalComponent implements OnInit {
     return this.form.controls.lines;
   }
 
+  constructor() {
+    // React to budget data changes and populate the form.
+    effect(() => {
+      const budget = this.budgetData();
+      if (!budget) return;
+
+      this.loadingBudget.set(false);
+
+      this.form.patchValue({
+        customerId: budget.customerId,
+        currency: budget.currency,
+        notes: budget.notes ?? '',
+      });
+      this.initialCustomerId.set(budget.customerId);
+
+      this.linesArray.clear();
+      const sortedLines = [...budget.lines].sort((a, b) => a.sortOrder - b.sortOrder);
+      for (const line of sortedLines) {
+        const formLine = InvoiceLinesEditorComponent.createLine(this.fb, {
+          id: null,
+          itemId: line.itemId ?? null,
+          description: line.description,
+          unit: line.unit,
+          quantity: Number(line.quantity),
+          unitPrice: Number(line.unitPrice),
+          discountPercentage: Number(line.discountPercentage),
+          taxRate: Number(line.taxRate),
+          withholdingRate: 0,
+        });
+
+        if (line.itemId) {
+          formLine.controls.description.disable();
+          formLine.controls.unit.disable();
+          formLine.controls.unitPrice.disable();
+          formLine.controls.taxRate.disable();
+        }
+
+        this.linesArray.push(formLine);
+      }
+      if (this.linesArray.length === 0) {
+        this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
+      }
+      this.recomputeTotals();
+    });
+  }
+
   ngOnInit(): void {
     if (this.isEdit() && this.invoiceId()) {
       this.loadInvoice();
@@ -124,6 +196,15 @@ export class InvoiceFormModalComponent implements OnInit {
       // Start create mode with at least one blank line for convenience.
       this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
       this.recomputeTotals();
+
+      // If a budget was preselected (e.g. from budgets page), load its data.
+      const preselected = this.preselectedBudgetId();
+      if (preselected) {
+        this.initialBudgetId.set(preselected);
+        this.form.controls.budgetId.setValue(preselected);
+        this.loadingBudget.set(true);
+        this.activeBudgetId.set(preselected);
+      }
     }
   }
 
@@ -156,6 +237,32 @@ export class InvoiceFormModalComponent implements OnInit {
   protected onBudgetSelected(value: Guid | null): void {
     this.form.controls.budgetId.setValue(value);
     this.form.controls.budgetId.markAsTouched();
+
+    if (value) {
+      this.loadingBudget.set(true);
+      this.activeBudgetId.set(value);
+    } else {
+      this.resetForm();
+    }
+  }
+
+  protected resetForm(): void {
+    this.activeBudgetId.set(undefined);
+    this.form.reset({
+      series: '',
+      number: '',
+      issueDate: this.today(),
+      dueDate: this.today(),
+      customerId: null,
+      budgetId: null,
+      currency: 'EUR',
+      notes: '',
+    });
+    this.initialCustomerId.set(null);
+    this.initialBudgetId.set(null);
+    this.linesArray.clear();
+    this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
+    this.recomputeTotals();
   }
 
   protected onTotalsChange(totals: InvoiceTotals): void {

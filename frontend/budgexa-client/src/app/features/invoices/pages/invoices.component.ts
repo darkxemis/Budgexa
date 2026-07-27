@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
@@ -40,6 +41,8 @@ export class InvoicesComponent implements OnInit {
   private readonly invoiceApiService = inject(InvoiceApiService);
   private readonly statusApiService = inject(StatusApiService);
   private readonly toast = inject(ToastService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   grid = viewChild(DataGridComponent<InvoiceGridDto>);
 
@@ -51,6 +54,7 @@ export class InvoicesComponent implements OnInit {
   protected readonly formModalOpen = signal(false);
   protected readonly formMode = signal<InvoiceFormMode>('create');
   protected readonly editingInvoiceId = signal<Guid | null>(null);
+  protected readonly preselectedBudgetId = signal<Guid | null>(null);
 
   // Payment modal state
   protected readonly paymentModalOpen = signal(false);
@@ -65,6 +69,17 @@ export class InvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.initializeColumns();
     this.initializeActions();
+
+    // Check if navigated from budgets with a preselected budget
+    const budgetId = this.route.snapshot.queryParamMap.get('budgetId');
+    if (budgetId) {
+      this.preselectedBudgetId.set(budgetId as Guid);
+      this.formMode.set('create');
+      this.editingInvoiceId.set(null);
+      this.formModalOpen.set(true);
+      // Clean up the query param
+      this.router.navigate([], { queryParams: {}, replaceUrl: true });
+    }
   }
 
   private initializeColumns(): void {
@@ -139,11 +154,13 @@ export class InvoicesComponent implements OnInit {
 
   protected onFormSaved(): void {
     this.formModalOpen.set(false);
+    this.preselectedBudgetId.set(null);
     this.grid()?.reload();
   }
 
   protected onFormClosed(): void {
     this.formModalOpen.set(false);
+    this.preselectedBudgetId.set(null);
   }
 
   // ------------------------------------------------------------------

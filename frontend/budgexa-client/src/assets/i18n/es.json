@@ -159,6 +159,7 @@
   "budgets": {
     "title": "Presupuestos",
     "create": "Crear Presupuesto",
+    "createInvoice": "Crear Factura",
     "created": "Presupuesto creado correctamente",
     "updated": "Presupuesto actualizado correctamente",
     "deleted": "Presupuesto eliminado correctamente",
@@ -266,7 +267,8 @@
       "noLines": "No hay líneas. Añade al menos una para calcular los totales.",
       "selectItem": "Seleccionar Artículo",
       "selectItemPlaceholder": "Buscar artículo...",
-      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)"
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)",
+      "reset": "Limpiar formulario"
     },
     "grid": {
       "series": "Serie",

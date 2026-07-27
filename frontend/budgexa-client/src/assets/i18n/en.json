@@ -159,6 +159,7 @@
   "budgets": {
     "title": "Budgets",
     "create": "Create Budget",
+    "createInvoice": "Create Invoice",
     "created": "Budget created successfully",
     "updated": "Budget updated successfully",
     "deleted": "Budget deleted successfully",
@@ -265,7 +266,8 @@
       "noLines": "No lines yet. Add at least one to compute totals.",
       "selectItem": "Select Item",
       "selectItemPlaceholder": "Search item...",
-      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)"
+      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)",
+      "reset": "Clear form"
     },
     "grid": {
       "series": "Series",

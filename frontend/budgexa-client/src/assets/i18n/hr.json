@@ -159,6 +159,7 @@
   "budgets": {
     "title": "Ponude",
     "create": "Kreiraj ponudu",
+    "createInvoice": "Kreiraj račun",
     "created": "Ponuda uspješno kreirana",
     "updated": "Ponuda uspješno ažurirana",
     "deleted": "Ponuda uspješno obrisana",
@@ -267,7 +268,8 @@
       "noLines": "Još nema stavki. Dodajte barem jednu za izračun ukupnih iznosa.",
       "selectItem": "Odaberi stavku",
       "selectItemPlaceholder": "Pretraži stavke...",
-      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite × za brisanje i ručno uređivanje)"
+      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite × za brisanje i ručno uređivanje)",
+      "reset": "Očisti obrazac"
     },
     "grid": {
       "series": "Serija",

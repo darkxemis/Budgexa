@@ -159,6 +159,7 @@
   "budgets": {
     "title": "Angebote",
     "create": "Angebot erstellen",
+    "createInvoice": "Rechnung erstellen",
     "created": "Angebot erfolgreich erstellt",
     "updated": "Angebot erfolgreich aktualisiert",
     "deleted": "Angebot erfolgreich gelöscht",
@@ -267,7 +268,8 @@
       "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen.",
       "selectItem": "Artikel auswählen",
       "selectItemPlaceholder": "Artikel suchen...",
-      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)"
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)",
+      "reset": "Formular leeren"
     },
     "grid": {
       "series": "Serie",
