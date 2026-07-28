@@ -37,6 +37,20 @@ export class UserService {
     );
   }
 
+  uploadProfileImage(file: File): Observable<UserProfileResult | null> {
+    return this.api.uploadProfileImage(file).pipe(
+      tap((user: UserProfileResult) => this.userStore.setUser(user)),
+      catchError(() => of(null))
+    );
+  }
+
+  deleteProfileImage(): Observable<UserProfileResult | null> {
+    return this.api.deleteProfileImage().pipe(
+      tap((user: UserProfileResult) => this.userStore.setUser(user)),
+      catchError(() => of(null))
+    );
+  }
+
   clearUser() {
     this.userStore.clearUser();
   }

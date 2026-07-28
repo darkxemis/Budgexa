@@ -44,6 +44,15 @@
   "logout": "Abmelden",
   "noUserInfo": "Keine Benutzerinformationen geladen.",
 
+  "profileImage": "Profilbild",
+  "changeImage": "Bild ändern",
+  "deleteImage": "Bild löschen",
+  "invalidImageType": "Ungültiger Bildtyp. Verwende JPG, PNG, GIF oder WebP.",
+  "imageTooLarge": "Bild ist zu groß. Maximal 5MB.",
+  "profileImageUpdated": "Profilbild aktualisiert.",
+  "profileImageDeleted": "Profilbild gelöscht.",
+  "profileImageUpdateFailed": "Fehler beim Aktualisieren des Profilbilds.",
+
   "nav": {
     "dashboard": "Dashboard",
     "customers": "Kunden",

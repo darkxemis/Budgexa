@@ -26,6 +26,10 @@ services:
       - Ollama__DefaultModel=qwen3-coder:30b
       - ASPNETCORE_URLS=http://+:80
       - Cors__AllowedOrigins__0=https://budgexaclient.duckdns.org
+      - FileStorage__ProfileImagesPath=/app/uploads/profile-images
+      - FileStorage__BaseUrl=https://budgexaclient.duckdns.org/api
+    volumes:
+      - profile-images:/app/uploads/profile-images
     depends_on:
       - sqlserver
     restart: always
@@ -64,6 +68,7 @@ networks:
     driver: bridge
 
 volumes:
+  profile-images:
   certbot-etc:
     external: true
     name: budgexa_certbot-etc

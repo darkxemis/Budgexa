@@ -44,6 +44,15 @@
   "logout": "Logout",
   "noUserInfo": "No user info loaded.",
 
+  "profileImage": "Profile image",
+  "changeImage": "Change image",
+  "deleteImage": "Delete image",
+  "invalidImageType": "Invalid image type. Use JPG, PNG, GIF or WebP.",
+  "imageTooLarge": "Image is too large. Maximum 5MB.",
+  "profileImageUpdated": "Profile image updated.",
+  "profileImageDeleted": "Profile image deleted.",
+  "profileImageUpdateFailed": "Failed to update profile image.",
+
   "nav": {
     "dashboard": "Dashboard",
     "customers": "Customers",

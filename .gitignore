@@ -59,5 +59,8 @@ logs/
 # secrets
 .env
 
+# Uploaded files
+uploads/
+
 #IA context
 CONTEXT.md

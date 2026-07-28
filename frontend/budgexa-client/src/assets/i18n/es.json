@@ -44,6 +44,15 @@
   "logout": "Cerrar sesión",
   "noUserInfo": "No hay información de usuario cargada.",
 
+  "profileImage": "Imagen de perfil",
+  "changeImage": "Cambiar imagen",
+  "deleteImage": "Eliminar imagen",
+  "invalidImageType": "Tipo de imagen no válido. Usa JPG, PNG, GIF o WebP.",
+  "imageTooLarge": "La imagen es demasiado grande. Máximo 5MB.",
+  "profileImageUpdated": "Imagen de perfil actualizada.",
+  "profileImageDeleted": "Imagen de perfil eliminada.",
+  "profileImageUpdateFailed": "Error al actualizar la imagen de perfil.",
+
   "nav": {
     "dashboard": "Panel de Control",
     "customers": "Clientes",

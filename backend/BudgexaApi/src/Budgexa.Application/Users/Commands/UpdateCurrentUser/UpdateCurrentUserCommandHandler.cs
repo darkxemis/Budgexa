@@ -52,7 +52,8 @@ public sealed class UpdateCurrentUserCommandHandler(
                 u.Language.Code,
                 u.UserRoles.Select(ur => ur.Role.Name).ToList(),
                 u.CreatedAt,
-                u.UpdatedAt))
+                u.UpdatedAt,
+                u.ProfileImageUrl))
             .FirstOrDefaultAsync(cancellationToken);
 
         return updatedUser

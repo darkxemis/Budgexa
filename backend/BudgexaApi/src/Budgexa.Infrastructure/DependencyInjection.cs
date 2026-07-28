@@ -10,6 +10,7 @@ using Budgexa.Infrastructure.Authentication;
 using Budgexa.Infrastructure.BackgroundServices;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Services;
+using Budgexa.Infrastructure.Services.FileStorage;
 using Budgexa.Infrastructure.Services.Pdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ public static class DependencyInjection
     {
         services.AddPersistence(configuration);
         services.AddAuth(configuration);
-        services.AddServices();
+        services.AddServices(configuration);
         services.AddBackgroundJobs(configuration);
 
         return services;
@@ -48,12 +49,15 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
     }
 
-    private static void AddServices(this IServiceCollection services)
+    private static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<IPublicBudgetPdfService, PublicBudgetPdfService>();
         services.AddSingleton<IAiService, OllamaSharpAiService>();
+
+        services.Configure<FileStorageSettings>(configuration.GetSection(FileStorageSettings.SectionName));
+        services.AddSingleton<IFileStorageService, LocalFileStorageService>();
     }
 
     private static void AddAuth(this IServiceCollection services, IConfiguration configuration)

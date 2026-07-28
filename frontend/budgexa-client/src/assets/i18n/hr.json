@@ -44,6 +44,15 @@
   "logout": "Odjava",
   "noUserInfo": "Nema učitanih korisničkih podataka.",
 
+  "profileImage": "Profilna slika",
+  "changeImage": "Promijeni sliku",
+  "deleteImage": "Obriši sliku",
+  "invalidImageType": "Nevažeći tip slike. Koristi JPG, PNG, GIF ili WebP.",
+  "imageTooLarge": "Slika je prevelika. Maksimalno 5MB.",
+  "profileImageUpdated": "Profilna slika ažurirana.",
+  "profileImageDeleted": "Profilna slika obrisana.",
+  "profileImageUpdateFailed": "Greška pri ažuriranju profilne slike.",
+
   "nav": {
     "dashboard": "Nadzorna ploča",
     "customers": "Klijenti",

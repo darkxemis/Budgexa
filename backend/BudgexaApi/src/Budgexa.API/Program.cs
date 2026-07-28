@@ -3,8 +3,10 @@ using Budgexa.API.Endpoints;
 using Budgexa.Application;
 using Budgexa.Infrastructure;
 using Budgexa.Infrastructure.Persistence;
+using Budgexa.Infrastructure.Services.FileStorage;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using QuestPDF.Infrastructure;
 using Scalar.AspNetCore;
 using Serilog;
@@ -71,6 +73,20 @@ app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 
 app.UseCors("Frontend");
+
+// Serve uploaded profile images as static files
+var fileStorageSettings = builder.Configuration
+    .GetSection(FileStorageSettings.SectionName)
+    .Get<FileStorageSettings>() ?? new FileStorageSettings();
+
+var profileImagesPath = Path.GetFullPath(fileStorageSettings.ProfileImagesPath);
+Directory.CreateDirectory(profileImagesPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(profileImagesPath),
+    RequestPath = "/profile-images"
+});
 
 app.UseHttpsRedirection();
 

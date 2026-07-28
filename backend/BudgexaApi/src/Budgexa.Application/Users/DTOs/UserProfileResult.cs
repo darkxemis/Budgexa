@@ -11,4 +11,5 @@ public sealed record UserProfileResult(
     string Language,
     IReadOnlyList<string> Roles,
     DateTime CreatedAt,
-    DateTime? UpdatedAt);
+    DateTime? UpdatedAt,
+    string? ProfileImageUrl);
