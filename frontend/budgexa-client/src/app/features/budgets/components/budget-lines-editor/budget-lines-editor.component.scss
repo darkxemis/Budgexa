@@ -1,17 +1,14 @@
-// ─── Shared constants ───────────────────────────────────────────────────────
-$label-h:    16px;   // Fixed label height – prevents multi-line wrapping issues
-$input-h:    34px;   // All interactive fields the same height
-$cell-gap:   4px;    // Gap between label and field inside a cell
-$col-gap:    8px;    // Gap between columns
+$label-h:    16px;
+$input-h:    34px;
+$cell-gap:   4px;
+$col-gap:    8px;
 
-// ─── Wrapper ────────────────────────────────────────────────────────────────
 .lines-editor {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-// ─── Header row ─────────────────────────────────────────────────────────────
 .lines-header {
   display: flex;
   align-items: center;
@@ -40,38 +37,56 @@ $col-gap:    8px;    // Gap between columns
 .lines-table {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-// ─── Single line row ────────────────────────────────────────────────────────
-// Columns: [item-selector] [description] [unit] [qty] [price] [disc] [tax] [subtotal] [total] [delete]
+// ─── Single line row ─────────────────────────────────────────────────────────
 .line-row {
-  display: grid;
-  grid-template-columns: 160px 2fr 72px 72px 96px 80px 72px 96px 96px 36px;
-  gap: $col-gap;
-  align-items: start;    // All cells start at the top so labels + inputs align
-  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.15s;
 
-  @media (max-width: 1400px) {
-    grid-template-columns: 150px 1.8fr 66px 66px 88px 72px 66px 88px 88px 36px;
-  }
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr 1fr;
+  &:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+    border-color: #cbd5e1;
   }
 }
 
-// ─── Generic cell (label + field) ───────────────────────────────────────────
+.line-main-row {
+  display: grid;
+  grid-template-columns: 150px 1.8fr 80px 90px 76px 70px 90px 90px 36px;
+  gap: $col-gap;
+  align-items: start;
+}
+
+.line-measure-row {
+  display: flex;
+  gap: $col-gap;
+  padding-top: 8px;
+}
+
+.line-unit-measure-cell {
+  min-width: 180px;
+  max-width: 240px;
+}
+
+.line-quantity-cell {
+  min-width: 100px;
+  max-width: 140px;
+}
+
+// ─── Generic cell ────────────────────────────────────────────────────────────
 .line-cell {
   display: flex;
   flex-direction: column;
   gap: $cell-gap;
 
-  // Every label is exactly $label-h tall and never wraps.
-  // This guarantees all input fields sit at the same vertical position.
   label {
     display: block;
     height: $label-h;
@@ -84,13 +99,11 @@ $col-gap:    8px;    // Gap between columns
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
     margin: 0;
     padding: 0;
   }
 
-  // Shared field style
-  input {
+  input, select {
     height: $input-h;
     padding: 0 8px;
     border: 1px solid #e2e8f0;
@@ -122,7 +135,6 @@ $col-gap:    8px;    // Gap between columns
   }
 }
 
-// ─── Hint text below item selector ──────────────────────────────────────────
 .input-hint {
   font-size: 0.65rem;
   color: #94a3b8;
@@ -148,7 +160,6 @@ $col-gap:    8px;    // Gap between columns
 
 // ─── Delete button cell ──────────────────────────────────────────────────────
 .line-actions {
-  // Skip label height + gap so the button aligns with inputs
   padding-top: $label-h + $cell-gap;
 
   .btn-danger {
@@ -172,6 +183,7 @@ $col-gap:    8px;    // Gap between columns
   }
 }
 
+// ─── Totals summary ──────────────────────────────────────────────────────────
 .lines-totals {
   border-top: 1px dashed #e2e8f0;
   padding-top: 0.75rem;
@@ -215,6 +227,7 @@ $col-gap:    8px;    // Gap between columns
   }
 }
 
+// ─── Shared button base ──────────────────────────────────────────────────────
 .btn {
   display: inline-flex;
   align-items: center;

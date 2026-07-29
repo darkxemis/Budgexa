@@ -35,9 +35,9 @@ public class GenerateBudgetWithAiQueryHandlerTests
 
         var items = new List<Item>
         {
-            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio Blanca", null, ItemType.Product, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Interior de Madera Block Roble", null, ItemType.Product, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio Blanca", null, ItemType.Product, UnitMeasure.Quantity, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Interior de Madera Block Roble", null, ItemType.Product, UnitMeasure.Quantity, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, UnitMeasure.Quantity, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
         };
 
         var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
@@ -74,8 +74,8 @@ public class GenerateBudgetWithAiQueryHandlerTests
 
         var items = new List<Item>
         {
-            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio", null, ItemType.Product, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Madera", null, ItemType.Product, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio", null, ItemType.Product, UnitMeasure.Quantity, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Madera", null, ItemType.Product, UnitMeasure.Quantity, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
         };
 
         var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
@@ -103,9 +103,9 @@ public class GenerateBudgetWithAiQueryHandlerTests
 
         var items = new List<Item>
         {
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Terciopelo Luxury Edition", null, ItemType.Product, "ud", 900m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Amarillo", null, ItemType.Product, "ud", 450m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, UnitMeasure.Quantity, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Terciopelo Luxury Edition", null, ItemType.Product, UnitMeasure.Quantity, "ud", 900m, 21m, "EUR", Guid.NewGuid()),
+            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Amarillo", null, ItemType.Product, UnitMeasure.Quantity, "ud", 450m, 21m, "EUR", Guid.NewGuid()),
         };
 
         var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);

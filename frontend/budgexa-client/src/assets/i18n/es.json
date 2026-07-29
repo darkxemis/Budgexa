@@ -12,7 +12,10 @@
     "minlength": "No cumple la longitud mínima.",
     "maxlength": "Supera la longitud máxima.",
     "pattern": "Formato inválido.",
-    "invalid": "Valor inválido."
+    "invalid": "Valor inválido.",
+    "negative": "El valor no puede ser negativo.",
+    "invalidStep": "Debe ser en incrementos de {{ expected }}.",
+    "minQuantity": "Debe ser al menos {{ min }}."
   },
 
   "user.emailAlreadyExists": "Ya existe una cuenta con este correo.",
@@ -146,13 +149,15 @@
       "unitPrice": "Precio Unitario",
       "taxRate": "IVA (%)",
       "currency": "Moneda",
-      "totalWithTax": "Total con IVA"
+      "totalWithTax": "Total con IVA",
+      "unitMeasure": "Medida de Unidad"
     },
     "grid": {
       "sku": "SKU",
       "name": "Nombre",
       "type": "Tipo",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "unitPrice": "Precio Unitario",
       "taxRate": "IVA (%)",
       "currency": "Moneda",
@@ -199,6 +204,7 @@
       "item": "Artículo",
       "description": "Descripción",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "quantity": "Cantidad",
       "unitPrice": "Precio Unitario",
       "discount": "Descuento (%)",
@@ -258,6 +264,7 @@
       "item": "Artículo",
       "description": "Descripción",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "quantity": "Cantidad",
       "quantityHint": "Ej: 2.5 horas, 1.75 kg, 3 unidades",
       "unitPrice": "Precio Unitario",
@@ -485,6 +492,12 @@
       "start": "Pulsa para dictar",
       "stop": "Pulsa para parar",
       "listening": "Escuchando... habla ahora"
+    },
+    "unitMeasure": {
+      "select": "Seleccionar medida",
+      "quantity": "Cantidad",
+      "time": "Tiempo",
+      "weight": "Peso"
     }
   }
 }

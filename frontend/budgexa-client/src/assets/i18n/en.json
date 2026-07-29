@@ -12,7 +12,10 @@
     "minlength": "Does not meet minimum length.",
     "maxlength": "Exceeds maximum length.",
     "pattern": "Invalid format.",
-    "invalid": "Invalid value."
+    "invalid": "Invalid value.",
+    "negative": "Value cannot be negative.",
+    "invalidStep": "Must be in increments of {{ expected }}.",
+    "minQuantity": "Must be at least {{ min }}."
   },
 
   "user.emailAlreadyExists": "An account with this email already exists.",
@@ -146,13 +149,15 @@
       "unitPrice": "Unit Price",
       "taxRate": "Tax Rate (%)",
       "currency": "Currency",
-      "totalWithTax": "Total with Tax"
+      "totalWithTax": "Total with Tax",
+      "unitMeasure": "Unit Measure"
     },
     "grid": {
       "sku": "SKU",
       "name": "Name",
       "type": "Type",
       "unit": "Unit",
+      "unitMeasure": "Measure",
       "unitPrice": "Unit Price",
       "taxRate": "Tax Rate (%)",
       "currency": "Currency",
@@ -199,6 +204,7 @@
       "item": "Item",
       "description": "Description",
       "unit": "Unit",
+      "unitMeasure": "Unit Measure",
       "quantity": "Quantity",
       "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",
       "unitPrice": "Unit Price",
@@ -259,6 +265,7 @@
       "item": "Item",
       "description": "Description",
       "unit": "Unit",
+      "unitMeasure": "Unit Measure",
       "quantity": "Quantity",      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",      "unitPrice": "Unit Price",
       "discount": "Discount (%)",
       "taxRate": "Tax Rate (%)",
@@ -484,6 +491,12 @@
       "start": "Tap to dictate",
       "stop": "Tap to stop",
       "listening": "Listening... speak now"
+    },
+    "unitMeasure": {
+      "select": "Select unit measure",
+      "quantity": "Quantity",
+      "time": "Time",
+      "weight": "Weight"
     }
   }
 }

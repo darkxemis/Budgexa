@@ -1,12 +1,16 @@
 import { GridColumnDef } from '../../../core/models/grid.model';
+import { SelectorOption } from '../../../core/models/selector.model';
 import { ItemGridDto, ItemType } from '../models/item.model';
+import { UnitMeasure } from '../../../shared/models/unit-measure.model';
 
 /**
  * Returns the columns for the items grid.
  * @param translateType Function that converts an `ItemType` value into its localized label.
+ * @param translateUnitMeasure Function that converts a `UnitMeasure` value into its localized label.
  */
 export function buildItemsGridColumns(
-  translateType: (type: ItemType) => string
+  translateType: (type: ItemType) => string,
+  translateUnitMeasure?: (um: UnitMeasure) => string
 ): GridColumnDef<ItemGridDto>[] {
   return [
     {
@@ -33,6 +37,21 @@ export function buildItemsGridColumns(
       filterType: 'select',
       width: '130px',
       cellTemplate: (row: ItemGridDto) => translateType(row.type),
+    },
+    {
+      field: 'unitMeasure',
+      header: 'items.grid.unitMeasure',
+      sortable: true,
+      filterable: true,
+      filterType: 'select',
+      width: '130px',
+      cellTemplate: (row: ItemGridDto) =>
+        translateUnitMeasure ? translateUnitMeasure(row.unitMeasure) : String(row.unitMeasure),
+      filterOptions: async (): Promise<SelectorOption[]> => [
+        { id: String(UnitMeasure.Quantity) as never, name: translateUnitMeasure ? translateUnitMeasure(UnitMeasure.Quantity) : 'Quantity' },
+        { id: String(UnitMeasure.Time) as never, name: translateUnitMeasure ? translateUnitMeasure(UnitMeasure.Time) : 'Time' },
+        { id: String(UnitMeasure.Weight) as never, name: translateUnitMeasure ? translateUnitMeasure(UnitMeasure.Weight) : 'Weight' },
+      ],
     },
     {
       field: 'unit',

@@ -27,6 +27,8 @@ import { SelectorOption } from '../../../../core/models/selector.model';
 import { ItemSelectorService } from '../../../items/services/item-selector.service';
 import { ItemApiService } from '../../../items/services/item-api.service';
 import { computeLineTotals } from '../../models/budget.model';
+import { UnitMeasure } from '../../../../shared/models/unit-measure.model';
+import { quantityByUnitMeasureValidator } from '../../../../shared/validators/unit-measure.validators';
 
 /**
  * Reactive form group for a single budget line.
@@ -41,6 +43,7 @@ export type BudgetLineFormGroup = FormGroup<{
   unitPrice: FormControl<number>;
   discountPercentage: FormControl<number>;
   taxRate: FormControl<number>;
+  unitMeasure: FormControl<UnitMeasure>;
 }>;
 
 export interface BudgetTotals {
@@ -60,6 +63,8 @@ export interface BudgetTotals {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetLinesEditorComponent {
+  protected readonly UnitMeasure = UnitMeasure;
+
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly itemSelector = inject(ItemSelectorService);
   private readonly itemApi = inject(ItemApiService);
@@ -160,12 +165,14 @@ export class BudgetLinesEditorComponent {
           itemId: item.id,
           description: item.name,
           unit: item.unit,
+          unitMeasure: item.unitMeasure,
           unitPrice: Number(item.unitPrice),
           taxRate: Number(item.taxRate),
         });
         // Disable fields that reference the catalog item
         line.controls.description.disable();
         line.controls.unit.disable();
+        line.controls.unitMeasure.disable();
         line.controls.unitPrice.disable();
         line.controls.taxRate.disable();
         // FormControl.patchValue() does not change any signal, so the computed()
@@ -195,13 +202,14 @@ export class BudgetLinesEditorComponent {
       itemId?: Guid | null;
       description?: string;
       unit?: string;
+      unitMeasure?: UnitMeasure | null;
       quantity?: number;
       unitPrice?: number;
       discountPercentage?: number;
       taxRate?: number;
     }
   ): BudgetLineFormGroup {
-    return fb.group({
+    const group = fb.group({
       id: fb.control<Guid | null>(preset?.id ?? null),
       itemId: fb.control<Guid | null>(preset?.itemId ?? null),
       description: [preset?.description ?? '', [Validators.required, Validators.maxLength(500)]],
@@ -217,6 +225,26 @@ export class BudgetLinesEditorComponent {
         preset?.taxRate ?? 0,
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
+      unitMeasure: fb.control<UnitMeasure>(preset?.unitMeasure ?? UnitMeasure.Quantity),
     });
+
+    // Cross-field validation: quantity step/min depends on unitMeasure
+    const qtyCtrl = group.get('quantity')!;
+    const umCtrl = group.get('unitMeasure')!;
+    qtyCtrl.addValidators(quantityByUnitMeasureValidator(umCtrl));
+    umCtrl.valueChanges.subscribe(() => {
+      qtyCtrl.updateValueAndValidity();
+      qtyCtrl.markAsTouched();
+    });
+
+    return group as BudgetLineFormGroup;
+  }
+
+  protected getQuantityStep(unitMeasure: UnitMeasure | null): string {
+    switch (unitMeasure) {
+      case UnitMeasure.Time: return '0.25';
+      case UnitMeasure.Quantity: return '0.50';
+      default: return '0.01';
+    }
   }
 }

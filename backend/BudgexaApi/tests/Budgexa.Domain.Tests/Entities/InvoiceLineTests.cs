@@ -1,6 +1,7 @@
 namespace Budgexa.Domain.Tests.Entities;
 
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Enums;
 
 public class InvoiceLineTests
 {
@@ -19,7 +20,7 @@ public class InvoiceLineTests
             DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30)),
             "EUR", null, Guid.NewGuid());
 
-        line = invoice.AddLine(null, 1, "Service", "unit", quantity, unitPrice, discount, taxRate, withholdingRate, Guid.NewGuid());
+        line = invoice.AddLine(null, 1, "Service", "unit", UnitMeasure.Quantity, quantity, unitPrice, discount, taxRate, withholdingRate, Guid.NewGuid());
         return invoice;
     }
 
@@ -59,7 +60,7 @@ public class InvoiceLineTests
     {
         var invoice = InvoiceWithLine(1m, 100m, 0m, 21m, 0m, out var line);
 
-        invoice.UpdateLine(line.Id, null, 1, "X", "unit", 4m, 25m, 0m, 21m, 15m, Guid.NewGuid());
+        invoice.UpdateLine(line.Id, null, 1, "X", "unit", UnitMeasure.Quantity, 4m, 25m, 0m, 21m, 15m, Guid.NewGuid());
 
         line.Subtotal.Should().Be(100m);
         line.TaxAmount.Should().Be(21m);
@@ -103,7 +104,7 @@ public class InvoiceLineTests
             DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30)),
             "EUR", null, Guid.NewGuid());
 
-        var act = () => invoice.AddLine(null, 1, description, unit, quantity, unitPrice, discount, taxRate, withholdingRate, Guid.NewGuid());
+        var act = () => invoice.AddLine(null, 1, description, unit, UnitMeasure.Quantity, quantity, unitPrice, discount, taxRate, withholdingRate, Guid.NewGuid());
 
         act.Should().Throw<ArgumentException>();
     }

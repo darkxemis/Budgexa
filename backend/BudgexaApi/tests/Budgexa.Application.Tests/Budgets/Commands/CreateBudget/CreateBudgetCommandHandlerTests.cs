@@ -6,6 +6,7 @@ using Budgexa.Application.Budgets.DTOs;
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Tests.TestHelpers;
 using Budgexa.Domain.Constants;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Exceptions;
 using NSubstitute;
 
@@ -35,7 +36,7 @@ public class CreateBudgetCommandHandlerTests
             "Terms",
             lines ?? new List<BudgetLineUpsertDto>
             {
-                new(null, null, 1, "Service", "hour", 2m, 100m, 0m, 21m),
+                new(null, null, 1, "Service", "hour", UnitMeasure.Quantity, 2m, 100m, 0m, 21m),
             });
     }
 

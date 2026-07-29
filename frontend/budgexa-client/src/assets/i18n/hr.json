@@ -12,7 +12,10 @@
     "minlength": "Ne ispunjava minimalnu duljinu.",
     "maxlength": "Prelazi maksimalnu duljinu.",
     "pattern": "Neispravan format.",
-    "invalid": "Neispravna vrijednost."
+    "invalid": "Neispravna vrijednost.",
+    "negative": "Vrijednost ne može biti negativna.",
+    "invalidStep": "Mora biti u koracima od {{ expected }}.",
+    "minQuantity": "Mora biti najmanje {{ min }}."
   },
 
   "user.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
@@ -146,13 +149,15 @@
       "unitPrice": "Jedinična cijena",
       "taxRate": "PDV (%)",
       "currency": "Valuta",
-      "totalWithTax": "Ukupno s PDV-om"
+      "totalWithTax": "Ukupno s PDV-om",
+      "unitMeasure": "Mjerna jedinica"
     },
     "grid": {
       "sku": "SKU",
       "name": "Naziv",
       "type": "Vrsta",
       "unit": "Jedinica",
+      "unitMeasure": "Mjera",
       "unitPrice": "Jedinična cijena",
       "taxRate": "PDV (%)",
       "currency": "Valuta",
@@ -199,6 +204,7 @@
       "item": "Stavka",
       "description": "Opis",
       "unit": "Jedinica",
+      "unitMeasure": "Mjerna jedinica",
       "quantity": "Količina",
       "quantityHint": "Npr.: 2,5 sati, 1,75 kg, 3 komada",
       "unitPrice": "Jedinična cijena",
@@ -259,6 +265,7 @@
       "item": "Stavka",
       "description": "Opis",
       "unit": "Jedinica",
+      "unitMeasure": "Mjerna jedinica",
       "quantity": "Količina",
       "quantityHint": "Npr.: 2,5 sati, 1,75 kg, 3 komada",
       "unitPrice": "Jedinična cijena",
@@ -486,6 +493,12 @@
       "start": "Dodirnite za diktiranje",
       "stop": "Dodirnite za zaustavljanje",
       "listening": "Slušam... govorite sada"
+    },
+    "unitMeasure": {
+      "select": "Odaberite mjeru",
+      "quantity": "Količina",
+      "time": "Vrijeme",
+      "weight": "Težina"
     }
   }
 }

@@ -153,6 +153,7 @@ public class InvoiceTests
             sortOrder: 1,
             description: "Service",
             unit: "hour",
+            unitMeasure: UnitMeasure.Quantity,
             quantity: 2m,
             unitPrice: 100m,
             discountPercentage: 0m,
@@ -172,9 +173,9 @@ public class InvoiceTests
     public void UpdateLine_RecalculatesTotals()
     {
         var invoice = ValidInvoice();
-        var line = invoice.AddLine(null, 1, "Service", "hour", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        var line = invoice.AddLine(null, 1, "Service", "hour", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
 
-        invoice.UpdateLine(line.Id, null, 1, "Updated", "hour", 3m, 50m, 0m, 21m, 0m, Guid.NewGuid());
+        invoice.UpdateLine(line.Id, null, 1, "Updated", "hour", UnitMeasure.Quantity, 3m, 50m, 0m, 21m, 0m, Guid.NewGuid());
 
         invoice.Subtotal.Should().Be(150m);
         invoice.TaxAmount.Should().Be(31.50m);
@@ -186,7 +187,7 @@ public class InvoiceTests
     {
         var invoice = ValidInvoice();
 
-        var act = () => invoice.UpdateLine(Guid.NewGuid(), null, 1, "x", "u", 1m, 1m, 0m, 0m, 0m, Guid.NewGuid());
+        var act = () => invoice.UpdateLine(Guid.NewGuid(), null, 1, "x", "u", UnitMeasure.Quantity, 1m, 1m, 0m, 0m, 0m, Guid.NewGuid());
 
         act.Should().Throw<InvalidOperationException>();
     }
@@ -195,8 +196,8 @@ public class InvoiceTests
     public void RemoveLine_RemovesAndRecalculates()
     {
         var invoice = ValidInvoice();
-        var l1 = invoice.AddLine(null, 1, "A", "u", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
-        var l2 = invoice.AddLine(null, 2, "B", "u", 1m, 50m, 0m, 21m, 0m, Guid.NewGuid());
+        var l1 = invoice.AddLine(null, 1, "A", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        var l2 = invoice.AddLine(null, 2, "B", "u", UnitMeasure.Quantity, 1m, 50m, 0m, 21m, 0m, Guid.NewGuid());
 
         invoice.RemoveLine(l1.Id, Guid.NewGuid());
 
@@ -219,7 +220,7 @@ public class InvoiceTests
     public void RegisterPayment_AccumulatesAmountAndMarksPartial()
     {
         var invoice = ValidInvoice();
-        invoice.AddLine(null, 1, "S", "u", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        invoice.AddLine(null, 1, "S", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
 
         invoice.RegisterPayment(50m, PaymentMethod.BankTransfer, "REF-1", Guid.NewGuid());
 
@@ -234,7 +235,7 @@ public class InvoiceTests
     public void RegisterPayment_WhenAmountCompletesTotal_MarksFullyPaid()
     {
         var invoice = ValidInvoice();
-        invoice.AddLine(null, 1, "S", "u", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        invoice.AddLine(null, 1, "S", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
 
         invoice.RegisterPayment(121m, PaymentMethod.Cash, null, Guid.NewGuid());
 
@@ -248,7 +249,7 @@ public class InvoiceTests
     public void RegisterPayment_WithNonPositiveAmount_ThrowsArgumentException(decimal amount)
     {
         var invoice = ValidInvoice();
-        invoice.AddLine(null, 1, "S", "u", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        invoice.AddLine(null, 1, "S", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
 
         var act = () => invoice.RegisterPayment(amount, PaymentMethod.Cash, null, Guid.NewGuid());
 
@@ -259,7 +260,7 @@ public class InvoiceTests
     public void RegisterPayment_WhenExceedsTotal_ThrowsInvalidOperation()
     {
         var invoice = ValidInvoice();
-        invoice.AddLine(null, 1, "S", "u", 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
+        invoice.AddLine(null, 1, "S", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, 0m, Guid.NewGuid());
 
         var act = () => invoice.RegisterPayment(200m, PaymentMethod.Cash, null, Guid.NewGuid());
 

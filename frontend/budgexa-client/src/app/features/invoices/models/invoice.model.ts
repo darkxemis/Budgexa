@@ -16,12 +16,15 @@ export enum PaymentMethod {
   Other = 99,
 }
 
+import { UnitMeasure } from '../../../shared/models/unit-measure.model';
+
 export interface InvoiceLineDto {
   id: Guid;
   itemId: Guid | null;
   sortOrder: number;
   description: string;
   unit: string;
+  unitMeasure: UnitMeasure;
   quantity: number;
   unitPrice: number;
   discountPercentage: number;
@@ -39,6 +42,7 @@ export interface InvoiceLineUpsertDto {
   sortOrder: number;
   description: string;
   unit: string;
+  unitMeasure: UnitMeasure;
   quantity: number;
   unitPrice: number;
   discountPercentage: number;

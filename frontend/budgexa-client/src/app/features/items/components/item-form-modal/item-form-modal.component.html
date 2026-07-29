@@ -81,6 +81,16 @@
           </div>
 
           <div class="input-group">
+            <label for="item-unitMeasure">{{ 'items.form.unitMeasure' | translate }}</label>
+            <select id="item-unitMeasure" formControlName="unitMeasure">
+              <option [ngValue]="UnitMeasure.Quantity">{{ 'shared.unitMeasure.quantity' | translate }}</option>
+              <option [ngValue]="UnitMeasure.Time">{{ 'shared.unitMeasure.time' | translate }}</option>
+              <option [ngValue]="UnitMeasure.Weight">{{ 'shared.unitMeasure.weight' | translate }}</option>
+            </select>
+            <app-form-error [control]="form.controls.unitMeasure" />
+          </div>
+
+          <div class="input-group">
             <label for="item-unitPrice">{{ 'items.form.unitPrice' | translate }}</label>
             <input
               id="item-unitPrice"

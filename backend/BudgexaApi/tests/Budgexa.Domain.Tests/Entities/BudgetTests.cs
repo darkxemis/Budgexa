@@ -1,6 +1,7 @@
 namespace Budgexa.Domain.Tests.Entities;
 
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Enums;
 
 public class BudgetTests
 {
@@ -160,6 +161,7 @@ public class BudgetTests
             sortOrder: 1,
             description: "Service",
             unit: "hour",
+            unitMeasure: UnitMeasure.Quantity,
             quantity: 2m,
             unitPrice: 100m,
             discountPercentage: 0m,
@@ -185,6 +187,7 @@ public class BudgetTests
             1,
             "Service",
             "unit",
+            UnitMeasure.Quantity,
             quantity: 1m,
             unitPrice: 100m,
             discountPercentage: 10m,
@@ -200,7 +203,7 @@ public class BudgetTests
     public void UpdateLine_ChangesValuesAndRecalculatesTotals()
     {
         var budget = ValidBudget();
-        var line = budget.AddLine(null, 1, "Service", "hour", 1m, 100m, 0m, 21m, Guid.NewGuid());
+        var line = budget.AddLine(null, 1, "Service", "hour", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, Guid.NewGuid());
 
         budget.UpdateLine(
             line.Id,
@@ -208,6 +211,7 @@ public class BudgetTests
             sortOrder: 1,
             description: "Updated",
             unit: "hour",
+            unitMeasure: UnitMeasure.Quantity,
             quantity: 3m,
             unitPrice: 50m,
             discountPercentage: 0m,
@@ -227,7 +231,7 @@ public class BudgetTests
 
         var act = () => budget.UpdateLine(
             Guid.NewGuid(),
-            null, 1, "X", "u", 1m, 1m, 0m, 0m,
+            null, 1, "X", "u", UnitMeasure.Quantity, 1m, 1m, 0m, 0m,
             Guid.NewGuid());
 
         act.Should().Throw<InvalidOperationException>();
@@ -237,8 +241,8 @@ public class BudgetTests
     public void RemoveLine_RemovesAndRecalculates()
     {
         var budget = ValidBudget();
-        var l1 = budget.AddLine(null, 1, "A", "u", 1m, 100m, 0m, 21m, Guid.NewGuid());
-        var l2 = budget.AddLine(null, 2, "B", "u", 2m, 50m, 0m, 21m, Guid.NewGuid());
+        var l1 = budget.AddLine(null, 1, "A", "u", UnitMeasure.Quantity, 1m, 100m, 0m, 21m, Guid.NewGuid());
+        var l2 = budget.AddLine(null, 2, "B", "u", UnitMeasure.Quantity, 2m, 50m, 0m, 21m, Guid.NewGuid());
 
         budget.RemoveLine(l1.Id, Guid.NewGuid());
 

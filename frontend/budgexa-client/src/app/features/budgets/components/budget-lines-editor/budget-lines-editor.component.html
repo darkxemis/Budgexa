@@ -12,103 +12,116 @@
     <div class="lines-table">
       @for (line of lines().controls; track $index; let i = $index) {
         <div class="line-row" [formGroup]="line">
-          <div class="line-cell line-item-selector">
-            <label [title]="'budgets.form.selectItem' | translate">{{ 'budgets.form.selectItem' | translate }}</label>
-            <app-autocomplete-selector
-              [options]="loadItemOptions"
-              [initialValue]="line.controls.itemId.value"
-              [placeholder]="'budgets.form.selectItemPlaceholder' | translate"
-              [disabled]="isItemSelected(i)"
-              (valueChange)="onItemSelected(i, $event)"
-            />
-            <small class="input-hint">{{ 'budgets.form.selectItemHint' | translate }}</small>
+          <div class="line-main-row">
+            <div class="line-cell line-item-selector">
+              <label [title]="'budgets.form.selectItem' | translate">{{ 'budgets.form.selectItem' | translate }}</label>
+              <app-autocomplete-selector
+                [options]="loadItemOptions"
+                [initialValue]="line.controls.itemId.value"
+                [placeholder]="'budgets.form.selectItemPlaceholder' | translate"
+                [disabled]="isItemSelected(i)"
+                (valueChange)="onItemSelected(i, $event)"
+              />
+              <small class="input-hint">{{ 'budgets.form.selectItemHint' | translate }}</small>
+            </div>
+
+            <div class="line-cell line-description">
+              <label [title]="'budgets.form.description' | translate">{{ 'budgets.form.description' | translate }}</label>
+              <input
+                type="text"
+                formControlName="description"
+                [placeholder]="'budgets.form.description' | translate"
+                [class.is-disabled]="isItemSelected(i)"
+              />
+              <app-form-error [control]="line.controls.description" />
+            </div>
+
+            <div class="line-cell">
+              <label [title]="'budgets.form.unit' | translate">{{ 'budgets.form.unit' | translate }}</label>
+              <input
+                type="text"
+                formControlName="unit"
+                [placeholder]="'budgets.form.unit' | translate"
+                [class.is-disabled]="isItemSelected(i)"
+              />
+              <app-form-error [control]="line.controls.unit" />
+            </div>
+
+            <div class="line-cell">
+              <label [title]="'budgets.form.unitPrice' | translate">{{ 'budgets.form.unitPrice' | translate }}</label>
+              <input 
+                type="number" 
+                min="0" 
+                step="0.01" 
+                formControlName="unitPrice"
+                [class.is-disabled]="isItemSelected(i)"
+              />
+              <app-form-error [control]="line.controls.unitPrice" />
+            </div>
+
+            <div class="line-cell">
+              <label [title]="'budgets.form.discount' | translate">{{ 'budgets.form.discount' | translate }}</label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="0.01"
+                formControlName="discountPercentage"
+              />
+              <app-form-error [control]="line.controls.discountPercentage" />
+            </div>
+
+            <div class="line-cell">
+              <label [title]="'budgets.form.taxRate' | translate">{{ 'budgets.form.taxRate' | translate }}</label>
+              <input 
+                type="number" 
+                min="0" 
+                max="100" 
+                step="0.01" 
+                formControlName="taxRate"
+                [class.is-disabled]="isItemSelected(i)"
+              />
+              <app-form-error [control]="line.controls.taxRate" />
+            </div>
+
+            <div class="line-cell line-computed">
+              <label [title]="'budgets.form.subtotal' | translate">{{ 'budgets.form.subtotal' | translate }}</label>
+              <span class="computed">{{ lineSubtotal(i).toFixed(2) }} {{ currency() }}</span>
+            </div>
+
+            <div class="line-cell line-computed">
+              <label [title]="'budgets.form.total' | translate">{{ 'budgets.form.total' | translate }}</label>
+              <span class="computed">{{ lineTotal(i).toFixed(2) }} {{ currency() }}</span>
+            </div>
+
+            <div class="line-cell line-actions">
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="removeLine(i)"
+                [attr.aria-label]="'budgets.form.removeLine' | translate"
+              >
+                &times;
+              </button>
+            </div>
           </div>
 
-          <div class="line-cell line-description">
-            <label [title]="'budgets.form.description' | translate">{{ 'budgets.form.description' | translate }}</label>
-            <input
-              type="text"
-              formControlName="description"
-              [placeholder]="'budgets.form.description' | translate"
-              [class.is-disabled]="isItemSelected(i)"
-            />
-            <app-form-error [control]="line.controls.description" />
-          </div>
+          <div class="line-measure-row">
+            <div class="line-cell line-unit-measure-cell">
+              <label [title]="'budgets.form.unitMeasure' | translate">{{ 'budgets.form.unitMeasure' | translate }}</label>
+              <select formControlName="unitMeasure" [class.is-disabled]="isItemSelected(i)">
+                <option [ngValue]="UnitMeasure.Quantity">{{ 'shared.unitMeasure.quantity' | translate }}</option>
+                <option [ngValue]="UnitMeasure.Time">{{ 'shared.unitMeasure.time' | translate }}</option>
+                <option [ngValue]="UnitMeasure.Weight">{{ 'shared.unitMeasure.weight' | translate }}</option>
+              </select>
+            </div>
 
-          <div class="line-cell">
-            <label [title]="'budgets.form.unit' | translate">{{ 'budgets.form.unit' | translate }}</label>
-            <input
-              type="text"
-              formControlName="unit"
-              [placeholder]="'budgets.form.unit' | translate"
-              [class.is-disabled]="isItemSelected(i)"
-            />
-            <app-form-error [control]="line.controls.unit" />
-          </div>
-
-          <div class="line-cell">
-            <label [title]="'budgets.form.quantity' | translate">{{ 'budgets.form.quantity' | translate }}</label>
-            <input type="number" min="0.01" step="0.01" formControlName="quantity" />
-            <small class="input-hint">{{ 'budgets.form.quantityHint' | translate }}</small>
-            <app-form-error [control]="line.controls.quantity" />
-          </div>
-
-          <div class="line-cell">
-            <label [title]="'budgets.form.unitPrice' | translate">{{ 'budgets.form.unitPrice' | translate }}</label>
-            <input 
-              type="number" 
-              min="0" 
-              step="0.01" 
-              formControlName="unitPrice"
-              [class.is-disabled]="isItemSelected(i)"
-            />
-            <app-form-error [control]="line.controls.unitPrice" />
-          </div>
-
-          <div class="line-cell">
-            <label [title]="'budgets.form.discount' | translate">{{ 'budgets.form.discount' | translate }}</label>
-            <input
-              type="number"
-              min="0"
-              max="100"
-              step="0.01"
-              formControlName="discountPercentage"
-            />
-            <app-form-error [control]="line.controls.discountPercentage" />
-          </div>
-
-          <div class="line-cell">
-            <label [title]="'budgets.form.taxRate' | translate">{{ 'budgets.form.taxRate' | translate }}</label>
-            <input 
-              type="number" 
-              min="0" 
-              max="100" 
-              step="0.01" 
-              formControlName="taxRate"
-              [class.is-disabled]="isItemSelected(i)"
-            />
-            <app-form-error [control]="line.controls.taxRate" />
-          </div>
-
-          <div class="line-cell line-computed">
-            <label [title]="'budgets.form.subtotal' | translate">{{ 'budgets.form.subtotal' | translate }}</label>
-            <span class="computed">{{ lineSubtotal(i).toFixed(2) }} {{ currency() }}</span>
-          </div>
-
-          <div class="line-cell line-computed">
-            <label [title]="'budgets.form.total' | translate">{{ 'budgets.form.total' | translate }}</label>
-            <span class="computed">{{ lineTotal(i).toFixed(2) }} {{ currency() }}</span>
-          </div>
-
-          <div class="line-cell line-actions">
-            <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              (click)="removeLine(i)"
-              [attr.aria-label]="'budgets.form.removeLine' | translate"
-            >
-              &times;
-            </button>
+            <div class="line-cell line-quantity-cell">
+              <label [title]="'budgets.form.quantity' | translate">{{ 'budgets.form.quantity' | translate }}</label>
+              <input type="number" min="0" [step]="getQuantityStep(line.controls.unitMeasure.value)" formControlName="quantity" />
+              <small class="input-hint">{{ 'budgets.form.quantityHint' | translate }}</small>
+              <app-form-error [control]="line.controls.quantity" />
+            </div>
           </div>
         </div>
       }

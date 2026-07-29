@@ -12,6 +12,7 @@ public sealed class Item : Entity
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
     public ItemType Type { get; private set; }
+    public UnitMeasure UnitMeasure { get; private set; }
     public string Unit { get; private set; } = default!;
     public decimal UnitPrice { get; private set; }
     public decimal TaxRate { get; private set; }
@@ -30,6 +31,7 @@ public sealed class Item : Entity
         string name,
         string? description,
         ItemType type,
+        UnitMeasure unitMeasure,
         string unit,
         decimal unitPrice,
         decimal taxRate,
@@ -43,6 +45,7 @@ public sealed class Item : Entity
         Name = name;
         Description = description;
         Type = type;
+        UnitMeasure = unitMeasure;
         Unit = unit;
         UnitPrice = unitPrice;
         TaxRate = taxRate;
@@ -58,6 +61,7 @@ public sealed class Item : Entity
         string name,
         string? description,
         ItemType type,
+        UnitMeasure unitMeasure,
         string unit,
         decimal unitPrice,
         decimal taxRate,
@@ -75,6 +79,7 @@ public sealed class Item : Entity
             name,
             description,
             type,
+            unitMeasure,
             unit,
             unitPrice,
             taxRate,
@@ -87,6 +92,7 @@ public sealed class Item : Entity
         string name,
         string? description,
         ItemType type,
+        UnitMeasure unitMeasure,
         string unit,
         decimal unitPrice,
         decimal taxRate,
@@ -99,6 +105,7 @@ public sealed class Item : Entity
         Name = name;
         Description = description;
         Type = type;
+        UnitMeasure = unitMeasure;
         Unit = unit;
         UnitPrice = unitPrice;
         TaxRate = taxRate;

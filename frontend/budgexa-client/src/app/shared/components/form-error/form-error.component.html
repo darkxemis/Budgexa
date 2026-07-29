@@ -1,7 +1,7 @@
 @if (showError()) {
   <div class="error-container">
     <small class="error-text">
-      {{ errorMessage() | translate }}
+      {{ errorMessage() | translate: errorParams() }}
     </small>
   </div>
 }

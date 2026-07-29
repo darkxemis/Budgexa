@@ -17,16 +17,17 @@ internal sealed class InvoiceLineConfiguration : IEntityTypeConfiguration<Invoic
 
         builder.Property(l => l.Description).IsRequired().HasMaxLength(500).HasColumnOrder(4);
         builder.Property(l => l.Unit).IsRequired().HasMaxLength(30).HasColumnOrder(5);
-        builder.Property(l => l.Quantity).IsRequired().HasColumnType("decimal(18,4)").HasColumnOrder(6);
-        builder.Property(l => l.UnitPrice).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(7);
-        builder.Property(l => l.DiscountPercentage).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(8);
-        builder.Property(l => l.TaxRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(9);
-        builder.Property(l => l.WithholdingRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(10);
+        builder.Property(l => l.UnitMeasure).IsRequired().HasConversion<int>().HasColumnOrder(6);
+        builder.Property(l => l.Quantity).IsRequired().HasColumnType("decimal(18,4)").HasColumnOrder(7);
+        builder.Property(l => l.UnitPrice).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(8);
+        builder.Property(l => l.DiscountPercentage).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(9);
+        builder.Property(l => l.TaxRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(10);
+        builder.Property(l => l.WithholdingRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(11);
 
-        builder.Property(l => l.Subtotal).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(11);
-        builder.Property(l => l.TaxAmount).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(12);
-        builder.Property(l => l.WithholdingAmount).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(13);
-        builder.Property(l => l.Total).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(14);
+        builder.Property(l => l.Subtotal).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(12);
+        builder.Property(l => l.TaxAmount).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(13);
+        builder.Property(l => l.WithholdingAmount).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(14);
+        builder.Property(l => l.Total).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(15);
 
         builder.HasIndex(l => l.InvoiceId);
 

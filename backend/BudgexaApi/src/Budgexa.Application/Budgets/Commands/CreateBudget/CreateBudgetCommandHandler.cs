@@ -64,6 +64,7 @@ public sealed class CreateBudgetCommandHandler(
                     line.SortOrder,
                     line.Description,
                     line.Unit,
+                    line.UnitMeasure,
                     line.Quantity,
                     line.UnitPrice,
                     line.DiscountPercentage,

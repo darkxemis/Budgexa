@@ -12,7 +12,10 @@
     "minlength": "Erfüllt nicht die Mindestlänge.",
     "maxlength": "Überschreitet die maximale Länge.",
     "pattern": "Ungültiges Format.",
-    "invalid": "Ungültiger Wert."
+    "invalid": "Ungültiger Wert.",
+    "negative": "Wert darf nicht negativ sein.",
+    "invalidStep": "Muss in Schritten von {{ expected }} sein.",
+    "minQuantity": "Muss mindestens {{ min }} sein."
   },
 
   "user.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
@@ -146,13 +149,15 @@
       "unitPrice": "Einzelpreis",
       "taxRate": "MwSt. (%)",
       "currency": "Währung",
-      "totalWithTax": "Gesamt inkl. MwSt."
+      "totalWithTax": "Gesamt inkl. MwSt.",
+      "unitMeasure": "Maßeinheit"
     },
     "grid": {
       "sku": "SKU",
       "name": "Name",
       "type": "Typ",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "unitPrice": "Einzelpreis",
       "taxRate": "MwSt. (%)",
       "currency": "Währung",
@@ -199,6 +204,7 @@
       "item": "Artikel",
       "description": "Beschreibung",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "quantity": "Menge",
       "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
       "unitPrice": "Einzelpreis",
@@ -259,6 +265,7 @@
       "item": "Artikel",
       "description": "Beschreibung",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "quantity": "Menge",
       "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
       "unitPrice": "Einzelpreis",
@@ -486,6 +493,12 @@
       "start": "Tippen zum Diktieren",
       "stop": "Tippen zum Stoppen",
       "listening": "Zuhören... sprechen Sie jetzt"
+    },
+    "unitMeasure": {
+      "select": "Maßeinheit auswählen",
+      "quantity": "Menge",
+      "time": "Zeit",
+      "weight": "Gewicht"
     }
   }
 }

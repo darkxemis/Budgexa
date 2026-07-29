@@ -52,6 +52,7 @@ internal static class BudgetProjections
                         l.SortOrder,
                         l.Description,
                         l.Unit,
+                        l.UnitMeasure,
                         l.Quantity,
                         l.UnitPrice,
                         l.DiscountPercentage,

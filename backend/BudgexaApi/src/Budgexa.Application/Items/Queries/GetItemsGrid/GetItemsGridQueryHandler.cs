@@ -64,6 +64,7 @@ public sealed class GetItemsGridQueryHandler(
             i.Name,
             i.Description,
             i.Type,
+            i.UnitMeasure,
             i.Unit,
             i.UnitPrice,
             i.TaxRate,
@@ -88,6 +89,7 @@ public sealed class GetItemsGridQueryHandler(
             .AddMap("Name", i => i.Name)
             .AddMap("Description", i => i.Description!)
             .AddMap("Type", i => (int)i.Type)
+            .AddMap("UnitMeasure", i => (int)i.UnitMeasure)
             .AddMap("Unit", i => i.Unit)
             .AddMap("UnitPrice", i => i.UnitPrice)
             .AddMap("TaxRate", i => i.TaxRate)

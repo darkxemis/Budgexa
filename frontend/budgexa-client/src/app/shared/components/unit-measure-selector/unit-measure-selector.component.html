@@ -1,0 +1,10 @@
+<select 
+  [disabled]="disabled()"
+  [value]="value() ?? ''"
+  (change)="onValueChange($event)"
+  class="form-select unit-measure-selector">
+  <option value="" [disabled]="true">{{ placeholder() | translate }}</option>
+  @for (option of unitMeasureOptions(); track option.id) {
+    <option [value]="option.id">{{ option.name }}</option>
+  }
+</select>

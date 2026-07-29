@@ -1,4 +1,5 @@
 import { Guid } from '../../../core/models/guid.model';
+import { UnitMeasure } from '../../../shared/models/unit-measure.model';
 
 /**
  * Item type. Must stay in sync with backend enum `Budgexa.Domain.Enums.ItemType`.
@@ -14,6 +15,7 @@ export interface ItemDto {
   name: string;
   description: string | null;
   type: ItemType;
+  unitMeasure: UnitMeasure;
   unit: string;
   unitPrice: number;
   taxRate: number;
@@ -31,6 +33,7 @@ export interface ItemCreateDto {
   name: string;
   description: string | null;
   type: ItemType;
+  unitMeasure: UnitMeasure;
   unit: string;
   unitPrice: number;
   taxRate: number;
@@ -42,6 +45,7 @@ export interface ItemUpdateDto {
   name: string;
   description: string | null;
   type: ItemType;
+  unitMeasure: UnitMeasure;
   unit: string;
   unitPrice: number;
   taxRate: number;
@@ -54,6 +58,7 @@ export interface ItemGridDto {
   name: string;
   description: string | null;
   type: ItemType;
+  unitMeasure: UnitMeasure;
   unit: string;
   unitPrice: number;
   taxRate: number;

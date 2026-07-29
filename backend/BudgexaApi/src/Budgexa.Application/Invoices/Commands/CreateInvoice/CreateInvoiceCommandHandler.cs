@@ -80,6 +80,7 @@ public sealed class CreateInvoiceCommandHandler(
                     line.SortOrder,
                     line.Description,
                     line.Unit,
+                    line.UnitMeasure,
                     line.Quantity,
                     line.UnitPrice,
                     line.DiscountPercentage,

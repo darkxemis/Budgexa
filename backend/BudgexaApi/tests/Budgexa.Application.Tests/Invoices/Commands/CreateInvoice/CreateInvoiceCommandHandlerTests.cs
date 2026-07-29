@@ -6,6 +6,7 @@ using Budgexa.Application.Invoices.Commands.CreateInvoice;
 using Budgexa.Application.Invoices.DTOs;
 using Budgexa.Application.Tests.TestHelpers;
 using Budgexa.Domain.Constants;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Exceptions;
 using NSubstitute;
 
@@ -38,7 +39,7 @@ public class CreateInvoiceCommandHandlerTests
             "Notes",
             lines ?? new List<InvoiceLineUpsertDto>
             {
-                new(null, null, 1, "Service", "hour", 2m, 100m, 0m, 21m, 0m),
+                new(null, null, 1, "Service", "hour", UnitMeasure.Quantity, 2m, 100m, 0m, 21m, 0m),
             });
     }
 
@@ -148,7 +149,7 @@ public class CreateInvoiceCommandHandlerTests
 
         var lines = new List<InvoiceLineUpsertDto>
         {
-            new(null, null, 1, "Consulting", "hour", 1m, 1000m, 0m, 21m, 15m),
+            new(null, null, 1, "Consulting", "hour", UnitMeasure.Quantity, 1m, 1000m, 0m, 21m, 15m),
         };
 
         var sut = new CreateInvoiceCommandHandler(db, BuildCurrentUser(companyId));
