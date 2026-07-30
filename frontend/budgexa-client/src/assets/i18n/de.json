@@ -81,6 +81,13 @@
   "delete": "Löschen",
   "confirm": "Bestätigen",
   "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
+  "signature": "Unterschrift",
+  "clear": "Löschen",
+  "update": "Aktualisieren",
+  "signatureEmpty": "Bitte unterschreiben Sie zuerst.",
+  "signatureUpdated": "Unterschrift erfolgreich aktualisiert.",
+  "signatureDeleted": "Unterschrift gelöscht.",
+  "signatureUpdateFailed": "Fehler beim Aktualisieren der Unterschrift.",
 
   "customers": {
     "title": "Kunden",

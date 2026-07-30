@@ -42,6 +42,20 @@ export class UserApiService {
     });
   }
 
+  uploadSignatureImage(file: File): Observable<UserProfileResult> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<UserProfileResult>(`${this.baseUrl}/me/signature-image`, formData, {
+      withCredentials: true,
+    });
+  }
+
+  deleteSignatureImage(): Observable<UserProfileResult> {
+    return this.http.delete<UserProfileResult>(`${this.baseUrl}/me/signature-image`, {
+      withCredentials: true,
+    });
+  }
+
   getById(id: Guid): Observable<UserDetailDto> {
     return this.http.get<UserDetailDto>(`${this.baseUrl}/${id}`, {
       withCredentials: true,

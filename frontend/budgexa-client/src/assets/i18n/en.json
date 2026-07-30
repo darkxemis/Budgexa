@@ -81,6 +81,14 @@
   "delete": "Delete",
   "confirm": "Confirm",
   "settingsUpdated": "Settings updated successfully",
+  "signature": "Signature",
+  "clear": "Clear",
+  "update": "Update",
+  "signatureEmpty": "Please draw your signature first.",
+  "signatureUpdated": "Signature updated successfully.",
+  "signatureDeleted": "Signature deleted.",
+  "signatureUpdateFailed": "Failed to update signature.",
+  "downloadFailed": "Failed to download file.",
 
   "customers": {
     "title": "Customers",

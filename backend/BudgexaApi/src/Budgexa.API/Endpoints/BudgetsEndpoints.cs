@@ -4,6 +4,7 @@ using Budgexa.API.Middleware;
 using Budgexa.Application.Budgets.Commands.ChangeBudgetStatus;
 using Budgexa.Application.Budgets.Commands.CreateBudget;
 using Budgexa.Application.Budgets.Commands.DeleteBudget;
+using Budgexa.Application.Budgets.Commands.DownloadBudgetPdf;
 using Budgexa.Application.Budgets.Commands.UpdateBudget;
 using Budgexa.Application.Budgets.DTOs;
 using Budgexa.Application.Budgets.Queries.GetAllBudgets;
@@ -120,6 +121,23 @@ public static class BudgetsEndpoints
             .WithName("ChangeBudgetStatus")
             .WithSummary("PATCH /api/v1/budgets/{id}/status")
             .WithDescription("Changes the status of an existing budget.");
+
+        group.MapGet("/{id:guid}/pdf",
+            async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new DownloadBudgetPdfCommand(id), cancellationToken);
+                return Results.File(
+                    result.PdfBytes,
+                    contentType: "application/pdf",
+                    fileDownloadName: result.FileName);
+            })
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK, contentType: "application/pdf")
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("DownloadBudgetPdf")
+            .WithSummary("GET /api/v1/budgets/{id}/pdf")
+            .WithDescription("Downloads a budget as a PDF file.");
 
         group.MapDelete("/{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>

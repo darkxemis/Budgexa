@@ -51,6 +51,20 @@ export class UserService {
     );
   }
 
+  uploadSignatureImage(file: File): Observable<UserProfileResult | null> {
+    return this.api.uploadSignatureImage(file).pipe(
+      tap((user: UserProfileResult) => this.userStore.setUser(user)),
+      catchError(() => of(null))
+    );
+  }
+
+  deleteSignatureImage(): Observable<UserProfileResult | null> {
+    return this.api.deleteSignatureImage().pipe(
+      tap((user: UserProfileResult) => this.userStore.setUser(user)),
+      catchError(() => of(null))
+    );
+  }
+
   clearUser() {
     this.userStore.clearUser();
   }

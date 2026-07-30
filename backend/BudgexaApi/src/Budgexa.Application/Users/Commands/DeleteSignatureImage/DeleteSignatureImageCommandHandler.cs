@@ -1,4 +1,4 @@
-namespace Budgexa.Application.Users.Commands.DeleteProfileImage;
+namespace Budgexa.Application.Users.Commands.DeleteSignatureImage;
 
 using System.Net;
 using Budgexa.Application.Common.Interfaces;
@@ -7,13 +7,13 @@ using Budgexa.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class DeleteProfileImageCommandHandler(
+public sealed class DeleteSignatureImageCommandHandler(
     IApplicationDbContext db,
     ICurrentUserService currentUserService,
     IFileStorageService fileStorageService
-) : IRequestHandler<DeleteProfileImageCommand, UserProfileResult>
+) : IRequestHandler<DeleteSignatureImageCommand, UserProfileResult>
 {
-    public async Task<UserProfileResult> Handle(DeleteProfileImageCommand request, CancellationToken cancellationToken)
+    public async Task<UserProfileResult> Handle(DeleteSignatureImageCommand request, CancellationToken cancellationToken)
     {
         var userId = currentUserService.UserId;
 
@@ -21,10 +21,10 @@ public sealed class DeleteProfileImageCommandHandler(
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken)
             ?? throw new AppException(HttpStatusCode.NotFound, ErrorTags.User.NotFound, "The requested user was not found.");
 
-        if (!string.IsNullOrWhiteSpace(user.ProfileImageUrl))
-            await fileStorageService.DeleteProfileImageAsync(user.ProfileImageUrl, cancellationToken);
+        if (!string.IsNullOrWhiteSpace(user.SignatureUrl))
+            await fileStorageService.DeleteSignatureImageAsync(user.SignatureUrl, cancellationToken);
 
-        user.SetProfileImage(null);
+        user.SetSignature(null);
         await db.SaveChangesAsync(cancellationToken);
 
         return await db.Users

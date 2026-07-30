@@ -26,6 +26,7 @@ public sealed class OllamaSharpAiService(
         You extract products/services from text into JSON.
         Return ONLY a JSON array, nothing else.
         Each item: {"productName": "Full Name", "quantity": N}
+        Do not add extra keys to the json
         CRITICAL RULES:
         - productName must contain ONLY the product name, NEVER include quantities or numbers.
           Example: "4 ventanas de aluminio" -> {"productName": "Ventana De Aluminio", "quantity": 4}

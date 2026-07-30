@@ -53,7 +53,8 @@ public sealed class UpdateCurrentUserCommandHandler(
                 u.UserRoles.Select(ur => ur.Role.Name).ToList(),
                 u.CreatedAt,
                 u.UpdatedAt,
-                u.ProfileImageUrl))
+                u.ProfileImageUrl,
+                u.SignatureUrl))
             .FirstOrDefaultAsync(cancellationToken);
 
         return updatedUser

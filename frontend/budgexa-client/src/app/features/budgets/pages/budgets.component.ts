@@ -86,6 +86,11 @@ export class BudgetsComponent implements OnInit {
         handler: (row) => this.createInvoiceFromBudget(row),
       },
       {
+        kind: 'custom',
+        label: 'Download PDF',
+        handler: (row) => this.downloadPdf(row),
+      },
+      {
         kind: 'edit',
         label: 'edit',
         handler: (row) => this.openEdit(row),
@@ -183,5 +188,21 @@ export class BudgetsComponent implements OnInit {
   // ------------------------------------------------------------------
   private createInvoiceFromBudget(row: BudgetGridDto): void {
     this.router.navigate(['/invoices'], { queryParams: { budgetId: row.id } });
+  }
+
+  private downloadPdf(row: BudgetGridDto): void {
+    this.budgetApiService.downloadPdf(row.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `${row.number}.pdf`;
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.toast.show('downloadFailed', ToastType.Error);
+      },
+    });
   }
 }

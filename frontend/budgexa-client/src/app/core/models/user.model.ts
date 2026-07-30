@@ -14,6 +14,7 @@ export interface UserProfileResult {
   createdAt: Date;
   updatedAt: Date;
   profileImageUrl?: string | null;
+  signatureUrl?: string | null;
 }
 
 export interface UpdateCurrentUserDto {

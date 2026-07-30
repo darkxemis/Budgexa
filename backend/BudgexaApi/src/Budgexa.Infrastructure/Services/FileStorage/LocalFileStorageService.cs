@@ -44,4 +44,55 @@ public sealed class LocalFileStorageService(IOptions<FileStorageSettings> option
 
         return Task.CompletedTask;
     }
+
+    public async Task<string> SaveSignatureImageAsync(Guid userId, Stream fileStream, string fileName, CancellationToken cancellationToken = default)
+    {
+        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+        if (!AllowedExtensions.Contains(extension))
+            throw new InvalidOperationException($"File extension '{extension}' is not allowed.");
+
+        var directory = Path.GetFullPath(_settings.SignatureImagesPath);
+        Directory.CreateDirectory(directory);
+
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        var safeFileName = $"{userId}_{timestamp}{extension}";
+        var filePath = Path.Combine(directory, safeFileName);
+
+        await using var file = File.Create(filePath);
+        await fileStream.CopyToAsync(file, cancellationToken);
+
+        var baseUrl = _settings.BaseUrl.TrimEnd('/');
+        return $"{baseUrl}/signature-images/{safeFileName}";
+    }
+
+    public Task DeleteSignatureImageAsync(string fileUrl, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(fileUrl))
+            return Task.CompletedTask;
+
+        var fileName = Path.GetFileName(new Uri(fileUrl).LocalPath);
+        var directory = Path.GetFullPath(_settings.SignatureImagesPath);
+        var filePath = Path.Combine(directory, fileName);
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
+        return Task.CompletedTask;
+    }
+
+    public Task<byte[]?> GetSignatureImageBytesAsync(string? fileUrl, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(fileUrl))
+            return Task.FromResult<byte[]?>(null);
+
+        var fileName = Path.GetFileName(new Uri(fileUrl).LocalPath);
+        var directory = Path.GetFullPath(_settings.SignatureImagesPath);
+        var filePath = Path.Combine(directory, fileName);
+
+        if (!File.Exists(filePath))
+            return Task.FromResult<byte[]?>(null);
+
+        return Task.FromResult<byte[]?>(File.ReadAllBytes(filePath));
+    }
 }

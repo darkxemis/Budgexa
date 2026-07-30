@@ -74,7 +74,7 @@ app.UseExceptionHandler();
 
 app.UseCors("Frontend");
 
-// Serve uploaded profile images as static files
+// Serve uploaded profile images and signature images as static files
 var fileStorageSettings = builder.Configuration
     .GetSection(FileStorageSettings.SectionName)
     .Get<FileStorageSettings>() ?? new FileStorageSettings();
@@ -86,6 +86,15 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(profileImagesPath),
     RequestPath = "/profile-images"
+});
+
+var signatureImagesPath = Path.GetFullPath(fileStorageSettings.SignatureImagesPath);
+Directory.CreateDirectory(signatureImagesPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(signatureImagesPath),
+    RequestPath = "/signature-images"
 });
 
 app.UseHttpsRedirection();

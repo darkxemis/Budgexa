@@ -9,6 +9,7 @@ import { ToastService } from '../toast/toast.service';
 import { ToastType } from '../toast/toast.type';
 import { LanguageDataService } from '../../../core/services/language-data.service';
 import { Guid } from '../../../core/models/guid.model';
+import { SignaturePadComponent } from '../signature-pad/signature-pad.component';
 
 @Component({
   selector: 'app-user-settings-modal',
@@ -18,21 +19,24 @@ import { Guid } from '../../../core/models/guid.model';
     TranslateModule,
     SpinnerComponent,
     FormErrorComponent,
+    SignaturePadComponent,
   ],
   templateUrl: './user-settings-modal.component.html',
   styleUrl: './user-settings-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsModalComponent implements OnInit {
+  readonly user = inject(UserStore).user;
+
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly userService = inject(UserService);
-  private readonly userStore = inject(UserStore);
   private readonly toastService = inject(ToastService);
   private readonly languageDataService = inject(LanguageDataService);
 
   readonly close = output<void>();
   readonly loading = signal(false);
   readonly loadingLanguages = signal(true);
+  readonly savingSignature = signal(false);
 
   readonly languages = this.languageDataService.languages;
 
@@ -51,7 +55,7 @@ export class UserSettingsModalComponent implements OnInit {
         this.loadingLanguages.set(false);
         this.form.controls.languageId.enable();
         
-        const user = this.userStore.user();
+        const user = this.user();
         if (user) {
           const currentLang = languages.find((l) => l.code === user.language);
           this.form.patchValue({
@@ -64,6 +68,34 @@ export class UserSettingsModalComponent implements OnInit {
       error: () => {
         this.loadingLanguages.set(false);
         this.form.controls.languageId.enable();
+      },
+    });
+  }
+
+  onSignatureSaved(file: File) {
+    this.savingSignature.set(true);
+    this.userService.uploadSignatureImage(file).subscribe({
+      next: () => {
+        this.savingSignature.set(false);
+        this.toastService.show('signatureUpdated', ToastType.Success);
+      },
+      error: () => {
+        this.savingSignature.set(false);
+        this.toastService.show('signatureUpdateFailed', ToastType.Error);
+      },
+    });
+  }
+
+  onSignatureDeleted() {
+    this.savingSignature.set(true);
+    this.userService.deleteSignatureImage().subscribe({
+      next: () => {
+        this.savingSignature.set(false);
+        this.toastService.show('signatureDeleted', ToastType.Success);
+      },
+      error: () => {
+        this.savingSignature.set(false);
+        this.toastService.show('signatureUpdateFailed', ToastType.Error);
       },
     });
   }

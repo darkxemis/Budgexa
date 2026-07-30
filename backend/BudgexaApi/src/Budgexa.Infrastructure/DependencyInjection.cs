@@ -2,6 +2,7 @@ namespace Budgexa.Infrastructure;
 
 using Budgexa.Application.Auth;
 using Budgexa.Application.Common.Interfaces;
+using Budgexa.Application.Budgets.Services;
 using Budgexa.Application.PublicBudgets.Services;
 using Budgexa.Domain.Constants;
 using Budgexa.Domain.Interfaces;
@@ -54,6 +55,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<IPublicBudgetPdfService, PublicBudgetPdfService>();
+        services.AddSingleton<IBudgetPdfService, BudgetPdfService>();
         services.AddSingleton<IAiService, OllamaSharpAiService>();
 
         services.Configure<FileStorageSettings>(configuration.GetSection(FileStorageSettings.SectionName));

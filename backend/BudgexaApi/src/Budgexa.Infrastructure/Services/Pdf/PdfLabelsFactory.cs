@@ -18,7 +18,8 @@ internal static class PdfLabelsFactory
             SubTotalLabel: "Subtotal",
             TaxTotalLabel: "Total Impuestos",
             GrandTotalLabel: "Total General",
-            FooterText: "Gracias por su confianza. Este presupuesto ha sido generado automáticamente."),
+            FooterText: "Gracias por su confianza. Este presupuesto ha sido generado automáticamente.",
+            SignatureLabel: "Firma"),
 
         "de" => new PdfLabels(
             Title: "Kostenvoranschlag",
@@ -34,7 +35,8 @@ internal static class PdfLabelsFactory
             SubTotalLabel: "Zwischensumme",
             TaxTotalLabel: "Steuern Gesamt",
             GrandTotalLabel: "Gesamtbetrag",
-            FooterText: "Vielen Dank für Ihr Vertrauen. Dieses Angebot wurde automatisch erstellt."),
+            FooterText: "Vielen Dank für Ihr Vertrauen. Dieses Angebot wurde automatisch erstellt.",
+            SignatureLabel: "Unterschrift"),
 
         "hr" => new PdfLabels(
             Title: "Ponuda",
@@ -50,7 +52,8 @@ internal static class PdfLabelsFactory
             SubTotalLabel: "Podzbroj",
             TaxTotalLabel: "Ukupni porez",
             GrandTotalLabel: "Ukupno",
-            FooterText: "Hvala na povjerenju. Ova ponuda je automatski generirana."),
+            FooterText: "Hvala na povjerenju. Ova ponuda je automatski generirana.",
+            SignatureLabel: "Potpis"),
 
         _ => new PdfLabels(
             Title: "Budget",
@@ -66,6 +69,7 @@ internal static class PdfLabelsFactory
             SubTotalLabel: "Subtotal",
             TaxTotalLabel: "Tax Total",
             GrandTotalLabel: "Grand Total",
-            FooterText: "Thank you for your trust. This budget has been automatically generated.")
+            FooterText: "Thank you for your trust. This budget has been automatically generated.",
+            SignatureLabel: "Signature")
     };
 }

@@ -81,6 +81,13 @@
   "delete": "Obriši",
   "confirm": "Potvrdi",
   "settingsUpdated": "Postavke uspješno ažurirane",
+  "signature": "Potpis",
+  "clear": "Očisti",
+  "update": "Ažuriraj",
+  "signatureEmpty": "Najprije nacrtajte svoj potpis.",
+  "signatureUpdated": "Potpis uspješno ažuriran.",
+  "signatureDeleted": "Potpis izbrisan.",
+  "signatureUpdateFailed": "Neuspješno ažuriranje potpisa.",
 
   "customers": {
     "title": "Klijenti",

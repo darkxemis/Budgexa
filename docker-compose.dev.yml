@@ -52,6 +52,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-dev.pfx
       - Ollama__BaseUrl=http://budgexa-ollama:11435
       - FileStorage__ProfileImagesPath=/app/uploads/profile-images
+      - FileStorage__SignatureImagesPath=/app/uploads/signature-images
       - FileStorage__BaseUrl=https://localhost:5443
     ports:
       - "5000:80"
@@ -61,6 +62,7 @@ services:
     volumes:
       - ./backend/BudgexaApi/https:/https:ro
       - ./uploads/profile-images:/app/uploads/profile-images
+      - ./uploads/signature-images:/app/uploads/signature-images
     networks:
       - budgexa-net
 

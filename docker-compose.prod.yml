@@ -27,9 +27,11 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - Cors__AllowedOrigins__0=https://budgexaclient.duckdns.org
       - FileStorage__ProfileImagesPath=/app/uploads/profile-images
+      - FileStorage__SignatureImagesPath=/app/uploads/signature-images
       - FileStorage__BaseUrl=https://budgexaclient.duckdns.org/api
     volumes:
       - profile-images:/app/uploads/profile-images
+      - signature-images:/app/uploads/signature-images
     depends_on:
       - sqlserver
     restart: always
@@ -69,6 +71,7 @@ networks:
 
 volumes:
   profile-images:
+  signature-images:
   certbot-etc:
     external: true
     name: budgexa_certbot-etc

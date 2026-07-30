@@ -81,6 +81,13 @@
   "delete": "Eliminar",
   "confirm": "Confirmar",
   "settingsUpdated": "Configuración actualizada correctamente",
+  "signature": "Firma",
+  "clear": "Limpiar",
+  "update": "Actualizar",
+  "signatureEmpty": "Dibuja tu firma primero.",
+  "signatureUpdated": "Firma actualizada correctamente.",
+  "signatureDeleted": "Firma eliminada.",
+  "signatureUpdateFailed": "Error al actualizar la firma.",
 
   "customers": {
     "title": "Clientes",

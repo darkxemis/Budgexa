@@ -12,4 +12,5 @@ public sealed record UserProfileResult(
     IReadOnlyList<string> Roles,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    string? ProfileImageUrl);
+    string? ProfileImageUrl,
+    string? SignatureUrl = null);
