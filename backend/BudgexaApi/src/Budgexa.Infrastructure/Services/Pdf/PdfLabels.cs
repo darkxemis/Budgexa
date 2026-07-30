@@ -14,4 +14,5 @@ internal sealed record PdfLabels(
     string SubTotalLabel,
     string TaxTotalLabel,
     string GrandTotalLabel,
-    string FooterText);
+    string FooterText,
+    string SignatureLabel);

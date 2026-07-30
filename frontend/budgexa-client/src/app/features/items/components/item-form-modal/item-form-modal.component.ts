@@ -24,6 +24,7 @@ import { ToastService } from '../../../../shared/components/toast/toast.service'
 import { ToastType } from '../../../../shared/components/toast/toast.type';
 import { ItemApiService } from '../../services/item-api.service';
 import { ItemDto, ItemType } from '../../models/item.model';
+import { UnitMeasure } from '../../../../shared/models/unit-measure.model';
 
 export type ItemFormMode = 'create' | 'edit';
 
@@ -53,6 +54,8 @@ export class ItemFormModalComponent implements OnInit {
   readonly saved = output<ItemDto>();
   readonly close = output<void>();
 
+  protected readonly UnitMeasure = UnitMeasure;
+
   protected readonly loading = signal(false);
   protected readonly loadingData = signal(false);
 
@@ -78,6 +81,8 @@ export class ItemFormModalComponent implements OnInit {
     unitPrice: [0, [Validators.required, Validators.min(0)]],
     taxRate: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
     currency: ['EUR', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]],
+    // New field for unit measure
+    unitMeasure: [null as UnitMeasure | null, []],
   });
 
   private readonly formValues = toSignal(this.form.valueChanges, {
@@ -115,6 +120,7 @@ export class ItemFormModalComponent implements OnInit {
           description: item.description ?? '',
           type: item.type,
           unit: item.unit,
+          unitMeasure: item.unitMeasure,
           unitPrice: item.unitPrice,
           taxRate: item.taxRate,
           currency: item.currency,
@@ -147,6 +153,7 @@ export class ItemFormModalComponent implements OnInit {
       unitPrice: Number(value.unitPrice),
       taxRate: Number(value.taxRate),
       currency: value.currency.trim().toUpperCase(),
+      unitMeasure: value.unitMeasure ?? UnitMeasure.Quantity,
     };
 
     this.loading.set(true);

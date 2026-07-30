@@ -27,9 +27,10 @@ internal sealed class ItemConfiguration : IEntityTypeConfiguration<Item>
         builder.Property(i => i.Description).HasMaxLength(1000).HasColumnOrder(9);
         builder.Property(i => i.Type).IsRequired().HasConversion<int>().HasColumnOrder(10);
         builder.Property(i => i.Unit).IsRequired().HasMaxLength(30).HasColumnOrder(11);
-        builder.Property(i => i.UnitPrice).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(12);
-        builder.Property(i => i.TaxRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(13);
-        builder.Property(i => i.Currency).IsRequired().HasMaxLength(3).IsFixedLength().HasColumnOrder(14);
+        builder.Property(i => i.UnitMeasure).IsRequired().HasConversion<int>().HasColumnOrder(12);
+        builder.Property(i => i.UnitPrice).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(13);
+        builder.Property(i => i.TaxRate).IsRequired().HasColumnType("decimal(5,2)").HasColumnOrder(14);
+        builder.Property(i => i.Currency).IsRequired().HasMaxLength(3).IsFixedLength().HasColumnOrder(15);
 
         // Unique SKU per Company (only when SKU is set)
         builder.HasIndex(i => new { i.CompanyId, i.Sku })

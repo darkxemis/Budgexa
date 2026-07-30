@@ -60,6 +60,7 @@ internal static class InvoiceProjections
                         l.SortOrder,
                         l.Description,
                         l.Unit,
+                        l.UnitMeasure,
                         l.Quantity,
                         l.UnitPrice,
                         l.DiscountPercentage,

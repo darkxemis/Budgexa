@@ -1,5 +1,6 @@
 namespace Budgexa.Application.Items.Commands.CreateItem;
 
+using Budgexa.Domain.Enums;
 using FluentValidation;
 
 public sealed class CreateItemCommandValidator : AbstractValidator<CreateItemCommand>
@@ -27,6 +28,9 @@ public sealed class CreateItemCommandValidator : AbstractValidator<CreateItemCom
 
         RuleFor(x => x.Dto.UnitPrice)
             .GreaterThanOrEqualTo(0).WithMessage("Unit price cannot be negative.");
+
+        RuleFor(x => x.Dto.UnitMeasure)
+            .IsInEnum().WithMessage("Unit measure must be a valid value.");
 
         RuleFor(x => x.Dto.TaxRate)
             .InclusiveBetween(0, 100).WithMessage("Tax rate must be between 0 and 100.");

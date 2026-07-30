@@ -12,7 +12,10 @@
     "minlength": "Erfüllt nicht die Mindestlänge.",
     "maxlength": "Überschreitet die maximale Länge.",
     "pattern": "Ungültiges Format.",
-    "invalid": "Ungültiger Wert."
+    "invalid": "Ungültiger Wert.",
+    "negative": "Wert darf nicht negativ sein.",
+    "invalidStep": "Muss in Schritten von {{ expected }} sein.",
+    "minQuantity": "Muss mindestens {{ min }} sein."
   },
 
   "user.emailAlreadyExists": "Ein Konto mit dieser E-Mail existiert bereits.",
@@ -44,6 +47,15 @@
   "logout": "Abmelden",
   "noUserInfo": "Keine Benutzerinformationen geladen.",
 
+  "profileImage": "Profilbild",
+  "changeImage": "Bild ändern",
+  "deleteImage": "Bild löschen",
+  "invalidImageType": "Ungültiger Bildtyp. Verwende JPG, PNG, GIF oder WebP.",
+  "imageTooLarge": "Bild ist zu groß. Maximal 5MB.",
+  "profileImageUpdated": "Profilbild aktualisiert.",
+  "profileImageDeleted": "Profilbild gelöscht.",
+  "profileImageUpdateFailed": "Fehler beim Aktualisieren des Profilbilds.",
+
   "nav": {
     "dashboard": "Dashboard",
     "customers": "Kunden",
@@ -69,6 +81,13 @@
   "delete": "Löschen",
   "confirm": "Bestätigen",
   "settingsUpdated": "Einstellungen erfolgreich aktualisiert",
+  "signature": "Unterschrift",
+  "clear": "Löschen",
+  "update": "Aktualisieren",
+  "signatureEmpty": "Bitte unterschreiben Sie zuerst.",
+  "signatureUpdated": "Unterschrift erfolgreich aktualisiert.",
+  "signatureDeleted": "Unterschrift gelöscht.",
+  "signatureUpdateFailed": "Fehler beim Aktualisieren der Unterschrift.",
 
   "customers": {
     "title": "Kunden",
@@ -137,13 +156,15 @@
       "unitPrice": "Einzelpreis",
       "taxRate": "MwSt. (%)",
       "currency": "Währung",
-      "totalWithTax": "Gesamt inkl. MwSt."
+      "totalWithTax": "Gesamt inkl. MwSt.",
+      "unitMeasure": "Maßeinheit"
     },
     "grid": {
       "sku": "SKU",
       "name": "Name",
       "type": "Typ",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "unitPrice": "Einzelpreis",
       "taxRate": "MwSt. (%)",
       "currency": "Währung",
@@ -159,6 +180,7 @@
   "budgets": {
     "title": "Angebote",
     "create": "Angebot erstellen",
+    "createInvoice": "Rechnung erstellen",
     "created": "Angebot erfolgreich erstellt",
     "updated": "Angebot erfolgreich aktualisiert",
     "deleted": "Angebot erfolgreich gelöscht",
@@ -189,6 +211,7 @@
       "item": "Artikel",
       "description": "Beschreibung",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "quantity": "Menge",
       "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
       "unitPrice": "Einzelpreis",
@@ -249,6 +272,7 @@
       "item": "Artikel",
       "description": "Beschreibung",
       "unit": "Einheit",
+      "unitMeasure": "Maßeinheit",
       "quantity": "Menge",
       "quantityHint": "Z.B.: 2,5 Stunden, 1,75 kg, 3 Einheiten",
       "unitPrice": "Einzelpreis",
@@ -267,7 +291,8 @@
       "noLines": "Noch keine Positionen. Fügen Sie mindestens eine hinzu, um die Summen zu berechnen.",
       "selectItem": "Artikel auswählen",
       "selectItemPlaceholder": "Artikel suchen...",
-      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)"
+      "selectItemHint": "Optional: Wählen Sie einen Artikel aus dem Katalog (verwenden Sie × zum Löschen und manuellen Bearbeiten)",
+      "reset": "Formular leeren"
     },
     "grid": {
       "series": "Serie",
@@ -475,6 +500,12 @@
       "start": "Tippen zum Diktieren",
       "stop": "Tippen zum Stoppen",
       "listening": "Zuhören... sprechen Sie jetzt"
+    },
+    "unitMeasure": {
+      "select": "Maßeinheit auswählen",
+      "quantity": "Menge",
+      "time": "Zeit",
+      "weight": "Gewicht"
     }
   }
 }

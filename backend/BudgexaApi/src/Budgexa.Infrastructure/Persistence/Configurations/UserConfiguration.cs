@@ -28,6 +28,8 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName).IsRequired().HasMaxLength(100).HasColumnOrder(11);
         builder.Property(u => u.FailedLoginAttempts).IsRequired().HasColumnOrder(12);
         builder.Property(u => u.LockoutEnd).HasColumnOrder(13);
+        builder.Property(u => u.ProfileImageUrl).HasMaxLength(500).HasColumnOrder(14);
+        builder.Property(u => u.SignatureUrl).HasMaxLength(500).HasColumnOrder(15);
 
         // Relationships
         builder.HasOne(u => u.Company)

@@ -126,6 +126,7 @@ public sealed class Invoice : Entity
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -134,7 +135,7 @@ public sealed class Invoice : Entity
         Guid updatedByUserId,
         Guid? lineId = null)
     {
-        var line = InvoiceLine.Create(itemId, sortOrder, description, unit, quantity, unitPrice, discountPercentage, taxRate, withholdingRate, lineId);
+        var line = InvoiceLine.Create(itemId, sortOrder, description, unit, unitMeasure, quantity, unitPrice, discountPercentage, taxRate, withholdingRate, lineId);
         line.AttachTo(Id);
         _lines.Add(line);
         RecalculateTotals();
@@ -148,6 +149,7 @@ public sealed class Invoice : Entity
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -158,7 +160,7 @@ public sealed class Invoice : Entity
         var line = _lines.FirstOrDefault(l => l.Id == lineId)
             ?? throw new InvalidOperationException($"Invoice line '{lineId}' not found.");
 
-        line.Update(itemId, sortOrder, description, unit, quantity, unitPrice, discountPercentage, taxRate, withholdingRate);
+        line.Update(itemId, sortOrder, description, unit, unitMeasure, quantity, unitPrice, discountPercentage, taxRate, withholdingRate);
         RecalculateTotals();
         Touch(updatedByUserId);
     }

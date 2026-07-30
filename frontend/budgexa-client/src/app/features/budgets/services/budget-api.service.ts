@@ -41,4 +41,11 @@ export class BudgetApiService {
       { withCredentials: true }
     );
   }
+
+  downloadPdf(id: Guid): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${id}/pdf`, {
+      withCredentials: true,
+      responseType: 'blob',
+    });
+  }
 }

@@ -31,6 +31,7 @@
     <app-invoice-form-modal
       [mode]="formMode()"
       [invoiceId]="editingInvoiceId()"
+      [preselectedBudgetId]="preselectedBudgetId()"
       (saved)="onFormSaved()"
       (close)="onFormClosed()"
     />

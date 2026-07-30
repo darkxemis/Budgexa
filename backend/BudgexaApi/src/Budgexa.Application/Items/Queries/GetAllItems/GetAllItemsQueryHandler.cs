@@ -26,6 +26,7 @@ public sealed class GetAllItemsQueryHandler(
                 i.Name,
                 i.Description,
                 i.Type,
+                i.UnitMeasure,
                 i.Unit,
                 i.UnitPrice,
                 i.TaxRate,

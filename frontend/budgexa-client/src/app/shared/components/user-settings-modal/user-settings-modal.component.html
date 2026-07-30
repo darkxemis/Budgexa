@@ -59,6 +59,13 @@
         <app-form-error [control]="form.controls.languageId" />
       </div>
 
+      <app-signature-pad
+        [existingImageUrl]="user()?.signatureUrl ?? null"
+        [saving]="savingSignature()"
+        (saved)="onSignatureSaved($event)"
+        (deleted)="onSignatureDeleted()"
+      />
+
       <div class="modal-actions">
         <button type="button" class="btn-secondary" (click)="onClose()" [disabled]="loading()">
           {{ 'cancel' | translate }}

@@ -22,7 +22,7 @@ public class CreateItemCommandHandlerTests
     }
 
     private static ItemCreateDto BuildDto(string? sku = "SKU-001", string name = "Item") =>
-        new(sku, name, "desc", ItemType.Service, "hour", 100m, 21m, "EUR");
+        new(sku, name, "desc", ItemType.Service, UnitMeasure.Quantity, "hour", 100m, 21m, "EUR");
 
     [Fact]
     public async Task Handle_NewItem_CreatesAndReturnsDto()

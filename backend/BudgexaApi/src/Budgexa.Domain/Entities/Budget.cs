@@ -1,6 +1,7 @@
 namespace Budgexa.Domain.Entities;
 
 using Budgexa.Domain.Common;
+using Budgexa.Domain.Enums;
 
 public sealed class Budget : Entity
 {
@@ -115,6 +116,7 @@ public sealed class Budget : Entity
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -122,7 +124,7 @@ public sealed class Budget : Entity
         Guid updatedByUserId,
         Guid? lineId = null)
     {
-        var line = BudgetLine.Create(itemId, sortOrder, description, unit, quantity, unitPrice, discountPercentage, taxRate, lineId);
+        var line = BudgetLine.Create(itemId, sortOrder, description, unit, unitMeasure, quantity, unitPrice, discountPercentage, taxRate, lineId);
         line.AttachTo(Id);
         _lines.Add(line);
         RecalculateTotals();
@@ -136,6 +138,7 @@ public sealed class Budget : Entity
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -145,7 +148,7 @@ public sealed class Budget : Entity
         var line = _lines.FirstOrDefault(l => l.Id == lineId)
             ?? throw new InvalidOperationException($"Budget line '{lineId}' not found.");
 
-        line.Update(itemId, sortOrder, description, unit, quantity, unitPrice, discountPercentage, taxRate);
+        line.Update(itemId, sortOrder, description, unit, unitMeasure, quantity, unitPrice, discountPercentage, taxRate);
         RecalculateTotals();
         Touch(updatedByUserId);
     }

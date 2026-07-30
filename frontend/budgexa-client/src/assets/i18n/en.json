@@ -12,7 +12,10 @@
     "minlength": "Does not meet minimum length.",
     "maxlength": "Exceeds maximum length.",
     "pattern": "Invalid format.",
-    "invalid": "Invalid value."
+    "invalid": "Invalid value.",
+    "negative": "Value cannot be negative.",
+    "invalidStep": "Must be in increments of {{ expected }}.",
+    "minQuantity": "Must be at least {{ min }}."
   },
 
   "user.emailAlreadyExists": "An account with this email already exists.",
@@ -44,6 +47,15 @@
   "logout": "Logout",
   "noUserInfo": "No user info loaded.",
 
+  "profileImage": "Profile image",
+  "changeImage": "Change image",
+  "deleteImage": "Delete image",
+  "invalidImageType": "Invalid image type. Use JPG, PNG, GIF or WebP.",
+  "imageTooLarge": "Image is too large. Maximum 5MB.",
+  "profileImageUpdated": "Profile image updated.",
+  "profileImageDeleted": "Profile image deleted.",
+  "profileImageUpdateFailed": "Failed to update profile image.",
+
   "nav": {
     "dashboard": "Dashboard",
     "customers": "Customers",
@@ -69,6 +81,14 @@
   "delete": "Delete",
   "confirm": "Confirm",
   "settingsUpdated": "Settings updated successfully",
+  "signature": "Signature",
+  "clear": "Clear",
+  "update": "Update",
+  "signatureEmpty": "Please draw your signature first.",
+  "signatureUpdated": "Signature updated successfully.",
+  "signatureDeleted": "Signature deleted.",
+  "signatureUpdateFailed": "Failed to update signature.",
+  "downloadFailed": "Failed to download file.",
 
   "customers": {
     "title": "Customers",
@@ -137,13 +157,15 @@
       "unitPrice": "Unit Price",
       "taxRate": "Tax Rate (%)",
       "currency": "Currency",
-      "totalWithTax": "Total with Tax"
+      "totalWithTax": "Total with Tax",
+      "unitMeasure": "Unit Measure"
     },
     "grid": {
       "sku": "SKU",
       "name": "Name",
       "type": "Type",
       "unit": "Unit",
+      "unitMeasure": "Measure",
       "unitPrice": "Unit Price",
       "taxRate": "Tax Rate (%)",
       "currency": "Currency",
@@ -159,6 +181,7 @@
   "budgets": {
     "title": "Budgets",
     "create": "Create Budget",
+    "createInvoice": "Create Invoice",
     "created": "Budget created successfully",
     "updated": "Budget updated successfully",
     "deleted": "Budget deleted successfully",
@@ -189,6 +212,7 @@
       "item": "Item",
       "description": "Description",
       "unit": "Unit",
+      "unitMeasure": "Unit Measure",
       "quantity": "Quantity",
       "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",
       "unitPrice": "Unit Price",
@@ -249,6 +273,7 @@
       "item": "Item",
       "description": "Description",
       "unit": "Unit",
+      "unitMeasure": "Unit Measure",
       "quantity": "Quantity",      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",      "unitPrice": "Unit Price",
       "discount": "Discount (%)",
       "taxRate": "Tax Rate (%)",
@@ -265,7 +290,8 @@
       "noLines": "No lines yet. Add at least one to compute totals.",
       "selectItem": "Select Item",
       "selectItemPlaceholder": "Search item...",
-      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)"
+      "selectItemHint": "Optional: select an item from the catalog (use × to clear and edit manually)",
+      "reset": "Clear form"
     },
     "grid": {
       "series": "Series",
@@ -473,6 +499,12 @@
       "start": "Tap to dictate",
       "stop": "Tap to stop",
       "listening": "Listening... speak now"
+    },
+    "unitMeasure": {
+      "select": "Select unit measure",
+      "quantity": "Quantity",
+      "time": "Time",
+      "weight": "Weight"
     }
   }
 }

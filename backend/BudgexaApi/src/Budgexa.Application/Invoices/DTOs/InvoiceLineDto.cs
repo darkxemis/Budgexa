@@ -1,11 +1,14 @@
 namespace Budgexa.Application.Invoices.DTOs;
 
+using Budgexa.Domain.Enums;
+
 public sealed record InvoiceLineDto(
     Guid Id,
     Guid? ItemId,
     int SortOrder,
     string Description,
     string Unit,
+    UnitMeasure UnitMeasure,
     decimal Quantity,
     decimal UnitPrice,
     decimal DiscountPercentage,
@@ -22,6 +25,7 @@ public sealed record InvoiceLineUpsertDto(
     int SortOrder,
     string Description,
     string Unit,
+    UnitMeasure UnitMeasure,
     decimal Quantity,
     decimal UnitPrice,
     decimal DiscountPercentage,

@@ -13,6 +13,8 @@ public sealed class User : Entity
     public Guid CompanyId { get; private set; }
     public Guid LanguageId { get; private set; }
     public Guid StatusId { get; private set; }
+    public string? ProfileImageUrl { get; private set; }
+    public string? SignatureUrl { get; private set; }
 
     public Company Company { get; private set; } = default!;
     public Language Language { get; private set; } = default!;
@@ -92,4 +94,16 @@ public sealed class User : Entity
     }
 
     public bool IsLockedOut() => LockoutEnd is { } end && end > DateTime.UtcNow;
+
+    public void SetProfileImage(string? url)
+    {
+        ProfileImageUrl = url;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetSignature(string? url)
+    {
+        SignatureUrl = url;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

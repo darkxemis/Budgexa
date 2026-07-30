@@ -3,12 +3,15 @@ import { Guid } from '../../../core/models/guid.model';
 /** ISO date string in the format `YYYY-MM-DD` (matches backend `DateOnly`). */
 export type DateOnlyString = string;
 
+import { UnitMeasure } from '../../../shared/models/unit-measure.model';
+
 export interface BudgetLineDto {
   id: Guid;
   itemId: Guid | null;
   sortOrder: number;
   description: string;
   unit: string;
+  unitMeasure: UnitMeasure;
   quantity: number;
   unitPrice: number;
   discountPercentage: number;
@@ -24,6 +27,7 @@ export interface BudgetLineUpsertDto {
   sortOrder: number;
   description: string;
   unit: string;
+  unitMeasure: UnitMeasure;
   quantity: number;
   unitPrice: number;
   discountPercentage: number;

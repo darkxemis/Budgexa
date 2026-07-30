@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
@@ -38,6 +39,7 @@ export class BudgetsComponent implements OnInit {
   private readonly budgetApiService = inject(BudgetApiService);
   private readonly statusApiService = inject(StatusApiService);
   private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
 
   grid = viewChild(DataGridComponent<BudgetGridDto>);
 
@@ -77,6 +79,17 @@ export class BudgetsComponent implements OnInit {
 
   private initializeActions(): void {
     this.actions = [
+      {
+        kind: 'custom',
+        label: 'budgets.createInvoice',
+        icon: 'invoice',
+        handler: (row) => this.createInvoiceFromBudget(row),
+      },
+      {
+        kind: 'custom',
+        label: 'Download PDF',
+        handler: (row) => this.downloadPdf(row),
+      },
       {
         kind: 'edit',
         label: 'edit',
@@ -168,5 +181,28 @@ export class BudgetsComponent implements OnInit {
     if (this.deleting()) return;
     this.deleteDialogOpen.set(false);
     this.budgetToDelete.set(null);
+  }
+
+  // ------------------------------------------------------------------
+  // Create Invoice from Budget
+  // ------------------------------------------------------------------
+  private createInvoiceFromBudget(row: BudgetGridDto): void {
+    this.router.navigate(['/invoices'], { queryParams: { budgetId: row.id } });
+  }
+
+  private downloadPdf(row: BudgetGridDto): void {
+    this.budgetApiService.downloadPdf(row.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `${row.number}.pdf`;
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.toast.show('downloadFailed', ToastType.Error);
+      },
+    });
   }
 }

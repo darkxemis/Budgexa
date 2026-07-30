@@ -1,0 +1,27 @@
+<div class="signature-section">
+  <label>{{ 'signature' | translate }}</label>
+
+  @if (existingImageUrl(); as url) {
+    <div class="signature-preview">
+      <img [src]="url" alt="Signature" class="signature-img" />
+      <button type="button" class="btn-delete-signature" (click)="delete()" [disabled]="saving()">
+        {{ 'delete' | translate }}
+      </button>
+    </div>
+  }
+
+  <div class="signature-pad-wrapper" [class.hidden]="!!existingImageUrl() && !showPad()">
+    <canvas #signatureCanvas class="signature-canvas"></canvas>
+    <div class="signature-actions">
+      <button type="button" class="btn-secondary" (click)="clear()" [disabled]="saving()">
+        {{ 'clear' | translate }}
+      </button>
+      <button type="button" class="btn-primary" (click)="save()" [disabled]="saving()">
+        @if (saving()) {
+          <app-spinner />
+        }
+        {{ (existingImageUrl() ? 'update' : 'save') | translate }}
+      </button>
+    </div>
+  </div>
+</div>

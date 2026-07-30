@@ -12,7 +12,10 @@
     "minlength": "No cumple la longitud mínima.",
     "maxlength": "Supera la longitud máxima.",
     "pattern": "Formato inválido.",
-    "invalid": "Valor inválido."
+    "invalid": "Valor inválido.",
+    "negative": "El valor no puede ser negativo.",
+    "invalidStep": "Debe ser en incrementos de {{ expected }}.",
+    "minQuantity": "Debe ser al menos {{ min }}."
   },
 
   "user.emailAlreadyExists": "Ya existe una cuenta con este correo.",
@@ -44,6 +47,15 @@
   "logout": "Cerrar sesión",
   "noUserInfo": "No hay información de usuario cargada.",
 
+  "profileImage": "Imagen de perfil",
+  "changeImage": "Cambiar imagen",
+  "deleteImage": "Eliminar imagen",
+  "invalidImageType": "Tipo de imagen no válido. Usa JPG, PNG, GIF o WebP.",
+  "imageTooLarge": "La imagen es demasiado grande. Máximo 5MB.",
+  "profileImageUpdated": "Imagen de perfil actualizada.",
+  "profileImageDeleted": "Imagen de perfil eliminada.",
+  "profileImageUpdateFailed": "Error al actualizar la imagen de perfil.",
+
   "nav": {
     "dashboard": "Panel de Control",
     "customers": "Clientes",
@@ -69,6 +81,13 @@
   "delete": "Eliminar",
   "confirm": "Confirmar",
   "settingsUpdated": "Configuración actualizada correctamente",
+  "signature": "Firma",
+  "clear": "Limpiar",
+  "update": "Actualizar",
+  "signatureEmpty": "Dibuja tu firma primero.",
+  "signatureUpdated": "Firma actualizada correctamente.",
+  "signatureDeleted": "Firma eliminada.",
+  "signatureUpdateFailed": "Error al actualizar la firma.",
 
   "customers": {
     "title": "Clientes",
@@ -137,13 +156,15 @@
       "unitPrice": "Precio Unitario",
       "taxRate": "IVA (%)",
       "currency": "Moneda",
-      "totalWithTax": "Total con IVA"
+      "totalWithTax": "Total con IVA",
+      "unitMeasure": "Medida de Unidad"
     },
     "grid": {
       "sku": "SKU",
       "name": "Nombre",
       "type": "Tipo",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "unitPrice": "Precio Unitario",
       "taxRate": "IVA (%)",
       "currency": "Moneda",
@@ -159,6 +180,7 @@
   "budgets": {
     "title": "Presupuestos",
     "create": "Crear Presupuesto",
+    "createInvoice": "Crear Factura",
     "created": "Presupuesto creado correctamente",
     "updated": "Presupuesto actualizado correctamente",
     "deleted": "Presupuesto eliminado correctamente",
@@ -189,6 +211,7 @@
       "item": "Artículo",
       "description": "Descripción",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "quantity": "Cantidad",
       "unitPrice": "Precio Unitario",
       "discount": "Descuento (%)",
@@ -248,6 +271,7 @@
       "item": "Artículo",
       "description": "Descripción",
       "unit": "Unidad",
+      "unitMeasure": "Medida",
       "quantity": "Cantidad",
       "quantityHint": "Ej: 2.5 horas, 1.75 kg, 3 unidades",
       "unitPrice": "Precio Unitario",
@@ -266,7 +290,8 @@
       "noLines": "No hay líneas. Añade al menos una para calcular los totales.",
       "selectItem": "Seleccionar Artículo",
       "selectItemPlaceholder": "Buscar artículo...",
-      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)"
+      "selectItemHint": "Opcional: selecciona un artículo del catálogo (usa ✕ para limpiar y editar manualmente)",
+      "reset": "Limpiar formulario"
     },
     "grid": {
       "series": "Serie",
@@ -474,6 +499,12 @@
       "start": "Pulsa para dictar",
       "stop": "Pulsa para parar",
       "listening": "Escuchando... habla ahora"
+    },
+    "unitMeasure": {
+      "select": "Seleccionar medida",
+      "quantity": "Cantidad",
+      "time": "Tiempo",
+      "weight": "Peso"
     }
   }
 }

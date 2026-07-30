@@ -13,6 +13,8 @@ export interface UserProfileResult {
   roles: string[];
   createdAt: Date;
   updatedAt: Date;
+  profileImageUrl?: string | null;
+  signatureUrl?: string | null;
 }
 
 export interface UpdateCurrentUserDto {

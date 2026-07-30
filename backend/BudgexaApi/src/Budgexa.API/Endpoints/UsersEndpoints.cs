@@ -3,9 +3,13 @@
 using Budgexa.API.Middleware;
 using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Users.Commands.CreateUser;
+using Budgexa.Application.Users.Commands.DeleteProfileImage;
 using Budgexa.Application.Users.Commands.DeleteUser;
 using Budgexa.Application.Users.Commands.UpdateCurrentUser;
 using Budgexa.Application.Users.Commands.UpdateUser;
+using Budgexa.Application.Users.Commands.UploadProfileImage;
+using Budgexa.Application.Users.Commands.UploadSignatureImage;
+using Budgexa.Application.Users.Commands.DeleteSignatureImage;
 using Budgexa.Application.Users.DTOs;
 using Budgexa.Application.Users.Queries.GetAllUsers;
 using Budgexa.Application.Users.Queries.GetCurrentUser;
@@ -139,6 +143,70 @@ public static class UsersEndpoints
             .WithName("DeleteUser")
             .WithSummary("DELETE /api/v1/users/{id}")
             .WithDescription("Soft deletes a user by changing its status to deleted.");
+
+        group.MapPost("/me/profile-image",
+            async (IFormFile file, ISender sender, CancellationToken cancellationToken) =>
+            {
+                await using var stream = file.OpenReadStream();
+                var result = await sender.Send(
+                    new UploadProfileImageCommand(stream, file.FileName),
+                    cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .DisableAntiforgery()
+            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .WithName("UploadProfileImage")
+            .WithSummary("POST /api/v1/users/me/profile-image")
+            .WithDescription("Uploads a profile image for the currently authenticated user. Replaces any existing image.");
+
+        group.MapDelete("/me/profile-image",
+            async (ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new DeleteProfileImageCommand(), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("DeleteProfileImage")
+            .WithSummary("DELETE /api/v1/users/me/profile-image")
+            .WithDescription("Deletes the profile image of the currently authenticated user.");
+
+        group.MapPost("/me/signature-image",
+            async (IFormFile file, ISender sender, CancellationToken cancellationToken) =>
+            {
+                await using var stream = file.OpenReadStream();
+                var result = await sender.Send(
+                    new UploadSignatureImageCommand(stream, file.FileName),
+                    cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .DisableAntiforgery()
+            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces<ApiErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .WithName("UploadSignatureImage")
+            .WithSummary("POST /api/v1/users/me/signature-image")
+            .WithDescription("Uploads a signature image for the currently authenticated user. Replaces any existing signature.");
+
+        group.MapDelete("/me/signature-image",
+            async (ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new DeleteSignatureImageCommand(), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .Produces<UserProfileResult>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("DeleteSignatureImage")
+            .WithSummary("DELETE /api/v1/users/me/signature-image")
+            .WithDescription("Deletes the signature image of the currently authenticated user.");
 
         return endpoints;
     }

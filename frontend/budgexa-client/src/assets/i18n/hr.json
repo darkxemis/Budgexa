@@ -12,7 +12,10 @@
     "minlength": "Ne ispunjava minimalnu duljinu.",
     "maxlength": "Prelazi maksimalnu duljinu.",
     "pattern": "Neispravan format.",
-    "invalid": "Neispravna vrijednost."
+    "invalid": "Neispravna vrijednost.",
+    "negative": "Vrijednost ne može biti negativna.",
+    "invalidStep": "Mora biti u koracima od {{ expected }}.",
+    "minQuantity": "Mora biti najmanje {{ min }}."
   },
 
   "user.emailAlreadyExists": "Račun s ovom e-poštom već postoji.",
@@ -44,6 +47,15 @@
   "logout": "Odjava",
   "noUserInfo": "Nema učitanih korisničkih podataka.",
 
+  "profileImage": "Profilna slika",
+  "changeImage": "Promijeni sliku",
+  "deleteImage": "Obriši sliku",
+  "invalidImageType": "Nevažeći tip slike. Koristi JPG, PNG, GIF ili WebP.",
+  "imageTooLarge": "Slika je prevelika. Maksimalno 5MB.",
+  "profileImageUpdated": "Profilna slika ažurirana.",
+  "profileImageDeleted": "Profilna slika obrisana.",
+  "profileImageUpdateFailed": "Greška pri ažuriranju profilne slike.",
+
   "nav": {
     "dashboard": "Nadzorna ploča",
     "customers": "Klijenti",
@@ -69,6 +81,13 @@
   "delete": "Obriši",
   "confirm": "Potvrdi",
   "settingsUpdated": "Postavke uspješno ažurirane",
+  "signature": "Potpis",
+  "clear": "Očisti",
+  "update": "Ažuriraj",
+  "signatureEmpty": "Najprije nacrtajte svoj potpis.",
+  "signatureUpdated": "Potpis uspješno ažuriran.",
+  "signatureDeleted": "Potpis izbrisan.",
+  "signatureUpdateFailed": "Neuspješno ažuriranje potpisa.",
 
   "customers": {
     "title": "Klijenti",
@@ -137,13 +156,15 @@
       "unitPrice": "Jedinična cijena",
       "taxRate": "PDV (%)",
       "currency": "Valuta",
-      "totalWithTax": "Ukupno s PDV-om"
+      "totalWithTax": "Ukupno s PDV-om",
+      "unitMeasure": "Mjerna jedinica"
     },
     "grid": {
       "sku": "SKU",
       "name": "Naziv",
       "type": "Vrsta",
       "unit": "Jedinica",
+      "unitMeasure": "Mjera",
       "unitPrice": "Jedinična cijena",
       "taxRate": "PDV (%)",
       "currency": "Valuta",
@@ -159,6 +180,7 @@
   "budgets": {
     "title": "Ponude",
     "create": "Kreiraj ponudu",
+    "createInvoice": "Kreiraj račun",
     "created": "Ponuda uspješno kreirana",
     "updated": "Ponuda uspješno ažurirana",
     "deleted": "Ponuda uspješno obrisana",
@@ -189,6 +211,7 @@
       "item": "Stavka",
       "description": "Opis",
       "unit": "Jedinica",
+      "unitMeasure": "Mjerna jedinica",
       "quantity": "Količina",
       "quantityHint": "Npr.: 2,5 sati, 1,75 kg, 3 komada",
       "unitPrice": "Jedinična cijena",
@@ -249,6 +272,7 @@
       "item": "Stavka",
       "description": "Opis",
       "unit": "Jedinica",
+      "unitMeasure": "Mjerna jedinica",
       "quantity": "Količina",
       "quantityHint": "Npr.: 2,5 sati, 1,75 kg, 3 komada",
       "unitPrice": "Jedinična cijena",
@@ -267,7 +291,8 @@
       "noLines": "Još nema stavki. Dodajte barem jednu za izračun ukupnih iznosa.",
       "selectItem": "Odaberi stavku",
       "selectItemPlaceholder": "Pretraži stavke...",
-      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite × za brisanje i ručno uređivanje)"
+      "selectItemHint": "Opcionalno: odaberite stavku iz kataloga (koristite × za brisanje i ručno uređivanje)",
+      "reset": "Očisti obrazac"
     },
     "grid": {
       "series": "Serija",
@@ -475,6 +500,12 @@
       "start": "Dodirnite za diktiranje",
       "stop": "Dodirnite za zaustavljanje",
       "listening": "Slušam... govorite sada"
+    },
+    "unitMeasure": {
+      "select": "Odaberite mjeru",
+      "quantity": "Količina",
+      "time": "Vrijeme",
+      "weight": "Težina"
     }
   }
 }

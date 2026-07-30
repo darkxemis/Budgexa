@@ -13,6 +13,7 @@ public class ItemTests
             name: "Test Item",
             description: "A test item",
             type: ItemType.Service,
+            unitMeasure: UnitMeasure.Quantity,
             unit: "hour",
             unitPrice: 100m,
             taxRate: 21m,
@@ -34,6 +35,7 @@ public class ItemTests
             "Hourly Consulting",
             "Consulting service",
             ItemType.Service,
+            UnitMeasure.Quantity,
             "hour",
             120m,
             21m,
@@ -47,6 +49,7 @@ public class ItemTests
         item.Name.Should().Be("Hourly Consulting");
         item.Description.Should().Be("Consulting service");
         item.Type.Should().Be(ItemType.Service);
+        item.UnitMeasure.Should().Be(UnitMeasure.Quantity);
         item.Unit.Should().Be("hour");
         item.UnitPrice.Should().Be(120m);
         item.TaxRate.Should().Be(21m);
@@ -80,6 +83,7 @@ public class ItemTests
             name!,
             null,
             ItemType.Product,
+            UnitMeasure.Quantity,
             "unit",
             10m,
             21m,
@@ -102,6 +106,7 @@ public class ItemTests
             "Name",
             null,
             ItemType.Product,
+            UnitMeasure.Quantity,
             unit!,
             10m,
             21m,
@@ -121,10 +126,12 @@ public class ItemTests
             "Name",
             null,
             ItemType.Product,
+            UnitMeasure.Quantity,
             "unit",
             -1m,
             21m,
             "EUR",
+            Guid.NewGuid(),
             Guid.NewGuid());
 
         act.Should().Throw<ArgumentException>();
@@ -142,6 +149,7 @@ public class ItemTests
             "Name",
             null,
             ItemType.Product,
+            UnitMeasure.Quantity,
             "unit",
             10m,
             taxRate,
@@ -164,6 +172,7 @@ public class ItemTests
             "Name",
             null,
             ItemType.Product,
+            UnitMeasure.Quantity,
             "unit",
             10m,
             21m,
@@ -184,6 +193,7 @@ public class ItemTests
             "Renamed",
             "New desc",
             ItemType.Product,
+            UnitMeasure.Quantity,
             "unit",
             55m,
             10m,
@@ -194,6 +204,7 @@ public class ItemTests
         item.Name.Should().Be("Renamed");
         item.Description.Should().Be("New desc");
         item.Type.Should().Be(ItemType.Product);
+        item.UnitMeasure.Should().Be(UnitMeasure.Quantity);
         item.Unit.Should().Be("unit");
         item.UnitPrice.Should().Be(55m);
         item.TaxRate.Should().Be(10m);

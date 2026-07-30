@@ -19,6 +19,9 @@ export class FormErrorComponent {
     minlength: 'validations.minlength',
     maxlength: 'validations.maxlength',
     pattern: 'validations.pattern',
+    negative: 'validations.negative',
+    invalidStep: 'validations.invalidStep',
+    minQuantity: 'validations.minQuantity',
   };
 
   private readonly touched = signal(false);
@@ -30,6 +33,12 @@ export class FormErrorComponent {
     const keys = Object.keys(this.errors() || {});
     const key = keys.length > 0 ? keys[0] : '';
     return this.errorMessages[key] || 'validations.invalid';
+  });
+
+  readonly errorParams = computed(() => {
+    const keys = Object.keys(this.errors() || {});
+    const key = keys.length > 0 ? keys[0] : '';
+    return this.errors()?.[key] || {};
   });
 
   constructor() {

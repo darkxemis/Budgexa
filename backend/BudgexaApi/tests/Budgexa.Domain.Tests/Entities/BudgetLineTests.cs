@@ -1,6 +1,7 @@
 namespace Budgexa.Domain.Tests.Entities;
 
 using Budgexa.Domain.Entities;
+using Budgexa.Domain.Enums;
 
 public class BudgetLineTests
 {
@@ -23,7 +24,7 @@ public class BudgetLineTests
             null,
             Guid.NewGuid());
 
-        line = budget.AddLine(null, 1, "Service", "unit", quantity, unitPrice, discount, taxRate, Guid.NewGuid());
+        line = budget.AddLine(null, 1, "Service", "unit", UnitMeasure.Quantity, quantity, unitPrice, discount, taxRate, Guid.NewGuid());
         return budget;
     }
 
@@ -66,7 +67,7 @@ public class BudgetLineTests
     {
         var budget = BudgetWithLine(out var line);
 
-        budget.UpdateLine(line.Id, null, 1, "X", "unit", 3m, 50m, 0m, 21m, Guid.NewGuid());
+        budget.UpdateLine(line.Id, null, 1, "X", "unit", UnitMeasure.Quantity, 3m, 50m, 0m, 21m, Guid.NewGuid());
 
         line.Quantity.Should().Be(3m);
         line.Subtotal.Should().Be(150m);
@@ -105,7 +106,7 @@ public class BudgetLineTests
             "BUD-1", DateOnly.FromDateTime(DateTime.UtcNow), null,
             "EUR", null, null, Guid.NewGuid());
 
-        var act = () => budget.AddLine(null, 1, description, unit, quantity, unitPrice, discount, taxRate, Guid.NewGuid());
+        var act = () => budget.AddLine(null, 1, description, unit, UnitMeasure.Quantity, quantity, unitPrice, discount, taxRate, Guid.NewGuid());
 
         act.Should().Throw<ArgumentException>();
     }

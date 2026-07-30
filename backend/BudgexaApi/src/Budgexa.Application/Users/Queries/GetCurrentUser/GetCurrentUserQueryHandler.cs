@@ -30,7 +30,9 @@ public sealed class GetCurrentUserQueryHandler(
                 u.Language.Code,
                 u.UserRoles.Select(ur => ur.Role.Name).ToList(),
                 u.CreatedAt,
-                u.UpdatedAt))
+                u.UpdatedAt,
+                u.ProfileImageUrl,
+                u.SignatureUrl))
             .FirstOrDefaultAsync(cancellationToken);
 
         return profile

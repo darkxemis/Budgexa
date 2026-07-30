@@ -6,6 +6,7 @@ using Budgexa.Application.Invoices.Commands.UpdateInvoice;
 using Budgexa.Application.Invoices.DTOs;
 using Budgexa.Application.Tests.TestHelpers;
 using Budgexa.Domain.Constants;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Exceptions;
 using NSubstitute;
 
@@ -89,8 +90,8 @@ public class UpdateInvoiceCommandHandlerTests
             "INV-001",
             new List<InvoiceLineUpsertDto>
             {
-                new(existingLineId, null, 1, "Updated", "unit", 3m, 50m, 0m, 21m, 0m),
-                new(null, null, 2, "Extra", "unit", 1m, 25m, 0m, 21m, 0m),
+                new(existingLineId, null, 1, "Updated", "unit", UnitMeasure.Quantity, 3m, 50m, 0m, 21m, 0m),
+                new(null, null, 2, "Extra", "unit", UnitMeasure.Quantity, 1m, 25m, 0m, 21m, 0m),
             });
 
         var sut = new UpdateInvoiceCommandHandler(db, BuildCurrentUser(companyId));

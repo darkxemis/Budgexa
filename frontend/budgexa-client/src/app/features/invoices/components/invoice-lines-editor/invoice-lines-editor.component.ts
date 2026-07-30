@@ -27,6 +27,8 @@ import { SelectorOption } from '../../../../core/models/selector.model';
 import { ItemSelectorService } from '../../../items/services/item-selector.service';
 import { ItemApiService } from '../../../items/services/item-api.service';
 import { computeLineTotals } from '../../models/invoice.model';
+import { UnitMeasure } from '../../../../shared/models/unit-measure.model';
+import { quantityByUnitMeasureValidator } from '../../../../shared/validators/unit-measure.validators';
 
 /**
  * Reactive form group for a single invoice line.
@@ -42,6 +44,7 @@ export type InvoiceLineFormGroup = FormGroup<{
   discountPercentage: FormControl<number>;
   taxRate: FormControl<number>;
   withholdingRate: FormControl<number>;
+  unitMeasure: FormControl<UnitMeasure>;
 }>;
 
 export interface InvoiceTotals {
@@ -62,6 +65,8 @@ export interface InvoiceTotals {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceLinesEditorComponent {
+  protected readonly UnitMeasure = UnitMeasure;
+
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly itemSelector = inject(ItemSelectorService);
   private readonly itemApi = inject(ItemApiService);
@@ -162,12 +167,14 @@ export class InvoiceLinesEditorComponent {
           itemId: item.id,
           description: item.name,
           unit: item.unit,
+          unitMeasure: item.unitMeasure,
           unitPrice: Number(item.unitPrice),
           taxRate: Number(item.taxRate),
         });
         // Lock catalog-sourced fields; quantity, discount and withholding remain editable
         line.controls.description.disable();
         line.controls.unit.disable();
+        line.controls.unitMeasure.disable();
         line.controls.unitPrice.disable();
         line.controls.taxRate.disable();
         this._lineVersion.update(v => v + 1);
@@ -193,6 +200,7 @@ export class InvoiceLinesEditorComponent {
       itemId?: Guid | null;
       description?: string;
       unit?: string;
+      unitMeasure?: UnitMeasure | null;
       quantity?: number;
       unitPrice?: number;
       discountPercentage?: number;
@@ -200,7 +208,7 @@ export class InvoiceLinesEditorComponent {
       withholdingRate?: number;
     }
   ): InvoiceLineFormGroup {
-    return fb.group({
+    const group = fb.group({
       id: fb.control<Guid | null>(preset?.id ?? null),
       itemId: fb.control<Guid | null>(preset?.itemId ?? null),
       description: [preset?.description ?? '', [Validators.required, Validators.maxLength(500)]],
@@ -220,7 +228,27 @@ export class InvoiceLinesEditorComponent {
         preset?.withholdingRate ?? 0,
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
+      unitMeasure: fb.control<UnitMeasure>(preset?.unitMeasure ?? UnitMeasure.Quantity),
     });
+
+    // Cross-field validation: quantity step/min depends on unitMeasure
+    const qtyCtrl = group.get('quantity')!;
+    const umCtrl = group.get('unitMeasure')!;
+    qtyCtrl.addValidators(quantityByUnitMeasureValidator(umCtrl));
+    umCtrl.valueChanges.subscribe(() => {
+      qtyCtrl.updateValueAndValidity();
+      qtyCtrl.markAsTouched();
+    });
+
+    return group as InvoiceLineFormGroup;
+  }
+
+  protected getQuantityStep(unitMeasure: UnitMeasure | null): string {
+    switch (unitMeasure) {
+      case UnitMeasure.Time: return '0.25';
+      case UnitMeasure.Quantity: return '0.50';
+      default: return '0.01';
+    }
   }
 }
 

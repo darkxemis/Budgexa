@@ -1,5 +1,7 @@
 namespace Budgexa.Domain.Entities;
 
+using Budgexa.Domain.Enums;
+
 public sealed class InvoiceLine
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
@@ -9,6 +11,7 @@ public sealed class InvoiceLine
     public int SortOrder { get; private set; }
     public string Description { get; private set; } = default!;
     public string Unit { get; private set; } = default!;
+    public UnitMeasure UnitMeasure { get; private set; }
     public decimal Quantity { get; private set; }
     public decimal UnitPrice { get; private set; }
     public decimal DiscountPercentage { get; private set; }
@@ -31,6 +34,7 @@ public sealed class InvoiceLine
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -42,6 +46,7 @@ public sealed class InvoiceLine
         SortOrder = sortOrder;
         Description = description;
         Unit = unit;
+        UnitMeasure = unitMeasure;
         Quantity = quantity;
         UnitPrice = unitPrice;
         DiscountPercentage = discountPercentage;
@@ -55,6 +60,7 @@ public sealed class InvoiceLine
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -70,6 +76,7 @@ public sealed class InvoiceLine
             sortOrder,
             description,
             unit,
+            unitMeasure,
             quantity,
             unitPrice,
             discountPercentage,
@@ -82,6 +89,7 @@ public sealed class InvoiceLine
         int sortOrder,
         string description,
         string unit,
+        UnitMeasure unitMeasure,
         decimal quantity,
         decimal unitPrice,
         decimal discountPercentage,
@@ -94,6 +102,7 @@ public sealed class InvoiceLine
         SortOrder = sortOrder;
         Description = description;
         Unit = unit;
+        UnitMeasure = unitMeasure;
         Quantity = quantity;
         UnitPrice = unitPrice;
         DiscountPercentage = discountPercentage;

@@ -22,7 +22,7 @@ public class UpdateItemCommandHandlerTests
     }
 
     private static ItemUpdateDto BuildDto(string? sku = "SKU-001", string name = "Updated") =>
-        new(sku, name, "desc", ItemType.Service, "hour", 120m, 21m, "EUR");
+        new(sku, name, "desc", ItemType.Service, UnitMeasure.Quantity, "hour", 120m, 21m, "EUR");
 
     [Fact]
     public async Task Handle_UnknownItem_ThrowsNotFound()

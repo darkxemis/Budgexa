@@ -14,12 +14,13 @@ public class CreateItemCommandValidatorTests
         string name = "Name",
         string? description = null,
         ItemType type = ItemType.Service,
+        UnitMeasure unitMeasure = UnitMeasure.Quantity,
         string unit = "hour",
         decimal unitPrice = 100m,
         decimal taxRate = 21m,
         string currency = "EUR")
     {
-        return new CreateItemCommand(new ItemCreateDto(sku, name, description, type, unit, unitPrice, taxRate, currency));
+        return new CreateItemCommand(new ItemCreateDto(sku, name, description, type, unitMeasure, unit, unitPrice, taxRate, currency));
     }
 
     [Fact]

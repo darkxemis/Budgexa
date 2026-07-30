@@ -6,6 +6,7 @@ using Budgexa.Application.Budgets.DTOs;
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Tests.TestHelpers;
 using Budgexa.Domain.Constants;
+using Budgexa.Domain.Enums;
 using Budgexa.Domain.Exceptions;
 using NSubstitute;
 
@@ -116,8 +117,8 @@ public class UpdateBudgetCommandHandlerTests
             "BUD-001",
             new List<BudgetLineUpsertDto>
             {
-                new(existingLineId, null, 1, "Updated line", "unit", 3m, 50m, 0m, 21m),
-                new(null, null, 2, "New line", "unit", 1m, 25m, 0m, 21m),
+                new(existingLineId, null, 1, "Updated line", "unit", UnitMeasure.Quantity, 3m, 50m, 0m, 21m),
+                new(null, null, 2, "New line", "unit", UnitMeasure.Quantity, 1m, 25m, 0m, 21m),
             });
 
         var sut = new UpdateBudgetCommandHandler(db, BuildCurrentUser(companyId));

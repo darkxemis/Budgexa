@@ -34,6 +34,7 @@ import {
   BudgetUpdateDto,
   computeLineTotals,
 } from '../../models/budget.model';
+import { UnitMeasure } from '../../../../shared/models/unit-measure.model';
 import {
   BudgetLineFormGroup,
   BudgetLinesEditorComponent,
@@ -168,6 +169,7 @@ export class BudgetFormModalComponent implements OnInit {
             itemId: line.itemId ?? null,
             description: line.description,
             unit: line.unit,
+            unitMeasure: line.unitMeasure,
             quantity: Number(line.quantity),
             unitPrice: Number(line.unitPrice),
             discountPercentage: Number(line.discountPercentage),
@@ -178,6 +180,7 @@ export class BudgetFormModalComponent implements OnInit {
           if (line.itemId) {
             formLine.controls.description.disable();
             formLine.controls.unit.disable();
+            formLine.controls.unitMeasure.disable();
             formLine.controls.unitPrice.disable();
             formLine.controls.taxRate.disable();
           }
@@ -217,6 +220,7 @@ export class BudgetFormModalComponent implements OnInit {
         sortOrder: index,
         description: (line.description ?? '').trim(),
         unit: (line.unit ?? '').trim(),
+        unitMeasure: line.unitMeasure ?? UnitMeasure.Quantity,
         // Allow decimal quantities: 2.5 hours, 1.75 kg, etc.
         quantity: Math.max(0.01, Number(line.quantity) || 0.01),
         unitPrice: Number(line.unitPrice) || 0,

@@ -14,7 +14,7 @@ services:
     container_name: budgexa-ollama
     image: ollama/ollama:latest
     ports:
-      - "11434:11434"
+      - "11435:11435"
     volumes:
       - ollama-data:/root/.ollama
     networks:
@@ -28,6 +28,7 @@ services:
               count: all
               capabilities: [gpu]
     environment:
+    - OLLAMA_HOST=0.0.0.0:11435
     - OLLAMA_CONTEXT_LENGTH=65536
     - OLLAMA_NUM_PARALLEL=1
     - OLLAMA_MAX_LOADED_MODELS=1
@@ -50,7 +51,10 @@ services:
       - JwtSettings__Secret=${JWT_SECRET}
       - ASPNETCORE_Kestrel__Certificates__Default__Password=BudgexaDev123!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-dev.pfx
-      - Ollama__BaseUrl=http://budgexa-ollama:11434
+      - Ollama__BaseUrl=http://budgexa-ollama:11435
+      - FileStorage__ProfileImagesPath=/app/uploads/profile-images
+      - FileStorage__SignatureImagesPath=/app/uploads/signature-images
+      - FileStorage__BaseUrl=https://localhost:5443
     ports:
       - "5000:80"
       - "5443:443"
@@ -58,6 +62,8 @@ services:
       - sqlserver
     volumes:
       - ./backend/BudgexaApi/https:/https:ro
+      - ./uploads/profile-images:/app/uploads/profile-images
+      - ./uploads/signature-images:/app/uploads/signature-images
     networks:
       - budgexa-net
 

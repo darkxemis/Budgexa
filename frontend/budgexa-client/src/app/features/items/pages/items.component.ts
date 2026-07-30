@@ -11,6 +11,7 @@ import { ToastType } from '../../../shared/components/toast/toast.type';
 import { ItemsGridService } from '../services/items-grid.service';
 import { ItemApiService } from '../services/item-api.service';
 import { ItemGridDto, ItemType } from '../models/item.model';
+import { UnitMeasure } from '../../../shared/models/unit-measure.model';
 import { buildItemsGridColumns } from '../config/items-grid-columns.config';
 import {
   ItemFormModalComponent,
@@ -60,10 +61,19 @@ export class ItemsComponent implements OnInit {
   }
 
   private initializeColumns(): void {
-    const baseColumns = buildItemsGridColumns((type) =>
-      this.translate.instant(
-        type === ItemType.Service ? 'items.types.service' : 'items.types.product'
-      )
+    const translateUnitMeasure = (um: UnitMeasure): string => {
+      const key = um === UnitMeasure.Quantity ? 'shared.unitMeasure.quantity'
+                : um === UnitMeasure.Time ? 'shared.unitMeasure.time'
+                : 'shared.unitMeasure.weight';
+      return this.translate.instant(key);
+    };
+
+    const baseColumns = buildItemsGridColumns(
+      (type) =>
+        this.translate.instant(
+          type === ItemType.Service ? 'items.types.service' : 'items.types.product'
+        ),
+      translateUnitMeasure
     );
 
     this.columns = baseColumns.map((column) => {

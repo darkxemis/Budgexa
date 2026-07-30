@@ -1,13 +1,40 @@
 @if (user(); as userInfo) {
   <div class="user-menu-container">
-    <button class="user-menu-btn" (click)="toggleMenu()">
-      <span class="user-avatar">{{ userInfo.firstName.charAt(0) | uppercase }}</span>
-      <span class="user-name hide-on-mobile">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
-    </button>
-    @if (menuOpen) {
+    <div class="user-menu-btn-group">
+      <button class="avatar-btn" type="button" (click)="toggleImageMenu($event)">
+        <app-user-avatar [firstName]="userInfo.firstName" [profileImageUrl]="userInfo.profileImageUrl" />
+      </button>
+      <button class="menu-btn" type="button" (click)="toggleMenu()">
+        <span class="user-name hide-on-mobile">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
+      </button>
+    </div>
+
+    <!-- Image management dropdown -->
+    @if (imageMenuOpen()) {
+      <div class="image-dropdown">
+        <div class="image-dropdown-header">
+          <app-user-avatar [firstName]="userInfo.firstName" [profileImageUrl]="userInfo.profileImageUrl" />
+          <span class="image-dropdown-title">{{ 'profileImage' | translate }}</span>
+        </div>
+        <div class="image-dropdown-actions">
+          <button class="dropdown-action" type="button" (click)="triggerFileInput()" [disabled]="savingImage()">
+            {{ 'changeImage' | translate }}
+          </button>
+          @if (userInfo.profileImageUrl) {
+            <button class="dropdown-action dropdown-action--danger" type="button" (click)="deleteProfileImage()" [disabled]="savingImage()">
+              {{ 'deleteImage' | translate }}
+            </button>
+          }
+        </div>
+        <input #fileInput type="file" accept="image/jpeg,image/png,image/gif,image/webp" (change)="onFileSelected($event)" class="hidden-file-input" />
+      </div>
+    }
+
+    <!-- User settings dropdown -->
+    @if (menuOpen()) {
       <div class="user-dropdown">
         <div class="user-dropdown-header">
-          <span class="user-avatar-lg">{{ userInfo.firstName.charAt(0) | uppercase }}</span>
+          <app-user-avatar [firstName]="userInfo.firstName" [profileImageUrl]="userInfo.profileImageUrl" />
           <div class="user-info-block">
             <div class="user-full-name">{{ userInfo.firstName }} {{ userInfo.lastName }}</div>
             <div class="user-email">{{ userInfo.email }}</div>

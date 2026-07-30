@@ -131,7 +131,7 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(9);
 
                     b.Property<Guid?>("ItemId")
                         .HasColumnType("uniqueidentifier")
@@ -139,7 +139,7 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,4)")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(7);
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int")
@@ -147,19 +147,19 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(11);
 
                     b.Property<decimal>("TaxAmount")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(12);
 
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(10);
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(13);
 
                     b.Property<string>("Unit")
                         .IsRequired()
@@ -167,9 +167,13 @@ namespace Budgexa.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnOrder(5);
 
+                    b.Property<int>("UnitMeasure")
+                        .HasColumnType("int")
+                        .HasColumnOrder(6);
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(8);
 
                     b.HasKey("Id");
 
@@ -464,7 +468,7 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(9);
 
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uniqueidentifier")
@@ -476,7 +480,7 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,4)")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(7);
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int")
@@ -484,19 +488,19 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(12);
 
                     b.Property<decimal>("TaxAmount")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(13);
 
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(10);
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(14);
+                        .HasColumnOrder(15);
 
                     b.Property<string>("Unit")
                         .IsRequired()
@@ -504,17 +508,21 @@ namespace Budgexa.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnOrder(5);
 
+                    b.Property<int>("UnitMeasure")
+                        .HasColumnType("int")
+                        .HasColumnOrder(6);
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(8);
 
                     b.Property<decimal>("WithholdingAmount")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(13);
+                        .HasColumnOrder(14);
 
                     b.Property<decimal>("WithholdingRate")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(11);
 
                     b.HasKey("Id");
 
@@ -548,7 +556,7 @@ namespace Budgexa.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nchar(3)")
-                        .HasColumnOrder(14)
+                        .HasColumnOrder(15)
                         .IsFixedLength();
 
                     b.Property<string>("Description")
@@ -573,7 +581,7 @@ namespace Budgexa.Infrastructure.Migrations
 
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(5,2)")
-                        .HasColumnOrder(13);
+                        .HasColumnOrder(14);
 
                     b.Property<int>("Type")
                         .HasColumnType("int")
@@ -585,9 +593,13 @@ namespace Budgexa.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnOrder(11);
 
+                    b.Property<int>("UnitMeasure")
+                        .HasColumnType("int")
+                        .HasColumnOrder(12);
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(13);
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2")
@@ -1602,6 +1614,16 @@ namespace Budgexa.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(9);
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(14);
+
+                    b.Property<string>("SignatureUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(15);
 
                     b.Property<Guid>("StatusId")
                         .HasColumnType("uniqueidentifier")
