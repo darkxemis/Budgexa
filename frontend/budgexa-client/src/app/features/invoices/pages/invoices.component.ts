@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
@@ -104,6 +111,11 @@ export class InvoicesComponent implements OnInit {
         icon: 'plus',
         handler: (row) => this.openPayment(row),
         visible: (row) => Number(row.amountDue ?? 0) > 0,
+      },
+      {
+        kind: 'custom',
+        label: 'invoices.downloadPdf',
+        handler: (row) => this.downloadPdf(row),
       },
       {
         kind: 'edit',
@@ -218,5 +230,23 @@ export class InvoicesComponent implements OnInit {
     this.deleteDialogOpen.set(false);
     this.invoiceToDelete.set(null);
   }
-}
 
+  // ------------------------------------------------------------------
+  // Download PDF
+  // ------------------------------------------------------------------
+  private downloadPdf(row: InvoiceGridDto): void {
+    this.invoiceApiService.downloadPdf(row.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `${row.series}-${row.number}.pdf`;
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.toast.show('downloadFailed', ToastType.Error);
+      },
+    });
+  }
+}

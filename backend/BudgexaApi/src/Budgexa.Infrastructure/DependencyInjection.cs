@@ -1,8 +1,9 @@
 namespace Budgexa.Infrastructure;
 
 using Budgexa.Application.Auth;
-using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Budgets.Services;
+using Budgexa.Application.Common.Interfaces;
+using Budgexa.Application.Invoices.Services;
 using Budgexa.Application.PublicBudgets.Services;
 using Budgexa.Domain.Constants;
 using Budgexa.Domain.Interfaces;
@@ -12,7 +13,9 @@ using Budgexa.Infrastructure.BackgroundServices;
 using Budgexa.Infrastructure.Persistence;
 using Budgexa.Infrastructure.Services;
 using Budgexa.Infrastructure.Services.FileStorage;
-using Budgexa.Infrastructure.Services.Pdf;
+using Budgexa.Infrastructure.Services.Pdf.Budgets;
+using Budgexa.Infrastructure.Services.Pdf.Invoices;
+using Budgexa.Infrastructure.Services.Pdf.PublicBudgets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,6 +59,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<IPublicBudgetPdfService, PublicBudgetPdfService>();
         services.AddSingleton<IBudgetPdfService, BudgetPdfService>();
+        services.AddSingleton<IInvoicePdfService, InvoicePdfService>();
         services.AddSingleton<IAiService, OllamaSharpAiService>();
 
         services.Configure<FileStorageSettings>(configuration.GetSection(FileStorageSettings.SectionName));

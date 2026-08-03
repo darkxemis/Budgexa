@@ -5,6 +5,7 @@ using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Invoices.Commands.ChangeInvoiceStatus;
 using Budgexa.Application.Invoices.Commands.CreateInvoice;
 using Budgexa.Application.Invoices.Commands.DeleteInvoice;
+using Budgexa.Application.Invoices.Commands.DownloadInvoicePdf;
 using Budgexa.Application.Invoices.Commands.RegisterInvoicePayment;
 using Budgexa.Application.Invoices.Commands.UpdateInvoice;
 using Budgexa.Application.Invoices.DTOs;
@@ -136,6 +137,20 @@ public static class InvoicesEndpoints
             .WithName("RegisterInvoicePayment")
             .WithSummary("POST /api/v1/invoices/{id}/payments")
             .WithDescription("Registers a payment against an invoice. Automatically updates the invoice status to PartiallyPaid or Paid based on the total amount paid.");
+
+        group.MapGet("/{id:guid}/pdf",
+            async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new DownloadInvoicePdfCommand(id), cancellationToken);
+                return Results.File(result.PdfBytes, "application/pdf", result.FileName);
+            })
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK, contentType: "application/pdf")
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("DownloadInvoicePdf")
+            .WithSummary("GET /api/v1/invoices/{id}/pdf")
+            .WithDescription("Returns the invoice PDF for the authenticated user's company.");
 
         group.MapDelete("/{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>

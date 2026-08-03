@@ -88,6 +88,7 @@
   "signatureUpdated": "Firma actualizada correctamente.",
   "signatureDeleted": "Firma eliminada.",
   "signatureUpdateFailed": "Error al actualizar la firma.",
+  "downloadFailed": "Error al descargar el archivo.",
 
   "customers": {
     "title": "Clientes",
@@ -246,6 +247,7 @@
     "created": "Factura creada correctamente",
     "updated": "Factura actualizada correctamente",
     "deleted": "Factura eliminada correctamente",
+    "downloadPdf": "Descargar PDF",
     "delete": {
       "title": "Eliminar Factura",
       "message": "¿Seguro que deseas eliminar la factura {{ number }}? Esta acción no se puede deshacer."
@@ -508,4 +510,3 @@
     }
   }
 }
-

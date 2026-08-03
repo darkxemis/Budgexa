@@ -43,13 +43,20 @@ export class InvoiceApiService {
     return this.http.patch<InvoiceDto>(
       `${this.baseUrl}/${id}/status`,
       { statusId },
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
 
   registerPayment(id: Guid, dto: RegisterInvoicePaymentDto): Observable<InvoiceDto> {
     return this.http.post<InvoiceDto>(`${this.baseUrl}/${id}/payments`, dto, {
       withCredentials: true,
+    });
+  }
+
+  downloadPdf(id: Guid): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${id}/pdf`, {
+      withCredentials: true,
+      responseType: 'blob',
     });
   }
 }

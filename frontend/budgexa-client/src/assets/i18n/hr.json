@@ -88,6 +88,7 @@
   "signatureUpdated": "Potpis uspješno ažuriran.",
   "signatureDeleted": "Potpis izbrisan.",
   "signatureUpdateFailed": "Neuspješno ažuriranje potpisa.",
+  "downloadFailed": "Preuzimanje datoteke nije uspjelo.",
 
   "customers": {
     "title": "Klijenti",
@@ -247,6 +248,7 @@
     "created": "Račun uspješno kreiran",
     "updated": "Račun uspješno ažuriran",
     "deleted": "Račun uspješno obrisan",
+    "downloadPdf": "Preuzmi PDF",
     "delete": {
       "title": "Obriši račun",
       "message": "Jeste li sigurni da želite obrisati račun {{ number }}? Ova radnja se ne može poništiti."

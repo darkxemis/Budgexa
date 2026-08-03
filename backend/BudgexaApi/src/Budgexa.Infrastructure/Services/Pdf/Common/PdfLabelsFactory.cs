@@ -1,4 +1,4 @@
-namespace Budgexa.Infrastructure.Services.Pdf;
+namespace Budgexa.Infrastructure.Services.Pdf.Common;
 
 internal static class PdfLabelsFactory
 {

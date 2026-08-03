@@ -88,6 +88,7 @@
   "signatureUpdated": "Unterschrift erfolgreich aktualisiert.",
   "signatureDeleted": "Unterschrift gelöscht.",
   "signatureUpdateFailed": "Fehler beim Aktualisieren der Unterschrift.",
+  "downloadFailed": "Datei konnte nicht heruntergeladen werden.",
 
   "customers": {
     "title": "Kunden",
@@ -247,6 +248,7 @@
     "created": "Rechnung erfolgreich erstellt",
     "updated": "Rechnung erfolgreich aktualisiert",
     "deleted": "Rechnung erfolgreich gelöscht",
+    "downloadPdf": "PDF herunterladen",
     "delete": {
       "title": "Rechnung löschen",
       "message": "Möchten Sie die Rechnung {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."

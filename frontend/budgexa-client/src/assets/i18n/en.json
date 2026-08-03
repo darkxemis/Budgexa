@@ -248,6 +248,7 @@
     "created": "Invoice created successfully",
     "updated": "Invoice updated successfully",
     "deleted": "Invoice deleted successfully",
+    "downloadPdf": "Download PDF",
     "delete": {
       "title": "Delete Invoice",
       "message": "Are you sure you want to delete invoice {{ number }}? This action cannot be undone."
@@ -274,7 +275,9 @@
       "description": "Description",
       "unit": "Unit",
       "unitMeasure": "Unit Measure",
-      "quantity": "Quantity",      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",      "unitPrice": "Unit Price",
+      "quantity": "Quantity",
+      "quantityHint": "E.g.: 2.5 hours, 1.75 kg, 3 units",
+      "unitPrice": "Unit Price",
       "discount": "Discount (%)",
       "taxRate": "Tax Rate (%)",
       "withholdingRate": "Withholding (%)",
@@ -508,4 +511,3 @@
     }
   }
 }
-
