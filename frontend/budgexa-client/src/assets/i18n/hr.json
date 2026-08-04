@@ -182,6 +182,7 @@
     "title": "Ponude",
     "create": "Kreiraj ponudu",
     "createInvoice": "Kreiraj račun",
+    "generateWithAi": "Generiraj s AI",
     "created": "Ponuda uspješno kreirana",
     "updated": "Ponuda uspješno ažurirana",
     "deleted": "Ponuda uspješno obrisana",
@@ -262,6 +263,7 @@
   "invoices": {
     "title": "Računi",
     "create": "Kreiraj račun",
+    "generateWithAi": "Generiraj s AI",
     "created": "Račun uspješno kreiran",
     "updated": "Račun uspješno ažuriran",
     "deleted": "Račun uspješno obrisan",

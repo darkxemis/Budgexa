@@ -263,6 +263,7 @@
   "invoices": {
     "title": "Rechnungen",
     "create": "Rechnung erstellen",
+    "generateWithAi": "Mit KI erstellen",
     "created": "Rechnung erfolgreich erstellt",
     "updated": "Rechnung erfolgreich aktualisiert",
     "deleted": "Rechnung erfolgreich gelöscht",
