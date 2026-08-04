@@ -5,6 +5,8 @@ services:
     environment:
       - SA_PASSWORD=${SA_PASSWORD}
       - ACCEPT_EULA=Y
+    volumes:
+      - sqlserver-data:/var/opt/mssql
     ports:
       - "1433:1433"
     networks:
@@ -99,6 +101,7 @@ networks:
     driver: bridge
 
 volumes:
+  sqlserver-data:
   profile-images:
   signature-images:
   ollama-data:
