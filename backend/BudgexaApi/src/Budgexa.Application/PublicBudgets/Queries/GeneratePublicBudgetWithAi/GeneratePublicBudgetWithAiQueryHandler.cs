@@ -3,6 +3,8 @@ namespace Budgexa.Application.PublicBudgets.Queries.GeneratePublicBudgetWithAi;
 using System.Globalization;
 using System.Net;
 using System.Text;
+using System.Text.Json;
+using Budgexa.Application.Budgets.DTOs;
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.PublicBudgets.DTOs;
 using Budgexa.Application.PublicBudgets.Services;
@@ -26,6 +28,20 @@ public sealed class GeneratePublicBudgetWithAiQueryHandler(
 
     private const double MatchThreshold = 0.5;
 
+    private const string PublicBudgetPrompt = """
+        You extract products/services from text into JSON.
+        Return ONLY a JSON array, nothing else.
+        Each item: {"productName": "Full Name", "quantity": N}
+        Do not add extra keys to the json
+        CRITICAL RULES:
+        - productName must contain ONLY the product name, NEVER include quantities or numbers.
+          Example: "4 ventanas de aluminio" -> {"productName": "Ventana De Aluminio", "quantity": 4}
+          Example: "3 puertas de madera" -> {"productName": "Puerta De Madera", "quantity": 3}
+        - Keep product names in the SAME language the user wrote. NEVER translate or mix languages.
+        - Use the FULL product name (e.g. "Ventana De Aluminio Reforzado" not just "Aluminio").
+        - If quantity is not stated, use 1.
+        """;
+
     public async Task<PublicBudgetAiResponseDto> Handle(
         GeneratePublicBudgetWithAiQuery request,
         CancellationToken cancellationToken)
@@ -44,8 +60,14 @@ public sealed class GeneratePublicBudgetWithAiQueryHandler(
                 "Company not found.");
         }
 
-        var aiResult = await aiService.GenerateBudgetJsonAsync(
-            request.Request.UserRequest, cancellationToken);
+        var aiResult = await aiService.GenerateJsonAsync(
+            PublicBudgetPrompt, request.Request.UserRequest, cancellationToken);
+
+        // Deserialize JSON to BudgetItem list
+        var aiItems = JsonSerializer.Deserialize<List<BudgetItem>>(aiResult.JsonResponse, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        }) ?? [];
 
         var companyItems = await db.Items
             .AsNoTracking()
@@ -55,7 +77,7 @@ public sealed class GeneratePublicBudgetWithAiQueryHandler(
 
         var matchedItems = new List<PublicBudgetAiItemDto>();
 
-        foreach (var aiItem in aiResult.Items)
+        foreach (var aiItem in aiItems)
         {
             var bestMatch = companyItems
                 .Select(item => new { Item = item, Score = CalculateMatchScore(aiItem.ProductName, item.Name) }) // Calculate match score for each item against the AI-extracted name

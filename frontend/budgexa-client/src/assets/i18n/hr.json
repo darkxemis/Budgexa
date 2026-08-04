@@ -88,6 +88,7 @@
   "signatureUpdated": "Potpis uspješno ažuriran.",
   "signatureDeleted": "Potpis izbrisan.",
   "signatureUpdateFailed": "Neuspješno ažuriranje potpisa.",
+  "downloadFailed": "Preuzimanje datoteke nije uspjelo.",
 
   "customers": {
     "title": "Klijenti",
@@ -181,12 +182,30 @@
     "title": "Ponude",
     "create": "Kreiraj ponudu",
     "createInvoice": "Kreiraj račun",
+    "generateWithAi": "Generiraj s AI",
     "created": "Ponuda uspješno kreirana",
     "updated": "Ponuda uspješno ažurirana",
     "deleted": "Ponuda uspješno obrisana",
     "delete": {
       "title": "Obriši ponudu",
       "message": "Jeste li sigurni da želite obrisati ponudu {{ number }}? Ova radnja se ne može poništiti."
+    },
+    "ai": {
+      "title": "Generiraj ponudu s AI",
+      "subtitle": "Opišite ponudu prirodnim jezikom i AI će je automatski generirati",
+      "label": "Opišite ponudu",
+      "placeholder": "Npr.: Ponuda za Atlas Technologies, 4 aluminijska prozora, 3 drvena vrata s 10% popusta, 1 sofa, usluga montaže, vrijedi do kraja mjeseca, valuta EUR...",
+      "examplesTitle": "Primjeri",
+      "example1": "Ponuda PRE-2026-0001 za Acme Corp, OIB B12345678, datum 15. siječnja 2025., vrijedi do 28. veljače 2025. 10 sati tehničkog savjetovanja, 5 softverskih licenci s 15% popusta, valuta EUR. Napomene: Cloud migracija projekt",
+      "example2": "Ponuda za XYZ d.o.o., 4 aluminijska prozora, 3 drvena vrata s 10% popusta, 1 sofa, usluga montaže. Vrijedi do kraja mjeseca. Valuta EUR. Napomene: Dostava za 15 dana",
+      "generate": "Generiraj",
+      "loadingMessage": "Generiranje ponude s AI...",
+      "errors": {
+        "invalidRequest": "Nevažeći zahtjev. Molimo opišite ponudu detaljnije.",
+        "rateLimit": "Prekoračili ste limit zahtjeva. Pokušajte kasnije.",
+        "unauthorized": "Nemate dozvolu za korištenje ove funkcionalnosti.",
+        "generic": "Greška pri generiranju ponude. Pokušajte ponovno."
+      }
     },
     "form": {
       "createTitle": "Kreiraj ponudu",
@@ -244,12 +263,31 @@
   "invoices": {
     "title": "Računi",
     "create": "Kreiraj račun",
+    "generateWithAi": "Generiraj s AI",
     "created": "Račun uspješno kreiran",
     "updated": "Račun uspješno ažuriran",
     "deleted": "Račun uspješno obrisan",
+    "downloadPdf": "Preuzmi PDF",
     "delete": {
       "title": "Obriši račun",
       "message": "Jeste li sigurni da želite obrisati račun {{ number }}? Ova radnja se ne može poništiti."
+    },
+    "ai": {
+      "title": "Generiraj račun s AI",
+      "subtitle": "Opišite račun prirodnim jezikom i AI će ga automatski generirati",
+      "label": "Opišite račun",
+      "placeholder": "Npr.: Račun serija A broj 2025-001 za Atlas Technologies, datum 15. siječnja 2025., dospijeva 15. veljače 2025. 10 sati savjetovanja s 10% popusta, 3 softverske licence, valuta EUR. Napomene: Cloud projekt...",
+      "examplesTitle": "Primjeri",
+      "example1": "Račun za Acme Corp, OIB B12345678, datum 20. prosinca 2024., dospijeva 20. siječnja 2025. 10 sati tehničkog savjetovanja s 5% popusta, 3 softverske licence, valuta EUR. Napomene: Cloud migracija projekt",
+      "example2": "Račun serija A-2025 broj 123 za XYZ d.o.o., datum danas. 4 aluminijska prozora, 3 drvena vrata s 10% popusta, 1 sofa, usluga montaže. Valuta EUR. Napomene: Hitna dostava",
+      "generate": "Generiraj",
+      "loadingMessage": "Generiranje računa s AI...",
+      "errors": {
+        "invalidRequest": "Nevažeći zahtjev. Molimo opišite račun detaljnije.",
+        "rateLimit": "Prekoračili ste limit zahtjeva. Pokušajte kasnije.",
+        "unauthorized": "Nemate dozvolu za korištenje ove funkcionalnosti.",
+        "generic": "Greška pri generiranju računa. Pokušajte ponovno."
+      }
     },
     "form": {
       "createTitle": "Kreiraj račun",

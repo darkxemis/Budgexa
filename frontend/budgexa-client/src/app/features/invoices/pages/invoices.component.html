@@ -2,14 +2,25 @@
   <div class="page-header">
     <h1 class="page-title">{{ 'invoices.title' | translate }}</h1>
 
-    <button
-      type="button"
-      class="btn btn-primary create-btn"
-      (click)="openCreate()"
-    >
-      <app-icon name="plus" [size]="16" />
-      <span>{{ 'invoices.create' | translate }}</span>
-    </button>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="btn btn-secondary ai-btn"
+        (click)="openAiGenerator()"
+      >
+        <app-icon name="sparkles" [size]="16" />
+        <span>{{ 'invoices.generateWithAi' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary create-btn"
+        (click)="openCreate()"
+      >
+        <app-icon name="plus" [size]="16" />
+        <span>{{ 'invoices.create' | translate }}</span>
+      </button>
+    </div>
   </div>
 
   <main class="invoices-main">
@@ -32,8 +43,16 @@
       [mode]="formMode()"
       [invoiceId]="editingInvoiceId()"
       [preselectedBudgetId]="preselectedBudgetId()"
+      [aiData]="aiGeneratedData()"
       (saved)="onFormSaved()"
       (close)="onFormClosed()"
+    />
+  }
+
+  @if (aiModalOpen()) {
+    <app-invoice-ai-generator
+      (generated)="onAiGenerated($event)"
+      (close)="onAiModalClosed()"
     />
   }
 

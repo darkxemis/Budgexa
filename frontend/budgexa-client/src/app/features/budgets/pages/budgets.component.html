@@ -2,14 +2,25 @@
   <div class="page-header">
     <h1 class="page-title">{{ 'budgets.title' | translate }}</h1>
 
-    <button
-      type="button"
-      class="btn btn-primary create-btn"
-      (click)="openCreate()"
-    >
-      <app-icon name="plus" [size]="16" />
-      <span>{{ 'budgets.create' | translate }}</span>
-    </button>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="btn btn-secondary ai-btn"
+        (click)="openAiGenerator()"
+      >
+        <app-icon name="sparkles" [size]="16" />
+        <span>{{ 'budgets.generateWithAi' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary create-btn"
+        (click)="openCreate()"
+      >
+        <app-icon name="plus" [size]="16" />
+        <span>{{ 'budgets.create' | translate }}</span>
+      </button>
+    </div>
   </div>
 
   <main class="budgets-main">
@@ -31,8 +42,16 @@
     <app-budget-form-modal
       [mode]="formMode()"
       [budgetId]="editingBudgetId()"
+      [aiData]="aiGeneratedData()"
       (saved)="onFormSaved()"
       (close)="onFormClosed()"
+    />
+  }
+
+  @if (aiModalOpen()) {
+    <app-budget-ai-generator
+      (generated)="onAiGenerated($event)"
+      (close)="onAiModalClosed()"
     />
   }
 

@@ -1,189 +1,243 @@
 namespace Budgexa.Application.Tests.Budgets.Queries.GenerateBudgetWithAi;
 
-using Budgexa.Application.Budgets.DTOs;
+using System.Text.Json;
+using Budgexa.Application.Budgets.Queries.GenerateBudgetWithAi;
+using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Common.Interfaces;
+using Budgexa.Application.Common.Services;
 using Budgexa.Application.PublicBudgets.DTOs;
-using Budgexa.Application.PublicBudgets.Queries.GeneratePublicBudgetWithAi;
 using Budgexa.Application.PublicBudgets.Services;
-using Budgexa.Domain.Constants;
-using Budgexa.Domain.Entities;
-using Budgexa.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using NSubstitute;
+using Budgexa.Domain.Exceptions;
+using Moq;
 
-public class GenerateBudgetWithAiQueryHandlerTests
+public sealed class GenerateBudgetWithAiQueryHandlerTests
 {
-    private static readonly Guid CompanyId = Guid.NewGuid();
-    private static readonly Guid ActiveStatusId = StatusIds.New;
+    private readonly Mock<IAiService> _aiServiceMock = new();
+    private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<ICustomerMatchingService> _customerMatchingServiceMock = new();
+    private readonly Mock<IItemMatchingService> _itemMatchingServiceMock = new();
+    private readonly Mock<IDateParsingService> _dateParsingServiceMock = new();
+    private readonly GenerateBudgetWithAiQueryHandler _handler;
+    private readonly Guid _companyId = Guid.NewGuid();
+
+    public GenerateBudgetWithAiQueryHandlerTests()
+    {
+        _handler = new GenerateBudgetWithAiQueryHandler(
+            _aiServiceMock.Object,
+            _currentUserServiceMock.Object,
+            _customerMatchingServiceMock.Object,
+            _itemMatchingServiceMock.Object,
+            _dateParsingServiceMock.Object);
+
+        _currentUserServiceMock.Setup(x => x.CompanyId).Returns(_companyId);
+    }
 
     [Fact]
-    public async Task Handle_MatchesItemsByFuzzyScore()
+    public async Task Handle_WithValidData_ReturnsCompleteResponse()
     {
         // Arrange
-        var aiService = Substitute.For<IAiService>();
-        aiService
-            .GenerateBudgetJsonAsync("4 ventanas de aluminio y 2 puertas de madera", Arg.Any<CancellationToken>())
-            .Returns(new BudgetItemsAiResult(
-                "4 ventanas de aluminio y 2 puertas de madera",
-                new List<BudgetItem>
-                {
-                    new("Ventana De Aluminio", 4),
-                    new("Puerta De Madera", 2),
-                },
-                "qwen2.5:7b"));
+        var userRequest = "Presupuesto para Acme Corp, 3 ventanas de aluminio";
+        var customerId = Guid.NewGuid();
 
-        var items = new List<Item>
+        var aiData = new AiPrivateBudgetDto(
+            CustomerName: "Acme Corp",
+            CustomerTaxId: "B12345678",
+            Number: "PRE-2025-001",
+            IssueDate: "2025-01-15",
+            ValidUntil: "2025-02-15",
+            Currency: "EUR",
+            Notes: "Test notes",
+            TermsAndConditions: "Test terms",
+            Items: new List<AiItemDto> { new("Ventana De Aluminio", 3, null) }
+        );
+
+        var aiJsonResponse = JsonSerializer.Serialize(aiData);
+
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new BudgetItemsAiResult(aiJsonResponse, userRequest, "llama3.2"));
+
+        _customerMatchingServiceMock
+            .Setup(x => x.FindCustomerIdAsync(_companyId, "Acme Corp", "B12345678", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(customerId);
+
+        _dateParsingServiceMock.Setup(x => x.ParseDate("2025-01-15")).Returns(new DateOnly(2025, 1, 15));
+        _dateParsingServiceMock.Setup(x => x.ParseDate("2025-02-15")).Returns(new DateOnly(2025, 2, 15));
+
+        var matchedItems = new List<MatchedItemDto>
         {
-            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio Blanca", null, ItemType.Product, UnitMeasure.Quantity, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Interior de Madera Block Roble", null, ItemType.Product, UnitMeasure.Quantity, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, UnitMeasure.Quantity, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
+            new(Guid.NewGuid(), "Ventana De Aluminio", 3, null, 150.00m, 21.00m, "Unidad", 1)
         };
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
+        _itemMatchingServiceMock
+            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(matchedItems);
 
-        var db = CreateMockDbContext(company, items);
-
-        var sut = new GeneratePublicBudgetWithAiQueryHandler(aiService, db);
+        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
 
         // Act
-        var response = await sut.Handle(
-            new GeneratePublicBudgetWithAiQuery(new PublicBudgetAiRequestDto(CompanyId, "4 ventanas de aluminio y 2 puertas de madera")),
-            CancellationToken.None);
+        var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        response.OriginalRequest.Should().Be("4 ventanas de aluminio y 2 puertas de madera");
-        response.Model.Should().Be("qwen2.5:7b");
-        response.Items.Should().HaveCount(2);
-        response.Items[0].ProductName.Should().Be("Ventana Corredera De Aluminio Blanca");
-        response.Items[0].Quantity.Should().Be(4);
-        response.Items[1].ProductName.Should().Be("Puerta de Interior de Madera Block Roble");
-        response.Items[1].Quantity.Should().Be(2);
+        Assert.NotNull(result);
+        Assert.Equal(userRequest, result.OriginalRequest);
+        Assert.Equal(customerId, result.CustomerId);
+        Assert.Equal("Acme Corp", result.CustomerName);
+        Assert.Equal("B12345678", result.CustomerTaxId);
+        Assert.Equal("PRE-2025-001", result.Number);
+        Assert.Equal(new DateOnly(2025, 1, 15), result.IssueDate);
+        Assert.Equal(new DateOnly(2025, 2, 15), result.ValidUntil);
+        Assert.Equal("EUR", result.Currency);
+        Assert.Equal("Test notes", result.Notes);
+        Assert.Equal("Test terms", result.TermsAndConditions);
+        Assert.Single(result.Items);
+        Assert.Equal("llama3.2", result.Model);
     }
 
     [Fact]
-    public async Task Handle_ReturnsEmpty_WhenNoItemsMatchAboveThreshold()
+    public async Task Handle_WithCustomerNotFound_ReturnsNullCustomerId()
     {
-        var aiService = Substitute.For<IAiService>();
-        aiService
-            .GenerateBudgetJsonAsync("un coche deportivo", Arg.Any<CancellationToken>())
-            .Returns(new BudgetItemsAiResult(
-                "un coche deportivo",
-                new List<BudgetItem> { new("Coche Deportivo", 1) },
-                "qwen2.5:7b"));
+        // Arrange
+        var userRequest = "Presupuesto para cliente desconocido";
 
-        var items = new List<Item>
-        {
-            Item.Create(CompanyId, ActiveStatusId, null, "Ventana Corredera De Aluminio", null, ItemType.Product, UnitMeasure.Quantity, "ud", 150m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Puerta de Madera", null, ItemType.Product, UnitMeasure.Quantity, "ud", 200m, 21m, "EUR", Guid.NewGuid()),
-        };
+        var aiData = new AiPrivateBudgetDto(
+            CustomerName: "Unknown Customer",
+            CustomerTaxId: null,
+            Number: null,
+            IssueDate: null,
+            ValidUntil: null,
+            Currency: null,
+            Notes: null,
+            TermsAndConditions: null,
+            Items: new List<AiItemDto>()
+        );
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
-        var db = CreateMockDbContext(company, items);
+        var aiJsonResponse = JsonSerializer.Serialize(aiData);
 
-        var sut = new GeneratePublicBudgetWithAiQueryHandler(aiService, db);
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
 
-        var response = await sut.Handle(
-            new GeneratePublicBudgetWithAiQuery(new PublicBudgetAiRequestDto(CompanyId, "un coche deportivo")),
-            CancellationToken.None);
+        _customerMatchingServiceMock
+            .Setup(x => x.FindCustomerIdAsync(_companyId, "Unknown Customer", null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Guid?)null);
 
-        response.Items.Should().BeEmpty();
+        _itemMatchingServiceMock
+            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<MatchedItemDto>());
+
+        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.Null(result.CustomerId);
+        Assert.Equal("Unknown Customer", result.CustomerName);
     }
 
     [Fact]
-    public async Task Handle_PicksBestMatch_WhenMultipleItemsScoreAboveThreshold()
+    public async Task Handle_WithInvalidDates_ReturnsNullDates()
     {
-        var aiService = Substitute.For<IAiService>();
-        aiService
-            .GenerateBudgetJsonAsync("1 sofa marron", Arg.Any<CancellationToken>())
-            .Returns(new BudgetItemsAiResult(
-                "1 sofa marron",
-                new List<BudgetItem> { new("Sofa Marron", 1) },
-                "qwen2.5:7b"));
+        // Arrange
+        var userRequest = "Presupuesto sin fechas válidas";
 
-        var items = new List<Item>
+        var aiData = new AiPrivateBudgetDto(
+            CustomerName: null,
+            CustomerTaxId: null,
+            Number: null,
+            IssueDate: "invalid date",
+            ValidUntil: "another invalid",
+            Currency: null,
+            Notes: null,
+            TermsAndConditions: null,
+            Items: new List<AiItemDto>()
+        );
+
+        var aiJsonResponse = JsonSerializer.Serialize(aiData);
+
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
+
+        _dateParsingServiceMock.Setup(x => x.ParseDate("invalid date")).Returns((DateOnly?)null);
+        _dateParsingServiceMock.Setup(x => x.ParseDate("another invalid")).Returns((DateOnly?)null);
+
+        _itemMatchingServiceMock
+            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<MatchedItemDto>());
+
+        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.Null(result.IssueDate);
+        Assert.Null(result.ValidUntil);
+    }
+
+    [Fact]
+    public async Task Handle_WithMalformedJson_ThrowsAppException()
+    {
+        // Arrange
+        var userRequest = "Request that returns invalid JSON";
+
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AiJsonResult("{invalid json", userRequest, "llama3.2"));
+
+        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<AppException>(() => _handler.Handle(query, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task Handle_WithItemsMatched_ReturnsMatchedItems()
+    {
+        // Arrange
+        var userRequest = "3 ventanas y 2 puertas";
+
+        var aiData = new AiPrivateBudgetDto(
+            CustomerName: null,
+            CustomerTaxId: null,
+            Number: null,
+            IssueDate: null,
+            ValidUntil: null,
+            Currency: null,
+            Notes: null,
+            TermsAndConditions: null,
+            Items: new List<AiItemDto>
+            {
+                new("Ventana De Aluminio", 3, null),
+                new("Puerta De Madera", 2, 5.00m)
+            }
+        );
+
+        var aiJsonResponse = JsonSerializer.Serialize(aiData);
+
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
+
+        var matchedItems = new List<MatchedItemDto>
         {
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Grande", null, ItemType.Product, UnitMeasure.Quantity, "ud", 500m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Marrón Terciopelo Luxury Edition", null, ItemType.Product, UnitMeasure.Quantity, "ud", 900m, 21m, "EUR", Guid.NewGuid()),
-            Item.Create(CompanyId, ActiveStatusId, null, "Sofá Amarillo", null, ItemType.Product, UnitMeasure.Quantity, "ud", 450m, 21m, "EUR", Guid.NewGuid()),
+            new(Guid.NewGuid(), "Ventana De Aluminio", 3, null, 150.00m, 21.00m, "Unidad", 1),
+            new(Guid.NewGuid(), "Puerta De Madera", 2, 5.00m, 200.00m, 21.00m, "Unidad", 1)
         };
 
-        var company = Company.Create("Test Company", null, DateOnly.FromDateTime(DateTime.UtcNow), null, Guid.NewGuid(), null, null, CompanyId);
-        var db = CreateMockDbContext(company, items);
+        _itemMatchingServiceMock
+            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(matchedItems);
 
-        var sut = new GeneratePublicBudgetWithAiQueryHandler(aiService, db);
+        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
 
-        var response = await sut.Handle(
-            new GeneratePublicBudgetWithAiQuery(new PublicBudgetAiRequestDto(CompanyId, "1 sofa marron")),
-            CancellationToken.None);
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
 
-        response.Items.Should().HaveCount(1);
-        // Should pick "Sofá Marrón Grande" (shorter name = tie-breaker)
-        response.Items[0].ProductName.Should().Be("Sofá Marrón Grande");
-        response.Items[0].Quantity.Should().Be(1);
+        // Assert
+        Assert.Equal(2, result.Items.Count);
+        Assert.Equal(5.00m, result.Items[1].DiscountPercentage);
     }
-
-    private static IApplicationDbContext CreateMockDbContext(Company company, List<Item> items)
-    {
-        var db = Substitute.For<IApplicationDbContext>();
-
-        // Mock Companies DbSet
-        var companyList = new List<Company> { company }.AsQueryable();
-        var mockCompaniesDbSet = Substitute.For<DbSet<Company>, IQueryable<Company>, IAsyncEnumerable<Company>>();
-        ((IQueryable<Company>)mockCompaniesDbSet).Provider.Returns(new TestAsyncQueryProvider<Company>(companyList.Provider));
-        ((IQueryable<Company>)mockCompaniesDbSet).Expression.Returns(companyList.Expression);
-        ((IQueryable<Company>)mockCompaniesDbSet).ElementType.Returns(companyList.ElementType);
-        ((IQueryable<Company>)mockCompaniesDbSet).GetEnumerator().Returns(companyList.GetEnumerator());
-        ((IAsyncEnumerable<Company>)mockCompaniesDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
-            .Returns(new TestAsyncEnumerator<Company>(companyList.GetEnumerator()));
-        db.Companies.Returns(mockCompaniesDbSet);
-
-        // Mock Items DbSet
-        var itemList = items.AsQueryable();
-        var mockItemsDbSet = Substitute.For<DbSet<Item>, IQueryable<Item>, IAsyncEnumerable<Item>>();
-        ((IQueryable<Item>)mockItemsDbSet).Provider.Returns(new TestAsyncQueryProvider<Item>(itemList.Provider));
-        ((IQueryable<Item>)mockItemsDbSet).Expression.Returns(itemList.Expression);
-        ((IQueryable<Item>)mockItemsDbSet).ElementType.Returns(itemList.ElementType);
-        ((IQueryable<Item>)mockItemsDbSet).GetEnumerator().Returns(itemList.GetEnumerator());
-        ((IAsyncEnumerable<Item>)mockItemsDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
-            .Returns(new TestAsyncEnumerator<Item>(itemList.GetEnumerator()));
-        db.Items.Returns(mockItemsDbSet);
-
-        return db;
-    }
-}
-
-internal sealed class TestAsyncQueryProvider<T>(IQueryProvider inner) : IAsyncQueryProvider
-{
-    public IQueryable CreateQuery(System.Linq.Expressions.Expression expression) => new TestAsyncEnumerable<T>(expression, inner);
-    public IQueryable<TElement> CreateQuery<TElement>(System.Linq.Expressions.Expression expression) => new TestAsyncEnumerable<TElement>(expression, inner);
-    public object? Execute(System.Linq.Expressions.Expression expression) => inner.Execute(expression);
-    public TResult Execute<TResult>(System.Linq.Expressions.Expression expression) => inner.Execute<TResult>(expression);
-    public TResult ExecuteAsync<TResult>(System.Linq.Expressions.Expression expression, CancellationToken cancellationToken = default)
-    {
-        var resultType = typeof(TResult).GetGenericArguments()[0];
-        var executeMethod = typeof(IQueryProvider).GetMethods()
-            .First(m => m.Name == nameof(IQueryProvider.Execute) && m.IsGenericMethodDefinition)
-            .MakeGenericMethod(resultType);
-
-        var result = executeMethod.Invoke(inner, [expression]);
-        return (TResult)typeof(Task).GetMethod(nameof(Task.FromResult))!
-            .MakeGenericMethod(resultType)
-            .Invoke(null, [result])!;
-    }
-}
-
-internal sealed class TestAsyncEnumerable<T>(System.Linq.Expressions.Expression expression, IQueryProvider provider)
-    : EnumerableQuery<T>(expression), IAsyncEnumerable<T>, IQueryable<T>
-{
-    IQueryProvider IQueryable.Provider => new TestAsyncQueryProvider<T>(provider);
-    public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default) =>
-        new TestAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
-}
-
-internal sealed class TestAsyncEnumerator<T>(IEnumerator<T> inner) : IAsyncEnumerator<T>
-{
-    public T Current => inner.Current;
-    public ValueTask DisposeAsync() { inner.Dispose(); return ValueTask.CompletedTask; }
-    public ValueTask<bool> MoveNextAsync() => ValueTask.FromResult(inner.MoveNext());
 }

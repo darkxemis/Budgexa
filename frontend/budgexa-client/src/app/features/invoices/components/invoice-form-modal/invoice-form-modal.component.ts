@@ -34,6 +34,7 @@ import { CustomerSelectorService } from '../../services/customer-selector.servic
 import { BudgetSelectorService } from '../../services/budget-selector.service';
 import { BudgetApiService } from '../../../budgets/services/budget-api.service';
 import { BudgetDto } from '../../../budgets/models/budget.model';
+import { PrivateInvoiceAiResponseDto } from '../../../../shared/models/ai.model';
 import {
   InvoiceCreateDto,
   InvoiceDto,
@@ -79,6 +80,8 @@ export class InvoiceFormModalComponent implements OnInit {
   readonly invoiceId = input<Guid | null>(null);
   /** Pre-selected budget id (used when navigating from budgets page). */
   readonly preselectedBudgetId = input<Guid | null>(null);
+  /** AI-generated data for prefilling the form (used when mode is 'create'). */
+  readonly aiData = input<PrivateInvoiceAiResponseDto | null>(null);
 
   readonly saved = output<InvoiceDto>();
   readonly close = output<void>();
@@ -196,8 +199,14 @@ export class InvoiceFormModalComponent implements OnInit {
     if (this.isEdit() && this.invoiceId()) {
       this.loadInvoice();
     } else {
-      // Start create mode with at least one blank line for convenience.
-      this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
+      // Check if AI generated data is available
+      const ai = this.aiData();
+      if (ai) {
+        this.prefillFromAi(ai);
+      } else {
+        // Start create mode with at least one blank line for convenience.
+        this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
+      }
       this.recomputeTotals();
 
       // If a budget was preselected (e.g. from budgets page), load its data.
@@ -214,6 +223,58 @@ export class InvoiceFormModalComponent implements OnInit {
   @HostListener('document:keydown.escape')
   protected onEscape() {
     if (!this.loading()) this.onClose();
+  }
+
+  /** Prefill form from AI generated data. */
+  private prefillFromAi(ai: PrivateInvoiceAiResponseDto): void {
+    // Prefill top-level fields
+    this.form.patchValue({
+      series: ai.series || '',
+      number: ai.number || '',
+      issueDate: ai.issueDate || this.today(),
+      dueDate: ai.dueDate ?? undefined, // Don't invent due date if not specified (convert null to undefined)
+      customerId: ai.customerId || null,
+      currency: ai.currency || 'EUR',
+      notes: ai.notes || '',
+    });
+
+    if (ai.customerId) {
+      this.initialCustomerId.set(ai.customerId);
+    }
+
+    // Clear any existing lines
+    this.linesArray.clear();
+
+    // Prefill lines from matched items
+    for (const item of ai.items) {
+      const formLine = InvoiceLinesEditorComponent.createLine(this.fb);
+      formLine.patchValue({
+        itemId: item.itemId || null,
+        description: item.productName,
+        unit: item.unit || '',
+        unitMeasure: item.unitMeasure || UnitMeasure.Quantity,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice || 0,
+        discountPercentage: item.discountPercentage || 0,
+        taxRate: item.taxRate || 21,
+        withholdingRate: 0,
+      });
+
+      if (item.itemId) {
+        formLine.controls.description.disable();
+        formLine.controls.unit.disable();
+        formLine.controls.unitMeasure.disable();
+        formLine.controls.unitPrice.disable();
+        formLine.controls.taxRate.disable();
+      }
+
+      this.linesArray.push(formLine);
+    }
+
+    // If no items were added, add one blank line
+    if (this.linesArray.length === 0) {
+      this.linesArray.push(InvoiceLinesEditorComponent.createLine(this.fb));
+    }
   }
 
   protected loadCustomerOptions = async (searchQuery?: string): Promise<SelectorOption[]> => {

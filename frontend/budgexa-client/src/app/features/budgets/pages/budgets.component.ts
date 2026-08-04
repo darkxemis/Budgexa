@@ -19,6 +19,8 @@ import {
   BudgetFormModalComponent,
   BudgetFormMode,
 } from '../components/budget-form-modal/budget-form-modal.component';
+import { BudgetAiGeneratorComponent } from '../components/budget-ai-generator/budget-ai-generator.component';
+import { PrivateBudgetAiResponseDto } from '../../../shared/models/ai.model';
 
 @Component({
   selector: 'app-budgets',
@@ -29,6 +31,7 @@ import {
     IconComponent,
     ConfirmDialogComponent,
     BudgetFormModalComponent,
+    BudgetAiGeneratorComponent,
   ],
   templateUrl: './budgets.component.html',
   styleUrl: './budgets.component.scss',
@@ -57,6 +60,10 @@ export class BudgetsComponent implements OnInit {
   protected readonly deleting = signal(false);
   protected readonly budgetToDelete = signal<BudgetGridDto | null>(null);
   protected readonly deleteMessageParams = signal<Record<string, unknown> | undefined>(undefined);
+
+  // AI generator modal state
+  protected readonly aiModalOpen = signal(false);
+  protected readonly aiGeneratedData = signal<PrivateBudgetAiResponseDto | null>(null);
 
   ngOnInit(): void {
     this.initializeColumns();
@@ -144,6 +151,27 @@ export class BudgetsComponent implements OnInit {
 
   protected onFormClosed(): void {
     this.formModalOpen.set(false);
+    this.aiGeneratedData.set(null); // Clear AI data after closing
+  }
+
+  // ------------------------------------------------------------------
+  // AI Generator
+  // ------------------------------------------------------------------
+  protected openAiGenerator(): void {
+    this.aiModalOpen.set(true);
+  }
+
+  protected onAiGenerated(data: PrivateBudgetAiResponseDto): void {
+    this.aiGeneratedData.set(data);
+    this.aiModalOpen.set(false);
+    // Open the form modal in create mode with the AI data
+    this.formMode.set('create');
+    this.editingBudgetId.set(null);
+    this.formModalOpen.set(true);
+  }
+
+  protected onAiModalClosed(): void {
+    this.aiModalOpen.set(false);
   }
 
   // ------------------------------------------------------------------

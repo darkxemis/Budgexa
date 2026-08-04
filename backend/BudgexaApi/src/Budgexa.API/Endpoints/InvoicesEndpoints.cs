@@ -5,14 +5,17 @@ using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Invoices.Commands.ChangeInvoiceStatus;
 using Budgexa.Application.Invoices.Commands.CreateInvoice;
 using Budgexa.Application.Invoices.Commands.DeleteInvoice;
+using Budgexa.Application.Invoices.Commands.DownloadInvoicePdf;
 using Budgexa.Application.Invoices.Commands.RegisterInvoicePayment;
 using Budgexa.Application.Invoices.Commands.UpdateInvoice;
 using Budgexa.Application.Invoices.DTOs;
+using Budgexa.Application.Invoices.Queries.GenerateInvoiceWithAi;
 using Budgexa.Application.Invoices.Queries.GetAllInvoices;
 using Budgexa.Application.Invoices.Queries.GetInvoiceById;
 using Budgexa.Application.Invoices.Queries.GetInvoicesForSelector;
 using Budgexa.Application.Invoices.Queries.GetInvoicesGrid;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 public static class InvoicesEndpoints
 {
@@ -137,6 +140,20 @@ public static class InvoicesEndpoints
             .WithSummary("POST /api/v1/invoices/{id}/payments")
             .WithDescription("Registers a payment against an invoice. Automatically updates the invoice status to PartiallyPaid or Paid based on the total amount paid.");
 
+        group.MapGet("/{id:guid}/pdf",
+            async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new DownloadInvoicePdfCommand(id), cancellationToken);
+                return Results.File(result.PdfBytes, "application/pdf", result.FileName);
+            })
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK, contentType: "application/pdf")
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status404NotFound)
+            .WithName("DownloadInvoicePdf")
+            .WithSummary("GET /api/v1/invoices/{id}/pdf")
+            .WithDescription("Returns the invoice PDF for the authenticated user's company.");
+
         group.MapDelete("/{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
@@ -150,6 +167,20 @@ public static class InvoicesEndpoints
             .WithName("DeleteInvoice")
             .WithSummary("DELETE /api/v1/invoices/{id}")
             .WithDescription("Soft deletes an invoice by setting its status to deleted.");
+
+        group.MapPost("/generate-with-ai",
+            async ([FromBody] PrivateInvoiceAiRequestDto dto, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new GenerateInvoiceWithAiQuery(dto), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .Produces<PrivateInvoiceAiResponseDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status500InternalServerError)
+            .WithName("GenerateInvoiceWithAi")
+            .WithSummary("POST /api/v1/invoices/generate-with-ai")
+            .WithDescription("Generates an invoice using AI from natural language text or voice input. Supports multi-language input, returns resolved customer ID, series, parsed dates, and matched items.");
 
         return endpoints;
     }
