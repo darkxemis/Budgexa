@@ -40,6 +40,7 @@ import {
   BudgetLinesEditorComponent,
   BudgetTotals,
 } from '../budget-lines-editor/budget-lines-editor.component';
+import { PrivateBudgetAiResponseDto } from '../../../../shared/models/ai.model';
 
 export type BudgetFormMode = 'create' | 'edit';
 
@@ -68,6 +69,8 @@ export class BudgetFormModalComponent implements OnInit {
   readonly mode = input<BudgetFormMode>('create');
   /** Existing budget id (required when mode is 'edit'). */
   readonly budgetId = input<Guid | null>(null);
+  /** AI-generated data to prefill the form (optional). */
+  readonly aiData = input<PrivateBudgetAiResponseDto | null>(null);
 
   readonly saved = output<BudgetDto>();
   readonly close = output<void>();
@@ -111,8 +114,14 @@ export class BudgetFormModalComponent implements OnInit {
     if (this.isEdit() && this.budgetId()) {
       this.loadBudget();
     } else {
-      // Start create mode with at least one blank line for convenience.
-      this.linesArray.push(BudgetLinesEditorComponent.createLine(this.fb));
+      // Check if we have AI data to prefill
+      const ai = this.aiData();
+      if (ai) {
+        this.prefillFromAi(ai);
+      } else {
+        // Start create mode with at least one blank line for convenience.
+        this.linesArray.push(BudgetLinesEditorComponent.createLine(this.fb));
+      }
       this.recomputeTotals();
     }
   }
@@ -195,6 +204,50 @@ export class BudgetFormModalComponent implements OnInit {
         this.onClose();
       },
     });
+  }
+
+  private prefillFromAi(ai: PrivateBudgetAiResponseDto): void {
+    // Patch form with AI data
+    this.form.patchValue({
+      number: ai.number || '',
+      issueDate: ai.issueDate || this.today(),
+      validUntil: ai.validUntil || null,
+      customerId: ai.customerId || null,
+      currency: ai.currency || 'EUR',
+      notes: ai.notes || '',
+      termsAndConditions: ai.termsAndConditions || '',
+    });
+
+    // If customer ID is resolved, set it for the selector
+    if (ai.customerId) {
+      this.initialCustomerId.set(ai.customerId);
+    }
+
+    // Prefill lines from matched items
+    for (const item of ai.items) {
+      const formLine = BudgetLinesEditorComponent.createLine(this.fb);
+      formLine.patchValue({
+        itemId: item.itemId || null,
+        description: item.productName,
+        unit: item.unit || '',
+        unitMeasure: item.unitMeasure || UnitMeasure.Quantity,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice || 0,
+        discountPercentage: item.discountPercentage || 0,
+        taxRate: item.taxRate || 21,
+      });
+
+      // If item was matched from catalog, disable protected fields
+      if (item.itemId) {
+        formLine.controls.description.disable();
+        formLine.controls.unit.disable();
+        formLine.controls.unitMeasure.disable();
+        formLine.controls.unitPrice.disable();
+        formLine.controls.taxRate.disable();
+      }
+
+      this.linesArray.push(formLine);
+    }
   }
 
   protected onSubmit(): void {

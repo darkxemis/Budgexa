@@ -1,54 +1,54 @@
-namespace Budgexa.Application.Tests.Budgets.Queries.GenerateBudgetWithAi;
+namespace Budgexa.Application.Tests.Invoices.Queries.GenerateInvoiceWithAi;
 
 using System.Text.Json;
-using Budgexa.Application.Budgets.Queries.GenerateBudgetWithAi;
 using Budgexa.Application.Common.DTOs;
 using Budgexa.Application.Common.Interfaces;
 using Budgexa.Application.Common.Services;
+using Budgexa.Application.Invoices.Queries.GenerateInvoiceWithAi;
 using Budgexa.Application.PublicBudgets.DTOs;
 using Budgexa.Application.PublicBudgets.Services;
 using Budgexa.Domain.Exceptions;
 using Moq;
 
-public sealed class GenerateBudgetWithAiQueryHandlerTests
+public sealed class GenerateInvoiceWithAiQueryHandlerTests
 {
     private readonly Mock<IAiService> _aiServiceMock = new();
     private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
     private readonly Mock<ICustomerMatchingService> _customerMatchingServiceMock = new();
     private readonly Mock<IItemMatchingService> _itemMatchingServiceMock = new();
     private readonly Mock<IDateParsingService> _dateParsingServiceMock = new();
-    private readonly GenerateBudgetWithAiQueryHandler _handler;
+    private readonly GenerateInvoiceWithAiQueryHandler _handler;
     private readonly Guid _companyId = Guid.NewGuid();
 
-    public GenerateBudgetWithAiQueryHandlerTests()
+    public GenerateInvoiceWithAiQueryHandlerTests()
     {
-        _handler = new GenerateBudgetWithAiQueryHandler(
+        _handler = new GenerateInvoiceWithAiQueryHandler(
             _aiServiceMock.Object,
             _currentUserServiceMock.Object,
             _customerMatchingServiceMock.Object,
             _itemMatchingServiceMock.Object,
             _dateParsingServiceMock.Object);
 
-        _currentUserServiceMock.Setup(x => x.CompanyId).Returns(_companyId);
+        _currentUserServiceMock.Setup(x => x.GetCompanyId()).Returns(_companyId);
     }
 
     [Fact]
     public async Task Handle_WithValidData_ReturnsCompleteResponse()
     {
         // Arrange
-        var userRequest = "Presupuesto para Acme Corp, 3 ventanas de aluminio";
+        var userRequest = "Factura para Acme Corp, 5 horas de consultoría";
         var customerId = Guid.NewGuid();
 
-        var aiData = new AiPrivateBudgetDto(
+        var aiData = new AiPrivateInvoiceDto(
             CustomerName: "Acme Corp",
             CustomerTaxId: "B12345678",
-            Number: "PRE-2025-001",
+            Series: "A",
+            Number: "001",
             IssueDate: "2025-01-15",
-            ValidUntil: "2025-02-15",
+            DueDate: "2025-02-15",
             Currency: "EUR",
-            Notes: "Test notes",
-            TermsAndConditions: "Test terms",
-            Items: new List<AiItemDto> { new("Ventana De Aluminio", 3, null) }
+            Notes: "Consultoría técnica avanzada",
+            Items: new List<AiItemDto> { new("Consultoría Técnica", 5, null) }
         );
 
         var aiJsonResponse = JsonSerializer.Serialize(aiData);
@@ -66,14 +66,14 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
 
         var matchedItems = new List<MatchedItemDto>
         {
-            new(Guid.NewGuid(), "Ventana De Aluminio", 3, null, 150.00m, 21.00m, "Unidad", 1)
+            new(Guid.NewGuid(), "Consultoría Técnica", 5, null, 75.00m, 21.00m, "Hora", 2)
         };
 
         _itemMatchingServiceMock
             .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(matchedItems);
 
-        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+        var query = new GenerateInvoiceWithAiQuery(new PrivateInvoiceAiRequestDto(userRequest));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -84,12 +84,12 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
         Assert.Equal(customerId, result.CustomerId);
         Assert.Equal("Acme Corp", result.CustomerName);
         Assert.Equal("B12345678", result.CustomerTaxId);
-        Assert.Equal("PRE-2025-001", result.Number);
+        Assert.Equal("A", result.Series);
+        Assert.Equal("001", result.Number);
         Assert.Equal(new DateOnly(2025, 1, 15), result.IssueDate);
-        Assert.Equal(new DateOnly(2025, 2, 15), result.ValidUntil);
+        Assert.Equal(new DateOnly(2025, 2, 15), result.DueDate);
         Assert.Equal("EUR", result.Currency);
-        Assert.Equal("Test notes", result.Notes);
-        Assert.Equal("Test terms", result.TermsAndConditions);
+        Assert.Equal("Consultoría técnica avanzada", result.Notes);
         Assert.Single(result.Items);
         Assert.Equal("llama3.2", result.Model);
     }
@@ -98,17 +98,17 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
     public async Task Handle_WithCustomerNotFound_ReturnsNullCustomerId()
     {
         // Arrange
-        var userRequest = "Presupuesto para cliente desconocido";
+        var userRequest = "Factura para cliente desconocido";
 
-        var aiData = new AiPrivateBudgetDto(
+        var aiData = new AiPrivateInvoiceDto(
             CustomerName: "Unknown Customer",
             CustomerTaxId: null,
+            Series: null,
             Number: null,
             IssueDate: null,
-            ValidUntil: null,
+            DueDate: null,
             Currency: null,
             Notes: null,
-            TermsAndConditions: null,
             Items: new List<AiItemDto>()
         );
 
@@ -116,7 +116,7 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
 
         _aiServiceMock
             .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
+            .ReturnsAsync(new BudgetItemsAiResult(aiJsonResponse, userRequest, "llama3.2"));
 
         _customerMatchingServiceMock
             .Setup(x => x.FindCustomerIdAsync(_companyId, "Unknown Customer", null, It.IsAny<CancellationToken>()))
@@ -126,7 +126,7 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
             .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<MatchedItemDto>());
 
-        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+        var query = new GenerateInvoiceWithAiQuery(new PrivateInvoiceAiRequestDto(userRequest));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -137,20 +137,20 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithInvalidDates_ReturnsNullDates()
+    public async Task Handle_WithSeriesAndNumber_ReturnsSeriesAndNumber()
     {
         // Arrange
-        var userRequest = "Presupuesto sin fechas válidas";
+        var userRequest = "Factura serie B número 042";
 
-        var aiData = new AiPrivateBudgetDto(
+        var aiData = new AiPrivateInvoiceDto(
             CustomerName: null,
             CustomerTaxId: null,
-            Number: null,
-            IssueDate: "invalid date",
-            ValidUntil: "another invalid",
+            Series: "B",
+            Number: "042",
+            IssueDate: null,
+            DueDate: null,
             Currency: null,
             Notes: null,
-            TermsAndConditions: null,
             Items: new List<AiItemDto>()
         );
 
@@ -158,23 +158,61 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
 
         _aiServiceMock
             .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
-
-        _dateParsingServiceMock.Setup(x => x.ParseDate("invalid date")).Returns((DateOnly?)null);
-        _dateParsingServiceMock.Setup(x => x.ParseDate("another invalid")).Returns((DateOnly?)null);
+            .ReturnsAsync(new BudgetItemsAiResult(aiJsonResponse, userRequest, "llama3.2"));
 
         _itemMatchingServiceMock
             .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<MatchedItemDto>());
 
-        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+        var query = new GenerateInvoiceWithAiQuery(new PrivateInvoiceAiRequestDto(userRequest));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        Assert.Null(result.IssueDate);
-        Assert.Null(result.ValidUntil);
+        Assert.Equal("B", result.Series);
+        Assert.Equal("042", result.Number);
+    }
+
+    [Fact]
+    public async Task Handle_WithInvalidDueDate_ReturnsNullDueDate()
+    {
+        // Arrange
+        var userRequest = "Factura con fecha de vencimiento inválida";
+
+        var aiData = new AiPrivateInvoiceDto(
+            CustomerName: null,
+            CustomerTaxId: null,
+            Series: null,
+            Number: null,
+            IssueDate: "2025-01-15",
+            DueDate: "invalid date",
+            Currency: null,
+            Notes: null,
+            Items: new List<AiItemDto>()
+        );
+
+        var aiJsonResponse = JsonSerializer.Serialize(aiData);
+
+        _aiServiceMock
+            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new BudgetItemsAiResult(aiJsonResponse, userRequest, "llama3.2"));
+
+        _dateParsingServiceMock.Setup(x => x.ParseDate("2025-01-15")).Returns(new DateOnly(2025, 1, 15));
+        _dateParsingServiceMock.Setup(x => x.ParseDate("invalid date")).Returns((DateOnly?)null);
+
+        _itemMatchingServiceMock
+            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<MatchedItemDto>());
+
+        var query = new GenerateInvoiceWithAiQuery(new PrivateInvoiceAiRequestDto(userRequest));
+
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.Equal(new DateOnly(2025, 1, 15), result.IssueDate);
+        Assert.Null(result.DueDate);
     }
 
     [Fact]
@@ -185,59 +223,11 @@ public sealed class GenerateBudgetWithAiQueryHandlerTests
 
         _aiServiceMock
             .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new AiJsonResult("{invalid json", userRequest, "llama3.2"));
+            .ReturnsAsync(new BudgetItemsAiResult("{invalid json", userRequest, "llama3.2"));
 
-        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
+        var query = new GenerateInvoiceWithAiQuery(new PrivateInvoiceAiRequestDto(userRequest));
 
         // Act & Assert
         await Assert.ThrowsAsync<AppException>(() => _handler.Handle(query, CancellationToken.None));
-    }
-
-    [Fact]
-    public async Task Handle_WithItemsMatched_ReturnsMatchedItems()
-    {
-        // Arrange
-        var userRequest = "3 ventanas y 2 puertas";
-
-        var aiData = new AiPrivateBudgetDto(
-            CustomerName: null,
-            CustomerTaxId: null,
-            Number: null,
-            IssueDate: null,
-            ValidUntil: null,
-            Currency: null,
-            Notes: null,
-            TermsAndConditions: null,
-            Items: new List<AiItemDto>
-            {
-                new("Ventana De Aluminio", 3, null),
-                new("Puerta De Madera", 2, 5.00m)
-            }
-        );
-
-        var aiJsonResponse = JsonSerializer.Serialize(aiData);
-
-        _aiServiceMock
-            .Setup(x => x.GenerateJsonAsync(It.IsAny<string>(), userRequest, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new AiJsonResult(aiJsonResponse, userRequest, "llama3.2"));
-
-        var matchedItems = new List<MatchedItemDto>
-        {
-            new(Guid.NewGuid(), "Ventana De Aluminio", 3, null, 150.00m, 21.00m, "Unidad", 1),
-            new(Guid.NewGuid(), "Puerta De Madera", 2, 5.00m, 200.00m, 21.00m, "Unidad", 1)
-        };
-
-        _itemMatchingServiceMock
-            .Setup(x => x.MatchItemsAsync(_companyId, It.IsAny<List<AiItemDto>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(matchedItems);
-
-        var query = new GenerateBudgetWithAiQuery(new PrivateBudgetAiRequestDto(userRequest));
-
-        // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
-
-        // Assert
-        Assert.Equal(2, result.Items.Count);
-        Assert.Equal(5.00m, result.Items[1].DiscountPercentage);
     }
 }

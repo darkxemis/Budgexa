@@ -182,12 +182,30 @@
     "title": "Presupuestos",
     "create": "Crear Presupuesto",
     "createInvoice": "Crear Factura",
+    "generateWithAi": "Generar con IA",
     "created": "Presupuesto creado correctamente",
     "updated": "Presupuesto actualizado correctamente",
     "deleted": "Presupuesto eliminado correctamente",
     "delete": {
       "title": "Eliminar Presupuesto",
       "message": "¿Seguro que deseas eliminar el presupuesto {{ number }}? Esta acción no se puede deshacer."
+    },
+    "ai": {
+      "title": "Generar Presupuesto con IA",
+      "subtitle": "Describe el presupuesto en lenguaje natural y la IA lo generará automáticamente",
+      "label": "Describe el presupuesto",
+      "placeholder": "Ej: Presupuesto para Tecnologías Atlas, 4 ventanas de aluminio, 3 puertas de madera con 10% descuento, 1 sofá, servicio de instalación, válido hasta fin de mes, moneda EUR...",
+      "examplesTitle": "Ejemplos",
+      "example1": "Presupuesto PRE-2026-0001 para Acme Corp, NIF B12345678, fecha 15 enero 2025, válido hasta 28 febrero 2025. Incluir 10 horas de consultoría técnica, 5 licencias de software con 15% descuento, moneda EUR. Notas: Proyecto migración cloud",
+      "example2": "Presupuesto para XYZ S.L., 4 ventanas de aluminio, 3 puertas de madera con 10% descuento, 1 sofá, servicio de instalación. Válido hasta fin de mes. Moneda EUR. Notas: Entrega en 15 días",
+      "generate": "Generar",
+      "loadingMessage": "Generando presupuesto con IA...",
+      "errors": {
+        "invalidRequest": "Solicitud inválida. Por favor, describe el presupuesto con más detalles.",
+        "rateLimit": "Has excedido el límite de solicitudes. Inténtalo más tarde.",
+        "unauthorized": "No tienes permisos para usar esta funcionalidad.",
+        "generic": "Error al generar el presupuesto. Inténtalo de nuevo."
+      }
     },
     "form": {
       "createTitle": "Crear Presupuesto",
@@ -244,6 +262,7 @@
   "invoices": {
     "title": "Facturas",
     "create": "Crear Factura",
+    "generateWithAi": "Generar con IA",
     "created": "Factura creada correctamente",
     "updated": "Factura actualizada correctamente",
     "deleted": "Factura eliminada correctamente",
@@ -251,6 +270,23 @@
     "delete": {
       "title": "Eliminar Factura",
       "message": "¿Seguro que deseas eliminar la factura {{ number }}? Esta acción no se puede deshacer."
+    },
+    "ai": {
+      "title": "Generar Factura con IA",
+      "subtitle": "Describe la factura en lenguaje natural y la IA la generará automáticamente",
+      "label": "Describe la factura",
+      "placeholder": "Ej: Factura serie A número 2025-001 para Tecnologías Atlas, fecha 15 enero 2025, vence 15 febrero 2025. Incluir 10 horas de consultoría con 10% descuento, 3 licencias de software, moneda EUR. Notas: Proyecto cloud...",
+      "examplesTitle": "Ejemplos",
+      "example1": "Factura para Acme Corp, NIF B12345678, fecha 20 diciembre 2024, vence 20 enero 2025. Incluir 10 horas de consultoría técnica con 5% descuento, 3 licencias de software, moneda EUR. Notas: Proyecto migración cloud",
+      "example2": "Factura serie A-2025 número 123 para XYZ S.L., fecha hoy. Incluir 4 ventanas de aluminio, 3 puertas de madera con 10% descuento, 1 sofá, servicio de instalación. Moneda EUR. Notas: Entrega urgente",
+      "generate": "Generar",
+      "loadingMessage": "Generando factura con IA...",
+      "errors": {
+        "invalidRequest": "Solicitud inválida. Por favor, describe la factura con más detalles.",
+        "rateLimit": "Has excedido el límite de solicitudes. Inténtalo más tarde.",
+        "unauthorized": "No tienes permisos para usar esta funcionalidad.",
+        "generic": "Error al generar la factura. Inténtalo de nuevo."
+      }
     },
     "form": {
       "createTitle": "Crear Factura",

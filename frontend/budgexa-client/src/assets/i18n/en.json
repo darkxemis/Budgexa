@@ -182,12 +182,30 @@
     "title": "Budgets",
     "create": "Create Budget",
     "createInvoice": "Create Invoice",
+    "generateWithAi": "Generate with AI",
     "created": "Budget created successfully",
     "updated": "Budget updated successfully",
     "deleted": "Budget deleted successfully",
     "delete": {
       "title": "Delete Budget",
       "message": "Are you sure you want to delete budget {{ number }}? This action cannot be undone."
+    },
+    "ai": {
+      "title": "Generate Budget with AI",
+      "subtitle": "Describe the budget in natural language and AI will generate it automatically",
+      "label": "Describe the budget",
+      "placeholder": "Ex: Budget for Atlas Technologies, 4 aluminum windows, 3 wooden doors with 10% discount, 1 sofa, installation service, valid until end of month, currency EUR...",
+      "examplesTitle": "Examples",
+      "example1": "Budget PRE-2026-0001 for Acme Corp, TIN B12345678, date January 15 2025, valid until February 28 2025. Include 10 hours of technical consulting, 5 software licenses with 15% discount, currency EUR. Notes: Cloud migration project",
+      "example2": "Budget for XYZ LLC, 4 aluminum windows, 3 wooden doors with 10% discount, 1 sofa, installation service. Valid until end of month. Currency EUR. Notes: Delivery in 15 days",
+      "generate": "Generate",
+      "loadingMessage": "Generating budget with AI...",
+      "errors": {
+        "invalidRequest": "Invalid request. Please describe the budget with more details.",
+        "rateLimit": "You have exceeded the request limit. Try again later.",
+        "unauthorized": "You do not have permission to use this feature.",
+        "generic": "Error generating the budget. Please try again."
+      }
     },
     "form": {
       "createTitle": "Create Budget",
@@ -245,6 +263,7 @@
   "invoices": {
     "title": "Invoices",
     "create": "Create Invoice",
+    "generateWithAi": "Generate with AI",
     "created": "Invoice created successfully",
     "updated": "Invoice updated successfully",
     "deleted": "Invoice deleted successfully",
@@ -252,6 +271,23 @@
     "delete": {
       "title": "Delete Invoice",
       "message": "Are you sure you want to delete invoice {{ number }}? This action cannot be undone."
+    },
+    "ai": {
+      "title": "Generate Invoice with AI",
+      "subtitle": "Describe the invoice in natural language and AI will generate it automatically",
+      "label": "Describe the invoice",
+      "placeholder": "Ex: Invoice series A number 2025-001 for Atlas Technologies, date January 15 2025, due February 15 2025. Include 10 hours of consulting with 10% discount, 3 software licenses, currency EUR. Notes: Cloud project...",
+      "examplesTitle": "Examples",
+      "example1": "Invoice for Acme Corp, TIN B12345678, date December 20 2024, due January 20 2025. Include 10 hours of technical consulting with 5% discount, 3 software licenses, currency EUR. Notes: Cloud migration project",
+      "example2": "Invoice series A-2025 number 123 for XYZ LLC, date today. Include 4 aluminum windows, 3 wooden doors with 10% discount, 1 sofa, installation service. Currency EUR. Notes: Urgent delivery",
+      "generate": "Generate",
+      "loadingMessage": "Generating invoice with AI...",
+      "errors": {
+        "invalidRequest": "Invalid request. Please describe the invoice with more details.",
+        "rateLimit": "You have exceeded the request limit. Try again later.",
+        "unauthorized": "You do not have permission to use this feature.",
+        "generic": "Error generating the invoice. Please try again."
+      }
     },
     "form": {
       "createTitle": "Create Invoice",

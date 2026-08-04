@@ -7,6 +7,7 @@ using Budgexa.Application.Budgets.Commands.DeleteBudget;
 using Budgexa.Application.Budgets.Commands.DownloadBudgetPdf;
 using Budgexa.Application.Budgets.Commands.UpdateBudget;
 using Budgexa.Application.Budgets.DTOs;
+using Budgexa.Application.Budgets.Queries.GenerateBudgetWithAi;
 using Budgexa.Application.Budgets.Queries.GetAllBudgets;
 using Budgexa.Application.Budgets.Queries.GetBudgetById;
 using Budgexa.Application.Budgets.Queries.GetBudgetsForSelector;
@@ -152,6 +153,20 @@ public static class BudgetsEndpoints
             .WithName("DeleteBudget")
             .WithSummary("DELETE /api/v1/budgets/{id}")
             .WithDescription("Soft deletes a budget by setting its status to deleted.");
+
+        group.MapPost("/generate-with-ai",
+            async ([FromBody] PrivateBudgetAiRequestDto dto, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new GenerateBudgetWithAiQuery(dto), cancellationToken);
+                return Results.Ok(result);
+            })
+            .RequireAuthorization()
+            .Produces<PrivateBudgetAiResponseDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<ApiErrorResponse>(StatusCodes.Status500InternalServerError)
+            .WithName("GenerateBudgetWithAi")
+            .WithSummary("POST /api/v1/budgets/generate-with-ai")
+            .WithDescription("Generates a budget using AI from natural language text or voice input. Supports multi-language input, returns resolved customer ID, parsed dates, and matched items.");
 
         return endpoints;
     }

@@ -3,6 +3,7 @@ namespace Budgexa.Infrastructure;
 using Budgexa.Application.Auth;
 using Budgexa.Application.Budgets.Services;
 using Budgexa.Application.Common.Interfaces;
+using Budgexa.Application.Common.Services;
 using Budgexa.Application.Invoices.Services;
 using Budgexa.Application.PublicBudgets.Services;
 using Budgexa.Domain.Constants;
@@ -61,6 +62,11 @@ public static class DependencyInjection
         services.AddSingleton<IBudgetPdfService, BudgetPdfService>();
         services.AddSingleton<IInvoicePdfService, InvoicePdfService>();
         services.AddSingleton<IAiService, OllamaSharpAiService>();
+
+        // AI-related matching and parsing services
+        services.AddScoped<ICustomerMatchingService, CustomerMatchingService>();
+        services.AddScoped<IItemMatchingService, ItemMatchingService>();
+        services.AddScoped<IDateParsingService, DateParsingService>();
 
         services.Configure<FileStorageSettings>(configuration.GetSection(FileStorageSettings.SectionName));
         services.AddSingleton<IFileStorageService, LocalFileStorageService>();

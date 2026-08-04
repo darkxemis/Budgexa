@@ -27,6 +27,8 @@ import {
   InvoiceFormMode,
 } from '../components/invoice-form-modal/invoice-form-modal.component';
 import { InvoicePaymentModalComponent } from '../components/invoice-payment-modal/invoice-payment-modal.component';
+import { InvoiceAiGeneratorComponent } from '../components/invoice-ai-generator/invoice-ai-generator.component';
+import { PrivateInvoiceAiResponseDto } from '../../../shared/models/ai.model';
 
 @Component({
   selector: 'app-invoices',
@@ -38,6 +40,7 @@ import { InvoicePaymentModalComponent } from '../components/invoice-payment-moda
     ConfirmDialogComponent,
     InvoiceFormModalComponent,
     InvoicePaymentModalComponent,
+    InvoiceAiGeneratorComponent,
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.scss',
@@ -72,6 +75,10 @@ export class InvoicesComponent implements OnInit {
   protected readonly deleting = signal(false);
   protected readonly invoiceToDelete = signal<InvoiceGridDto | null>(null);
   protected readonly deleteMessageParams = signal<Record<string, unknown> | undefined>(undefined);
+
+  // AI generator modal state
+  protected readonly aiModalOpen = signal(false);
+  protected readonly aiGeneratedData = signal<PrivateInvoiceAiResponseDto | null>(null);
 
   ngOnInit(): void {
     this.initializeColumns();
@@ -173,6 +180,28 @@ export class InvoicesComponent implements OnInit {
   protected onFormClosed(): void {
     this.formModalOpen.set(false);
     this.preselectedBudgetId.set(null);
+    this.aiGeneratedData.set(null); // Clear AI data after closing
+  }
+
+  // ------------------------------------------------------------------
+  // AI Generator
+  // ------------------------------------------------------------------
+  protected openAiGenerator(): void {
+    this.aiModalOpen.set(true);
+  }
+
+  protected onAiGenerated(data: PrivateInvoiceAiResponseDto): void {
+    this.aiGeneratedData.set(data);
+    this.aiModalOpen.set(false);
+    // Open the form modal in create mode with the AI data
+    this.formMode.set('create');
+    this.editingInvoiceId.set(null);
+    this.preselectedBudgetId.set(null);
+    this.formModalOpen.set(true);
+  }
+
+  protected onAiModalClosed(): void {
+    this.aiModalOpen.set(false);
   }
 
   // ------------------------------------------------------------------

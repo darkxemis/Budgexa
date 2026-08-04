@@ -23,7 +23,8 @@ export type IconName =
   | 'edit'
   | 'delete'
   | 'plus'
-  | 'warning';
+  | 'warning'
+  | 'sparkles';
 
 @Component({
   selector: 'app-icon',
@@ -137,6 +138,10 @@ export type IconName =
           <path d="M10.29 3.86L1.82 18C1.64537 18.3024 1.55296 18.6453 1.55199 18.9945C1.55101 19.3437 1.6415 19.687 1.81442 19.9905C1.98734 20.2939 2.23672 20.5466 2.53777 20.7234C2.83883 20.9001 3.18079 20.9948 3.53 20.9979H20.47C20.8192 20.9948 21.1612 20.9001 21.4622 20.7234C21.7633 20.5466 22.0127 20.2939 22.1856 19.9905C22.3585 19.687 22.449 19.3437 22.448 18.9945C22.447 18.6453 22.3546 18.3024 22.18 18L13.71 3.86C13.5318 3.56611 13.2807 3.32312 12.9812 3.15448C12.6817 2.98585 12.3438 2.89725 12 2.89725C11.6562 2.89725 11.3183 2.98585 11.0188 3.15448C10.7193 3.32312 10.4682 3.56611 10.29 3.86Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M12 9V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        }
+        @case ('sparkles') {
+          <path d="M12 2L14 8L20 10L14 12L12 18L10 12L4 10L10 8L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M18 4L19 6L21 7L19 8L18 10L17 8L15 7L17 6L18 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         }
       }
     </svg>

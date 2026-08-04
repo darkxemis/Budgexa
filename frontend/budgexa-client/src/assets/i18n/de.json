@@ -182,12 +182,30 @@
     "title": "Angebote",
     "create": "Angebot erstellen",
     "createInvoice": "Rechnung erstellen",
+    "generateWithAi": "Mit KI erstellen",
     "created": "Angebot erfolgreich erstellt",
     "updated": "Angebot erfolgreich aktualisiert",
     "deleted": "Angebot erfolgreich gelöscht",
     "delete": {
       "title": "Angebot löschen",
       "message": "Möchten Sie das Angebot {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "ai": {
+      "title": "Angebot mit KI erstellen",
+      "subtitle": "Beschreiben Sie das Angebot in natürlicher Sprache und die KI wird es automatisch erstellen",
+      "label": "Beschreiben Sie das Angebot",
+      "placeholder": "Z.B.: Angebot für Atlas Technologies, 4 Aluminiumfenster, 3 Holztüren mit 10% Rabatt, 1 Sofa, Montageservice, gültig bis Monatsende, Währung EUR...",
+      "examplesTitle": "Beispiele",
+      "example1": "Angebot PRE-2026-0001 für Acme Corp, Steuernummer B12345678, Datum 15. Januar 2025, gültig bis 28. Februar 2025. 10 Stunden technische Beratung, 5 Softwarelizenzen mit 15% Rabatt, Währung EUR. Notizen: Cloud-Migrationsprojekt",
+      "example2": "Angebot für XYZ GmbH, 4 Aluminiumfenster, 3 Holztüren mit 10% Rabatt, 1 Sofa, Montageservice. Gültig bis Monatsende. Währung EUR. Notizen: Lieferung in 15 Tagen",
+      "generate": "Erstellen",
+      "loadingMessage": "Angebot wird mit KI erstellt...",
+      "errors": {
+        "invalidRequest": "Ungültige Anfrage. Bitte beschreiben Sie das Angebot ausführlicher.",
+        "rateLimit": "Sie haben das Anfragelimit überschritten. Versuchen Sie es später erneut.",
+        "unauthorized": "Sie haben keine Berechtigung für diese Funktion.",
+        "generic": "Fehler beim Erstellen des Angebots. Bitte versuchen Sie es erneut."
+      }
     },
     "form": {
       "createTitle": "Angebot erstellen",
@@ -252,6 +270,23 @@
     "delete": {
       "title": "Rechnung löschen",
       "message": "Möchten Sie die Rechnung {{ number }} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "ai": {
+      "title": "Rechnung mit KI erstellen",
+      "subtitle": "Beschreiben Sie die Rechnung in natürlicher Sprache und die KI wird sie automatisch erstellen",
+      "label": "Beschreiben Sie die Rechnung",
+      "placeholder": "Z.B.: Rechnung Serie A Nummer 2025-001 für Atlas Technologies, Datum 15. Januar 2025, Fälligkeit 15. Februar 2025. 10 Stunden Beratung mit 10% Rabatt, 3 Softwarelizenzen, Währung EUR. Notizen: Cloud-Projekt...",
+      "examplesTitle": "Beispiele",
+      "example1": "Rechnung für Acme Corp, Steuernummer B12345678, Datum 20. Dezember 2024, Fälligkeit 20. Januar 2025. 10 Stunden technische Beratung mit 5% Rabatt, 3 Softwarelizenzen, Währung EUR. Notizen: Cloud-Migrationsprojekt",
+      "example2": "Rechnung Serie A-2025 Nummer 123 für XYZ GmbH, Datum heute. 4 Aluminiumfenster, 3 Holztüren mit 10% Rabatt, 1 Sofa, Montageservice. Währung EUR. Notizen: Express-Lieferung",
+      "generate": "Erstellen",
+      "loadingMessage": "Rechnung wird mit KI erstellt...",
+      "errors": {
+        "invalidRequest": "Ungültige Anfrage. Bitte beschreiben Sie die Rechnung ausführlicher.",
+        "rateLimit": "Sie haben das Anfragelimit überschritten. Versuchen Sie es später erneut.",
+        "unauthorized": "Sie haben keine Berechtigung für diese Funktion.",
+        "generic": "Fehler beim Erstellen der Rechnung. Bitte versuchen Sie es erneut."
+      }
     },
     "form": {
       "createTitle": "Rechnung erstellen",
