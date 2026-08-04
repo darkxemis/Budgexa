@@ -23,7 +23,6 @@ services:
     networks:
       - budgexa-net
     restart: unless-stopped
-    command: ollama pull qwen2.5-coder:1.5b
     environment:
       - OLLAMA_HOST=0.0.0.0:11435
       - OLLAMA_CONTEXT_LENGTH=8192
@@ -52,7 +51,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - JwtSettings__Secret=${JWT_SECRET}
-      - Ollama__BaseUrl=http://budgexa-ollama:11435
+      - Ollama__BaseUrl=http://192.168.1.69:11435
       - Ollama__DefaultModel=qwen2.5-coder:1.5b
       - ASPNETCORE_URLS=http://+:80
       - Cors__AllowedOrigins__0=https://budgexaclient.duckdns.org
