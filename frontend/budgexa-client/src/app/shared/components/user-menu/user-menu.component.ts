@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { performLogout } from '../../../core/utils/auth.utils';
 import { UserSettingsModalComponent } from '../user-settings-modal/user-settings-modal.component';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { IconComponent } from '../icon/icon.component';
 import { ToastService } from '../toast/toast.service';
 import { ToastType } from '../toast/toast.type';
 
 @Component({
   selector: 'app-user-menu',
   standalone: true,
-  imports: [TranslateModule, UserSettingsModalComponent, UserAvatarComponent],
+  imports: [TranslateModule, UserSettingsModalComponent, UserAvatarComponent, IconComponent],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

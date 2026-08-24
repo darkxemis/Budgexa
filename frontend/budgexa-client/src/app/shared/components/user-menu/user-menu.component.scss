@@ -32,6 +32,7 @@
 .menu-btn {
   display: flex;
   align-items: center;
+  gap: 0.4rem;
   background: none;
   border: none;
   padding: 0.35rem 1rem;
@@ -45,6 +46,19 @@
   }
 }
 
+.user-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-btn-chevron {
+  display: none;
+  color: #7b2ff2;
+  flex-shrink: 0;
+}
+
 .hidden-file-input {
   display: none;
 }
@@ -56,6 +70,10 @@
 @media (max-width: 600px) {
   .hide-on-mobile {
     display: none !important;
+  }
+
+  .menu-btn-chevron {
+    display: block;
   }
 }
 

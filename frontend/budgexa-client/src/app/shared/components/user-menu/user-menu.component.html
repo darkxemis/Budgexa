@@ -6,6 +6,7 @@
       </button>
       <button class="menu-btn" type="button" (click)="toggleMenu()">
         <span class="user-name hide-on-mobile">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
+        <app-icon name="chevron-down" customClass="menu-btn-chevron" [size]="16" />
       </button>
     </div>
 
